@@ -12,6 +12,25 @@ following = db.Table(
         'users.id'), primary_key=True),
 )
 
+users_tags = db.Table(
+    'users_tags',
+    db.Column('user_id',
+              db.Integer,
+              db.ForeignKey('users.id'),
+              primary_key=True),
+    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'),
+              primary_key=True))
+
+users_likes = db.Table(
+    'users_likes',
+    db.Column('user_id',
+              db.Integer,
+              db.ForeignKey('users.id'),
+              primary_key=True),
+    db.Column('post_id',
+              db.Integer,
+              db.ForeignKey('posts.id'),
+              primary_key=True))
 
 class User(db.Model):
   __tablename__ = 'users'
@@ -27,11 +46,21 @@ class User(db.Model):
   accept_payments = db.Column(db.Boolean, default=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
+  user_likes = db.relationship('Post', secondary=users_likes, back_populates="users")
+  user_tags = db.relationship('Tag', secondary=users_tags, back_populates='users')
   posts = db.relationship('Post', back_populates='user')
   follows = db.relationship('User',
                             secondary=following,
                             primaryjoin=id == following.c.user_id,
                             secondaryjoin=id == following.c.follow_id)
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "username": self.username,
+      "display_name": self.display_name,
+      "session_token": self.session_token,
+    }
 
   @property
   def password(self):
@@ -55,23 +84,6 @@ class User(db.Model):
   def is_following(self, user_to_check):
       return user_to_check in self.follows
 
-  def retrieve_feed(self):
-      return [post.to_dict() for post in Post.query.join(
-          following, (following.c.follow_id == Post.user_id)).filter(
-          following.c.user_id == self.id).order_by(Post.created_at.desc())]
-
-
-users_likes = db.Table(
-    'users_likes',
-    db.Column('user_id',
-              db.Integer,
-              db.ForeignKey('users.id'),
-              primary_key=True),
-    db.Column('post_id',
-              db.Integer,
-              db.ForeignKey('posts.id'),
-              primary_key=True))
-
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -86,6 +98,8 @@ class Post(db.Model):
     updated_at = db.Column(db.DateTime)
 
     user = db.relationship('User', back_populates='posts')
+    users = db.relationship('User', secondary=users_likes,
+                            back_populates='user_likes')
 
     def to_dict(self):
         return {
@@ -116,18 +130,10 @@ class Support(db.Model):
                                          name='cannot_support_yourself'), )
 
 
-users_tags = db.Table(
-    'users_tags',
-    db.Column('user_id',
-              db.Integer,
-              db.ForeignKey('users.id'),
-              primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'),
-              primary_key=True))
-
-
 class Tag(db.Model):
     __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True)
     tag_name = db.Column(db.String(40), nullable=False, unique=True)
+    
+    users = db.relationship('User', secondary=users_tags, back_populates='user_tags')

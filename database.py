@@ -28,10 +28,18 @@ with app.app_context():
   cath = User(username='cath',
               email='cath@thecat.com',
               password = SEED_USERS_PASSWORD)
+  bobo = User(username='boston',
+              email='boston@person.com',
+              password = SEED_USERS_PASSWORD)
+  jenni = User(username='jenni',
+              email='jenni@person.com',
+              password = SEED_USERS_PASSWORD)
 
   db.session.add(captain)
   db.session.add(luna)
   db.session.add(cath)
+  db.session.add(bobo)
+  db.session.add(jenni)
 
   db.session.add(Post(user_id=1, body="Meow meow!!!"))
   db.session.add(Post(user_id=1, body="I'm Captain!"))
@@ -44,6 +52,8 @@ with app.app_context():
   captain.follow(captain)
   luna.follow(luna)
   cath.follow(cath)
+  bobo.follow(bobo)
+  jenni.follow(jenni)
   cath.follow(captain)
   cath.follow(luna)
 

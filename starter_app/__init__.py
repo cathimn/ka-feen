@@ -2,17 +2,24 @@ import os
 from flask import Flask, render_template, request, session
 from flask_cors import CORS
 from flask_wtf.csrf import CSRFProtect, generate_csrf
-
+from flask_jwt_extended import JWTManager
 
 from starter_app.models import db, User
 from starter_app.api.user_routes import user_routes
+from starter_app.api.session_routes import session_routes
+from starter_app.api.follow_routes import follow_routes
 
 from starter_app.config import Config
 
 app = Flask(__name__, static_url_path='')
+app.url_map.strict_slashes = False
+
+jwt = JWTManager(app)
 
 app.config.from_object(Config)
 app.register_blueprint(user_routes, url_prefix='/api/users')
+app.register_blueprint(session_routes, url_prefix='/api/session')
+app.register_blueprint(follow_routes, url_prefix='/api/follows')
 db.init_app(app)
 
 ## Application Security
