@@ -8,6 +8,8 @@
   height: 55px;
   box-shadow: 0 0px 10px lavender;
   padding: 0 150px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 #navbar_logo {
@@ -18,4 +20,23 @@
 
 #navbar_logo > span {
   align-self: center;
+}
+
+.navbar > ul > li,
+.navbar > ul > a {
+  padding: 10px;
+  align-self: center;
+  border-radius: 25px;
+  margin: 0 5px;
+  text-decoration: none;
+  color: black;
+}
+
+.navbar > ul > li:hover {
+  cursor: pointer;
+}
+
+.navbar > ul > li.navbar-button {
+  color: white;
+  background-color: slateblue;
 }

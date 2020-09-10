@@ -32,6 +32,8 @@ export default function () {
     <div className="container">
       <SidebarNav />
       <div className="content">
+        <h3 className="content-header">Newsfeed</h3>
+        <div className="content-break"></div>
         {feed.map(post => <Post post={post} />)}
       </div>
     </div>

@@ -15,7 +15,7 @@ export default function () {
   return (
     <div>
       <Navbar />
-      <div>
+      <div className="container">
         COOL CONTENT
       </div>
     </div>

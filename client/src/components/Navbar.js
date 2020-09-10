@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
 
@@ -28,9 +29,11 @@ function Navbar () {
           </>
         ) : (
           <>
-            <li>Explore</li>
+            <Link>Explore</Link>
             <li onClick={() => setLoginModalDisplay(true)}>Log in</li>
-            <li onClick={() => setSignupModalDisplay(true)}>Start a page</li>
+            <li
+              className="navbar-button" 
+              onClick={() => setSignupModalDisplay(true)}>Start a page</li>
           </>
         )}
       </ul>

@@ -41,12 +41,23 @@ button {
 }
 
 .container {
-  margin: 70px 150px 0px 150px;
+  margin: 90px 150px 0px 150px;
   display: flex;
 }
 
 .content {
   width: 100%;
+  padding: 0px 15px;
+}
+
+.content-break {
+  height: 1px;
+  width: 500px;
+  background-color: rgba(230, 230, 250, 0.75);
+}
+
+.content-header {
+  padding: 10px 0;
 }
 
 @import './styles/modal.css';

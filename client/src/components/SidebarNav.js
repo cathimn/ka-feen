@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 
 import { logout } from "../actions/authentication";
 
@@ -10,42 +10,42 @@ export default function () {
   return (
     <div className="sidebar-container">
       <ul>
-        <li>
+        <Link to="/newsfeed">
           <span>
             <i className="fa fa-home" />
           </span>
           <span>Home</span>
-        </li>
-        <li>
+        </Link>
+        <Link>
           <span>
             <i className="fa fa-user-circle" />
           </span>
           <span>Your Page</span>
-        </li>
-        <li>
+        </Link>
+        <Link>
           <span>
             <i className="fa fa-cog" />
           </span>
           <span>Settings</span>
-        </li>
-        <li>
+        </Link>
+        <Link>
           <span>
             <i className="fa fa-search" />
           </span>
           <span>Explore</span>
-        </li>
-        <li>
+        </Link>
+        <Link>
           <span>
             <i className="fa fa-list" />
           </span>
           <span>Received & Given</span>
-        </li>
-        <li>
-          <span>
-            <i className="fa fa-users" />
-          </span>
-          <span>Following</span>
-        </li>
+        </Link>
+        <Link to="/following">
+            <span>
+              <i className="fa fa-users" />
+            </span>
+            <span>Following</span>
+        </Link>
         <li onClick={() => dispatch(logout())}>
           <span>
             <i className="fa fa-sign-out" />

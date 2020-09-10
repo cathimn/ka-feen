@@ -11,6 +11,7 @@ import { loadToken } from './actions/authentication';
 
 import Login from './components/Login';
 import Signup from './components/Signup';
+import Following from './components/Following';
 
 function App() {
   const dispatch = useDispatch();
@@ -43,6 +44,9 @@ function App() {
       <Signup />
       <BrowserRouter>
         <Switch>
+          <Route path="/following">
+            <Following />
+          </Route>
           <Route path="/newsfeed">
             <Newsfeed />
           </Route>
