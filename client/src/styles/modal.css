@@ -3,6 +3,7 @@
 }
 
 .modal-container {
+  z-index: 2;
   position: absolute;
   background-color: rgba(0, 0, 0, 0.1);
   width: 100vw;
@@ -48,6 +49,11 @@
   border: none;
   font-weight: 800;
   color: slateblue;
+}
+
+.modal-form > button:hover {
+  transition: background-color .5s;
+  background-color: rgb(207, 207, 250);
 }
 
 .modal-link {

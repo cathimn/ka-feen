@@ -14,8 +14,9 @@
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  background-color: slateblue;
+  background-color: lavender;
   margin: 0 15px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .post-info {
@@ -46,15 +47,30 @@
 }
 
 .post-body > p {
-  padding: 10px;
+  padding: 20px 10px;
   font-size: 14px;
 }
 
 .post-buttons {
   display: flex;
   padding: 5px;
+  align-content: center;
+}
+
+.like-button > i {
+  font-size: 20px;
+  color: lightgray;
+  vertical-align: center;
 }
 
 .like-button > i:hover {
-  color: red;
+  color: palevioletred;
+}
+
+.like-button > i.liked {
+  color: palevioletred;
+}
+
+.like-button > i.liked:hover {
+  color: lightgray;
 }

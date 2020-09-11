@@ -6,13 +6,11 @@ import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
-import { loadToken } from '../actions/authentication';
 
 const FollowCard = ({ user }) => (
   <>
     <div
       style={{
-        width: "500px",
         padding: "20px 0px",
         display: "flex",
         justifyContent: "space-between",
@@ -34,7 +32,7 @@ const FollowCard = ({ user }) => (
           <span style={{ color: "gray" }}>Following</span>
         </div>
       </div>
-      <Link>
+      <Link to={`/${user.username}`}>
         <button
           style={{
             marginRight: "10px",
@@ -53,20 +51,21 @@ export default function () {
   const dispatch = useDispatch();
   const loggedIn = useSelector((store) => store.authentication.token);
   const [follows, setFollows] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    dispatch(loadToken())
     async function fetchData() {
       const response = await fetch(`${apiUrl}/follows`, {
         headers: { Authorization: `Bearer ${loggedIn}` },
       });
       const responseData = await response.json();
       setFollows(responseData.following);
+      setLoaded(true);
     }
-    fetchData();
+    if (loggedIn) fetchData();
   }, [dispatch, loggedIn]);
 
-  if (!loggedIn) {
+  if (!loggedIn && loaded) {
     return <Redirect to="/" />
   }
 
@@ -78,7 +77,9 @@ export default function () {
       <div className="content">
         <h3 className="content-header">Following</h3>
         <div className="content-break" />
-        {follows.map(user => <FollowCard user={user} />)}
+        <div className={loaded ? "slide-in" : "slide-in hidden"}>
+          {follows.map(user => <FollowCard key={user.id} user={user} />)}
+        </div>
       </div>
     </div>
     </>

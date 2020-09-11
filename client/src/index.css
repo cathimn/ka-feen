@@ -42,22 +42,71 @@ button {
 
 .container {
   margin: 90px 150px 0px 150px;
-  display: flex;
+  display: grid;
+  grid-template-columns: 215px auto;
 }
 
 .content {
-  width: 100%;
-  padding: 0px 15px;
+  padding: 0px 25px;
+  display: flex;
+  flex-direction: column;
 }
 
 .content-break {
   height: 1px;
-  width: 500px;
+  width: auto;
   background-color: rgba(230, 230, 250, 0.75);
 }
 
 .content-header {
   padding: 10px 0;
+}
+
+.slide-in.hidden {
+  visibility: hidden;
+}
+
+.slide-in {
+
+}
+
+.search-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.search-form > input {
+  font-size: 16px;
+  padding: 20px 50px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 0 15px lavender;
+}
+
+.search-form > button {
+  position: absolute;
+  right: 0;
+  background-color: lavender;
+  margin: 10px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  color: slateblue;
+  border-radius: 50px;
+}
+
+.search-form > button:hover {
+  transition: background-color .5s;
+  background-color: rgb(221, 221, 255);
+}
+
+.search-form > i {
+  position: absolute;
+  left: 0;
+  margin: 20px;
+
 }
 
 @import './styles/modal.css';

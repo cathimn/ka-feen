@@ -29,7 +29,7 @@ function Navbar () {
           </>
         ) : (
           <>
-            <Link>Explore</Link>
+            <Link to="/explore">Explore</Link>
             <li onClick={() => setLoginModalDisplay(true)}>Log in</li>
             <li
               className="navbar-button" 

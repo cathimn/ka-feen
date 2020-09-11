@@ -12,6 +12,8 @@ import { loadToken } from './actions/authentication';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Following from './components/Following';
+import Explore from './components/Explore';
+import Settings from './components/Settings';
 
 function App() {
   const dispatch = useDispatch();
@@ -26,10 +28,13 @@ function App() {
 
   useEffect(() => {
     dispatch(loadToken());
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeAllModals();
-    })
   }, [dispatch])
+
+  useEffect(() => {
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAllModals();
+    });
+  }, []);
 
   return (
     <AppContext.Provider
@@ -44,10 +49,16 @@ function App() {
       <Signup />
       <BrowserRouter>
         <Switch>
-          <Route path="/following">
+          <Route exact path="/settings">
+            <Settings />
+          </Route>
+          <Route exact path="/explore">
+            <Explore />
+          </Route>
+          <Route exact path="/following">
             <Following />
           </Route>
-          <Route path="/newsfeed">
+          <Route exact path="/newsfeed">
             <Newsfeed />
           </Route>
           <Route path="/">

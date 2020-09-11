@@ -4,12 +4,12 @@ from starter_app.models import db, User
 
 session_routes = Blueprint('session', __name__)
 
+
 @session_routes.route('/logout', methods=['DELETE'])
 @jwt_required
 def logout():
     if request.method == 'DELETE':
         current_user = get_jwt_identity()
-        print(current_user)
         user = User.query.filter(User.email == current_user).first()
         if user.session_token == None:
             return jsonify(msg="Session does not exist"), 400
@@ -17,6 +17,7 @@ def logout():
         db.session.add(user)
         db.session.commit()
         return jsonify(msg="Session removed"), 200
+
 
 @session_routes.route('/', methods=['POST', 'PUT'])
 def index():
@@ -36,6 +37,7 @@ def index():
         user = User.query.filter(User.email == email).first()
         if not user or not user.check_password(password):
             return jsonify(msg="Bad email/password combination."), 401
+
     # SIGN UP
     elif request.method =="POST":
         username = request.json.get("username")

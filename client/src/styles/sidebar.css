@@ -1,5 +1,4 @@
 .sidebar-container {
-  width: 245px;
   font-size: 16px;
   font-weight: 600;
 }
@@ -17,7 +16,7 @@
 .sidebar-container > ul > li:hover {
   cursor: pointer;
   background-color: lavender;
-  border-radius: 5px;
+  border-radius: 10px;
   color: slateblue;
 }
 

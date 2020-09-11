@@ -35,7 +35,7 @@ export default function () {
           className="modal-close"
           onClick={(e) => setSignupModalDisplay(false)}
         >
-          <i class="fa fa-close" aria-hidden="true" />
+          <i className="fa fa-close" aria-hidden="true" />
         </button>
         <h3>Join Ka-feen! It's free.</h3>
         <form className="modal-form" onSubmit={handleSubmit}>

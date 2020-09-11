@@ -35,7 +35,7 @@ export default function () {
           className="modal-close"
           onClick={(e) => setLoginModalDisplay(false)}
         >
-          <i class="fa fa-close" aria-hidden="true" />
+          <i className="fa fa-close" aria-hidden="true" />
         </button>
         <h3>Log in</h3>
         <form className="modal-form" onSubmit={handleSubmit}>

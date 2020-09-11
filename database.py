@@ -32,7 +32,10 @@ with app.app_context():
               email='boston@person.com',
               password = SEED_USERS_PASSWORD)
   jenni = User(username='jenni',
-              email='jenni@person.com',
+              email='jenni@chanel.com',
+              password = SEED_USERS_PASSWORD)
+  jee = User(username='jeebee',
+              email='jeebee@doodoo.info',
               password = SEED_USERS_PASSWORD)
 
   db.session.add(captain)
@@ -40,11 +43,23 @@ with app.app_context():
   db.session.add(cath)
   db.session.add(bobo)
   db.session.add(jenni)
+  db.session.add(jee)
 
-  db.session.add(Post(user_id=1, body="Meow meow!!!"))
-  db.session.add(Post(user_id=1, body="I'm Captain!"))
-  db.session.add(Post(user_id=2, body="Mew mew!!!"))
-  db.session.add(Post(user_id=2, body="I'm Luna~"))
+  post1 = Post(user_id=1, body="Meow meow!!!")
+  post2 = Post(user_id=1, body="I'm Captain!")
+  post3 = Post(user_id=2, body="Mew mew!!!")
+  post4 = Post(user_id=2, body="I'm Luna~")
+  post5 = Post(user_id=6, body="I like my iPad.")
+  post6 = Post(user_id=6, body="PEACH TIME!!!")
+
+  # print(post1.to_dict())
+
+  db.session.add(post1)
+  db.session.add(post2)
+  db.session.add(post3)
+  db.session.add(post4)
+  db.session.add(post5)
+  db.session.add(post6)
 
   db.session.add(
       Post(user_id=3, body="This is Catherine making a test post..."))
@@ -56,6 +71,16 @@ with app.app_context():
   jenni.follow(jenni)
   cath.follow(captain)
   cath.follow(luna)
+  cath.follow(jee)
+
+  cath.like_post(post1)
+  cath.like_post(post2)
+  cath.like_post(post3)
+
+  cath.add_tag(Tag.query.filter(Tag.id == 1).first())
+  cath.add_tag(Tag.query.filter(Tag.id == 4).first())
+  cath.add_tag(Tag.query.filter(Tag.id == 15).first())
+
 
   test = Support(user_id=2,
                  supporter_id=3,

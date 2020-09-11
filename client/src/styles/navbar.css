@@ -10,6 +10,7 @@
   padding: 0 150px;
   font-size: 14px;
   font-weight: 600;
+  z-index: 1;
 }
 
 #navbar_logo {
@@ -39,4 +40,9 @@
 .navbar > ul > li.navbar-button {
   color: white;
   background-color: slateblue;
+}
+
+.navbar > ul > li.navbar-button:hover {
+  transition: background-color .5s;
+  background-color: rgb(124, 109, 224);
 }

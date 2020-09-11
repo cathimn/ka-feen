@@ -16,25 +16,25 @@ export default function () {
           </span>
           <span>Home</span>
         </Link>
-        <Link>
+        <Link to="/profile">
           <span>
             <i className="fa fa-user-circle" />
           </span>
           <span>Your Page</span>
         </Link>
-        <Link>
+        <Link to="/settings">
           <span>
             <i className="fa fa-cog" />
           </span>
           <span>Settings</span>
         </Link>
-        <Link>
+        <Link to="/explore">
           <span>
             <i className="fa fa-search" />
           </span>
           <span>Explore</span>
         </Link>
-        <Link>
+        <Link to="/support">
           <span>
             <i className="fa fa-list" />
           </span>
