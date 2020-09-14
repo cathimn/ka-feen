@@ -65,7 +65,8 @@ class User(db.Model):
       "banner_url": self.banner_url,
       "bio": self.bio,
       "accept_payments": self.accept_payments,
-      "tags": [tag.to_dict() for tag in self.user_tags]
+      "tags": [tag.to_dict() for tag in self.user_tags],
+      "posts": [post.to_dict() for post in self.posts],
     }
 
   def retrieve_feed(self):

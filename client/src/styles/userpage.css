@@ -1,0 +1,86 @@
+.userpage-container {
+  margin-left: 250px;
+  margin-right: 250px;
+}
+
+.userpage-topbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.userpage-avatarinfo {
+  display: flex;
+}
+
+.userpage-avatar {
+  border-radius: 150px;
+  max-width: 115px;
+  max-height: 115px;
+  min-height: 115px;
+  min-width: 115px;
+  border: 3px solid white;
+  box-shadow: 0 0 5px lavender;
+  background-color: lightgray;
+}
+
+.userpage-info {
+  align-self: center;
+  margin-left: 20px;
+  padding: 10px;
+  font-size: 14px;
+}
+
+.userpage-info > div {
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.userpage-buttons {
+  display: flex;
+  align-self: center;
+}
+
+.userpage-buttons > button {
+  font-size: 16px;
+  border-radius: 50px;
+}
+
+.userpage-buttons > button:hover {
+  cursor: pointer;
+}
+
+#support-button {
+  background-color: slateblue;
+  padding: 10px 60px;
+  color: white;
+  margin-right: 10px;
+}
+
+#support-button:hover {
+  transition: background-color .5s;
+  background-color:rgb(127, 108, 255);
+}
+
+#follow-button {
+  padding: 10px 15px;
+  border: 2px solid black;
+}
+
+#following-button {
+  background-color: lightgray;
+  padding: 5px 15px;
+  color: gray;
+}
+
+.userpage-main {
+  margin-top: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.userpage-left {
+  border-radius: 10px;
+  box-shadow: 0 0 5px lavender;
+  margin-right: 40px;
+  padding: 15px;
+}

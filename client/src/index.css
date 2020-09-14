@@ -47,6 +47,7 @@ button {
 }
 
 .content {
+  /* width: 100%; */
   padding: 0px 25px;
   display: flex;
   flex-direction: column;
@@ -113,3 +114,5 @@ button {
 @import './styles/sidebar.css';
 @import './styles/navbar.css';
 @import './styles/post.css';
+@import './styles/settings.css';
+@import './styles/userpage.css';

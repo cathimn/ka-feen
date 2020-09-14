@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 
 import { AppContext } from './AppContext';
 
-import LandingPage from './components/LandingPage';
-import Newsfeed from './components/Newsfeed';
-
 import { loadToken } from './actions/authentication';
 
+import LandingPage from './components/LandingPage';
+import Newsfeed from './components/Newsfeed';
 import Login from './components/Login';
 import Signup from './components/Signup';
 import Following from './components/Following';
 import Explore from './components/Explore';
 import Settings from './components/Settings';
+import Error from './components/Error'
+
+import { apiUrl } from './config';
+import UserPage from './components/UserPage';
 
 function App() {
   const dispatch = useDispatch();
 
   const [loginModalDisplay, setLoginModalDisplay] = useState(false);
   const [signupModalDisplay, setSignupModalDisplay] = useState(false);
+
+  const [loaded, setLoaded] = useState(false);
 
   const closeAllModals = () => {
     setLoginModalDisplay(false);
@@ -28,6 +33,7 @@ function App() {
 
   useEffect(() => {
     dispatch(loadToken());
+    setLoaded(true);
   }, [dispatch])
 
   useEffect(() => {
@@ -35,6 +41,10 @@ function App() {
       if (e.key === "Escape") closeAllModals();
     });
   }, []);
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <AppContext.Provider
@@ -60,6 +70,12 @@ function App() {
           </Route>
           <Route exact path="/newsfeed">
             <Newsfeed />
+          </Route>
+          <Route exact path="/notfound">
+            <Error />
+          </Route>
+          <Route path="/:user">
+            <UserPage />
           </Route>
           <Route path="/">
             <LandingPage />

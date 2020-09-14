@@ -6,7 +6,6 @@ import { apiUrl } from '../config';
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 import { Redirect } from 'react-router-dom';
-import { loadToken } from '../actions/authentication';
 
 export default function () {
   const dispatch = useDispatch();
@@ -14,10 +13,13 @@ export default function () {
   const [loaded, setLoaded] = useState(false);
   const [tags, setTags] = useState([]);
   const [userData, setUserData] = useState({});
+  const [avatarUrl, setAvatarUrl] = useState();
+  const [displayName, setDisplayName] = useState();
+  const [username, setUsername] = useState();
+  const [bio, setBio] = useState();
+  const [acceptsPayments, setAcceptsPayments] = useState();
 
   useEffect(() => {
-    dispatch(loadToken())
-
     async function fetchData() {
       const response = await fetch(`${apiUrl}/users/tags`);
       const responseData = await response.json();
@@ -28,6 +30,11 @@ export default function () {
       });
       const userInfoData = await requestUserInfo.json();
       setUserData(userInfoData);
+      setAvatarUrl(userInfoData.avatar_url);
+      setDisplayName(userInfoData.display_name);
+      setUsername(userInfoData.username);
+      setBio(userInfoData.bio);
+      setAcceptsPayments(userInfoData.accept_payments);
     }
     
     if (loggedIn) {
@@ -49,13 +56,12 @@ export default function () {
         <div className="content">
           <h3 className="content-header">Settings</h3>
           <div className="content-break" />
-          <form>
+          <form className="settings-form" name="settings">
             <div>
               <label htmlFor="displayName">Display Name</label> <br />
               <input
                 type="text"
                 name="displayName"
-                placeholder={userData.display_name}
               ></input>
             </div>
             <div>
@@ -63,23 +69,30 @@ export default function () {
               <input
                 type="text"
                 name="username"
-                placeholder={userData.username}
               ></input>
             </div>
             <div>
               <label htmlFor="bio">About You</label> <br />
               <textarea
                 name="bio"
-                placeholder={userData.bio}
               ></textarea>
             </div>
             <div>
-              <label htmlFor="payments">Accept "Payments"</label>
+              <label htmlFor="payments">Accept "Payments"</label> <br />
               <input type="checkbox"/>
             </div>
-            <div>
-              <button type="submit">Save Changes</button>
+            <div style={{ height: "150px" }}>
+              <label htmlFor="tags">What do you do?</label><br />
+              <ul className="settings-tags">
+                {userData.tags ? userData.tags.map(tag =>
+                  <li key={tag.id}>
+                    {tag.tag_name}
+                    <i className="fa fa-close" />
+                  </li>) : null}
+                <input type="text"></input>
+              </ul>
             </div>
+            <button htmlFor="settings" type="submit">Save Changes</button>
           </form>
         </div>
       </div>

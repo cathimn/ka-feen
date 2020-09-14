@@ -26,6 +26,12 @@ def index():
   return {"users": [user.to_dict() for user in response]}
 
 
+@user_routes.route('/<username>')
+def user(username):
+    response = User.query.filter(User.username == username).first()
+    return response.to_dict()
+
+
 @user_routes.route('/feed')
 @jwt_required
 def feed():
