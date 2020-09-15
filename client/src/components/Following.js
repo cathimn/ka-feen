@@ -19,7 +19,10 @@ const FollowCard = ({ user }) => (
       <div style={{ display: "flex" }}>
         <div
           className="post-avatar"
-          style={{ backgroundImage: `url(${user.avatarUrl})` }}
+          style={{
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundImage: `url(${user.avatarUrl})` }}
         />
         <div
           style={{
@@ -33,14 +36,7 @@ const FollowCard = ({ user }) => (
         </div>
       </div>
       <Link to={`/${user.username}`}>
-        <button
-          style={{
-            marginRight: "10px",
-            padding: "15px",
-            borderRadius: "10px",
-            color: "darkslateblue",
-            backgroundColor: "lavender",
-            alignSelf: "center"}}>View</button>
+        <button className="following-view_button">View</button>
       </Link>
     </div>
     <div className="content-break" />

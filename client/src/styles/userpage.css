@@ -84,3 +84,16 @@
   margin-right: 40px;
   padding: 15px;
 }
+
+.userpage-posts {
+  border-radius: 10px;
+  box-shadow: 0 0 5px lavender;
+  padding: 10px;
+}
+
+.userpage-post {
+  margin: 20px 0px;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px lavender;
+}

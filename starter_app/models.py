@@ -135,7 +135,7 @@ class Post(db.Model):
         "author": User.query.get(self.user_id).username,
         "body": self.body,
         "image_url": self.image_url,
-        "posted_on": str(self.created_at)
+        "posted_on": self.created_at
     }
 
 
@@ -150,12 +150,26 @@ class Support(db.Model):
   amount = db.Column(db.Integer, nullable=False)
   body = db.Column(db.Text)
   private = db.Column(db.Boolean)
+  created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
   supported_user = db.relationship('User', foreign_keys=[user_id])
   supporting_user = db.relationship('User', foreign_keys=[supporter_id])
 
   __table_args__ = (db.CheckConstraint(user_id != supporter_id,
                                         name='cannot_support_yourself'), )
+
+  def to_dict(self):
+    return {
+      "id": self.id,
+      "author": "Someone" if self.private else User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "amount": self.amount,
+      "body": None if self.private else self.body,
+      "posted_on": self.created_at,
+    }
+
+  @property
+  def supporter(self):
+    return self.supporter_id
 
 
 class Tag(db.Model):

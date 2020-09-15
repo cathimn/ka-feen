@@ -115,4 +115,5 @@ button {
 @import './styles/navbar.css';
 @import './styles/post.css';
 @import './styles/settings.css';
+@import './styles/following.css';
 @import './styles/userpage.css';

@@ -17,6 +17,7 @@ import Error from './components/Error'
 
 import { apiUrl } from './config';
 import UserPage from './components/UserPage';
+import SupportPage from './components/SupportPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -70,6 +71,9 @@ function App() {
           </Route>
           <Route exact path="/newsfeed">
             <Newsfeed />
+          </Route>
+          <Route exact path="/support">
+            <SupportPage />
           </Route>
           <Route exact path="/notfound">
             <Error />

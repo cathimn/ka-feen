@@ -1,9 +1,10 @@
 import React from 'react';
+import Navbar from './Navbar';
 
 export default function () {
   return (
-    <div>
-      EDITABLE USER PAGE
-    </div>
+    <>
+      <Navbar />
+    </>
   )
 }

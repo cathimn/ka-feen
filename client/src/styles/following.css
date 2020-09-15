@@ -1,0 +1,13 @@
+.following-view_button {
+  margin-right: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  color: darkslateblue;
+  background-color: lavender;
+  align-self: center;
+}
+
+.following-view_button:hover {
+  transition: background-color .25s;
+  background-color: rgb(218, 218, 255);
+}

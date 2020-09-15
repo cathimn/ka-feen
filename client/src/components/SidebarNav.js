@@ -1,11 +1,12 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Link } from "react-router-dom";
 
 import { logout } from "../actions/authentication";
 
 export default function () {
   const dispatch = useDispatch();
+  const loggedInUser = useSelector((store) => store.authentication.user);
 
   return (
     <div className="sidebar-container">
@@ -16,7 +17,7 @@ export default function () {
           </span>
           <span>Home</span>
         </Link>
-        <Link to="/profile">
+        <Link to={`/${loggedInUser.username}`}>
           <span>
             <i className="fa fa-user-circle" />
           </span>

@@ -21,13 +21,7 @@ function SupportModal ({ loggedIn, user, setSupportModalDisplay }) {
         >
           <i className="fa fa-close" aria-hidden="true" />
         </button>
-        <h3>
-          Buy some caffeine for{" "}
-          {user.display_name || user.username}
-        </h3>
-        <div>
-          <i className="fa fa-coffee" /> $3 each
-        </div>
+        
       </div>
     </div>
   );
@@ -39,7 +33,7 @@ export default function () {
   const loggedInUser = useSelector((store) => store.authentication.user);
   const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [validUser, setValidUser] = useState(false);
+  const [validUser, setValidUser] = useState();
   const [userPageInfo, setUserPageInfo] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const [editable, setEditable] = useState(false);
@@ -62,10 +56,12 @@ export default function () {
         setValidUser(true);
         const data = await response.json();
         setUserPageInfo({ ...data });
+      } else {
+        setValidUser(false);
       }
+      setLoaded(true)
     }
     fetchUserPageInfo();
-    setLoaded(true)
   }, [user, users])
 
   useEffect(() => {
@@ -89,26 +85,25 @@ export default function () {
     return null;
   }
 
-  // if (loaded && !validUser) {
-  //   return <Error />
-  // }
+  if (loaded && user === loggedInUser.username) {
+    return <EditUserPage />
+  }
+
+  if (loaded && !validUser) {
+    return <Error />
+  }
 
   console.log(`loaded? ${loaded}, loggedIn? ${loggedInUser.username}, validUser? ${validUser}`)
 
   return (
     <>
       <Navbar />
-      {supportModalDisplay ? (
-        <SupportModal
-          loggedIn={loggedIn}
-          user={userPageInfo}
-          setSupportModalDisplay={setSupportModalDisplay}
-        />
-      ) : null}
       <div
         style={
           userPageInfo.banner_url
             ? {
+                backgroundPosition: "center",
+                backgroundSize: "cover",
                 backgroundImage: `url(${userPageInfo.banner_url})`,
                 height: "250px",
               }
@@ -127,7 +122,10 @@ export default function () {
           <div className="userpage-avatarinfo">
             <div
               className="userpage-avatar"
-              style={{ backgroundImage: `url(${userPageInfo.avatar_url})` }}
+              style={{
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundImage: `url(${userPageInfo.avatar_url})` }}
             />
             <div className="userpage-info">
               <div>Buy some caffeine for</div>
@@ -163,7 +161,30 @@ export default function () {
             <p>{userPageInfo.bio}</p>
             {userPageInfo.tags ? userPageInfo.tags.map(el => <span>{el.tag_name}</span>) : null}
           </div>
-          <div className="userpage-right">right</div>
+          <div className="userpage-right">
+            <div className="userpage-support">
+              <h3>
+                Buy some caffeine for{" "}
+                {userPageInfo.display_name || userPageInfo.username}
+              </h3>
+              <div>
+                <i className="fa fa-coffee" /> $3 each
+              </div>
+              <form>
+                <input type="number" defaultValue="1"></input>
+              </form>
+            </div>
+            <div className="userpage-posts">
+              <h3>Feed</h3>
+              {userPageInfo.userpage_feed.map(post => {
+                if (post.amount) {
+                  return <div className="userpage-post">{post.author} bought some caffeine for {userPageInfo.display_name || userPageInfo.username}<p>{post.body}</p></div>
+                } else {
+                  return <div className="userpage-post">{post.author} posted <p>{post.body}</p></div>
+                }}
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from starter_app.models import db, User, Tag, users_tags
+from starter_app.models import db, User, Tag, Support, users_tags
 
 user_routes = Blueprint('users', __name__)
 
@@ -28,9 +28,24 @@ def index():
 
 @user_routes.route('/<username>')
 def user(username):
-    response = User.query.filter(User.username == username).first()
-    return response.to_dict()
-
+  user = User.query.filter(User.username == username).first()
+  supports = Support.query.filter(Support.user_id == user.id).all()
+  feed = user.posts + supports
+  total_support = len(supports)
+  feed.sort(key=lambda x: x.created_at, reverse=True)
+  user = user.to_dict()
+  return {
+    "id": user["id"],
+    "username": user["username"],
+    "display_name": user["display_name"],
+    "avatar_url": user["avatar_url"],
+    "banner_url": user["banner_url"],
+    "tags": user["tags"],
+    "accept_payments": user["accept_payments"],
+    "bio": user["bio"],
+    "userpage_feed": [item.to_dict() for item in feed],
+    "total_support": total_support,
+  }
 
 @user_routes.route('/feed')
 @jwt_required

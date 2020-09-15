@@ -31,3 +31,18 @@
 .sidebar-container > ul > li > span:first-child {
   width: 30px;
 }
+
+
+.sidebar-collapse.hidden {
+  position: absolute;
+  right: -215px;
+}
+
+
+.sidebar-collapse {
+  transition: right .25s;
+  position: absolute;
+  width: 215px;
+  right: 0px;
+  height: 100%;
+}
