@@ -30,6 +30,7 @@ export const removeUser = () => ({
 export const loadToken = () => async (dispatch) => {
   const token = window.localStorage.getItem(TOKEN_KEY);
   const user = window.localStorage.getItem(USER_KEY);
+
   if (token && user) {
     dispatch(setToken(token));
     dispatch(setUser(JSON.parse(user)));

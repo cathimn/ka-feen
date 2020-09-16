@@ -56,6 +56,24 @@ export default function () {
     })
   }
 
+  const follow = async () => {
+    const response = await fetch(`${apiUrl}/follows`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ "follow": user })
+    })
+    if (response.ok) setIsFollowing(true);
+  }
+
+  const unfollow = async () => {
+    const response = await fetch(`${apiUrl}/follows`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ "unfollow": user })
+    })
+    if (response.ok) setIsFollowing(false)
+  }
+
   if (!loaded) {
     return null;
   }
@@ -115,12 +133,12 @@ export default function () {
               &nbsp;Support
             </button>
             {isFollowing ? (
-              <button id="following-button">
+              <button id="following-button" onClick={unfollow}>
                 <i className="fa fa-user" />
                 <i className="fa fa-check" />
               </button>
             ) : (
-              <button id="follow-button">Follow</button>
+              <button id="follow-button" onClick={follow}>Follow</button>
             )}
           </div>
         </div>

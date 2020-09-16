@@ -12,17 +12,20 @@ def follows():
   user = User.query.filter(User.email == current_user).first()
 
   if request.method == 'POST':
-      to_follow = User.query.filter(User.id == follow_id).first()
-      user.follow(to_follow)
-      db.session.add(user)
-      db.session.commit()
-      return jsonify(msg=f'{user.username} is now following {to_follow.username}!')
+    follow = request.json.get("follow")
+    print(follow)
+    to_follow = User.query.filter(User.username == follow).first()
+    user.follow(to_follow)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(msg=f'{user.username} is now following {follow}!')
   elif request.method == 'DELETE':
-      to_unfollow = User.query.filter(User.id == follow_id).first()
-      user.unfollow(to_unfollow)
-      db.session.add(user)
-      db.session.commit()
-      return jsonify(msg=f'{user.username} has unfollowed {to_unfollow.username}!')
+    unfollow = request.json.get("unfollow")
+    to_unfollow = User.query.filter(User.username == unfollow).first()
+    user.unfollow(to_unfollow)
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(msg=f'{user.username} has unfollowed {unfollow}!')
 
 
   return {'following': [{

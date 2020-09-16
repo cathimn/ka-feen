@@ -105,7 +105,7 @@ class User(db.Model):
       self.user_likes.remove(post_to_unlike)
 
   def add_tag(self, tag_to_add):
-    if tag_to_add not in self.user_tags and len(self.user_tags) < 3:
+    if tag_to_add not in self.user_tags:
       self.user_tags.append(tag_to_add)
   
   def remove_tag(self, tag_to_remove):
