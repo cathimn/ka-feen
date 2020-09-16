@@ -5,7 +5,15 @@ import {
   REMOVE_USER
 } from "../actions/authentication";
 
-const authReducer = (state = {}, action) => {
+const initState = {
+  token: null,
+  user: {
+    id: null,
+    username: null
+  }
+}
+
+const authReducer = (state = initState, action) => {
   switch (action.type) {
     case SET_TOKEN: {
       return {
@@ -29,7 +37,10 @@ const authReducer = (state = {}, action) => {
 
     case REMOVE_USER: {
       const nextState = { ...state };
-      delete nextState.user;
+      nextState.user = {
+        id: null,
+        username: null
+      };
       return nextState;
     }
 

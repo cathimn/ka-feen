@@ -29,6 +29,8 @@ def index():
 @user_routes.route('/<username>')
 def user(username):
   user = User.query.filter(User.username == username).first()
+  if not user:
+    return jsonify(msg="Invalid user"), 401
   supports = Support.query.filter(Support.user_id == user.id).all()
   feed = user.posts + supports
   total_support = len(supports)

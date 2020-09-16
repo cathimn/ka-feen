@@ -161,9 +161,9 @@ class Support(db.Model):
   def to_dict(self):
     return {
       "id": self.id,
-      "author": "Someone" if self.private else User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "author": "Somebody" if self.private else User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
       "amount": self.amount,
-      "body": None if self.private else self.body,
+      "body": self.body,
       "posted_on": self.created_at,
     }
 

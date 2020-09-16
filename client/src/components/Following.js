@@ -56,13 +56,17 @@ export default function () {
       });
       const responseData = await response.json();
       setFollows(responseData.following);
-      setLoaded(true);
     }
     if (loggedIn) fetchData();
+    setLoaded(true);
   }, [dispatch, loggedIn]);
 
   if (!loggedIn && loaded) {
     return <Redirect to="/" />
+  }
+
+  if (!loaded) {
+    return null;
   }
 
   return (

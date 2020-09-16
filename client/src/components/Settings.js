@@ -13,11 +13,6 @@ export default function () {
   const [loaded, setLoaded] = useState(false);
   const [tags, setTags] = useState([]);
   const [userData, setUserData] = useState({});
-  const [avatarUrl, setAvatarUrl] = useState();
-  const [displayName, setDisplayName] = useState();
-  const [username, setUsername] = useState();
-  const [bio, setBio] = useState();
-  const [acceptsPayments, setAcceptsPayments] = useState();
 
   useEffect(() => {
     async function fetchData() {
@@ -30,18 +25,13 @@ export default function () {
       });
       const userInfoData = await requestUserInfo.json();
       setUserData(userInfoData);
-      setAvatarUrl(userInfoData.avatar_url);
-      setDisplayName(userInfoData.display_name);
-      setUsername(userInfoData.username);
-      setBio(userInfoData.bio);
-      setAcceptsPayments(userInfoData.accept_payments);
     }
     
     if (loggedIn) {
       fetchData();
     }
     
-    setLoaded(true)
+    setLoaded(true);
   }, [dispatch, loggedIn])
 
   if (!loggedIn && loaded) {

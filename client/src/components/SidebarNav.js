@@ -1,12 +1,16 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { logout } from "../actions/authentication";
 
 export default function () {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((store) => store.authentication.user);
+
+  if (!loggedInUser) {
+    return null;
+  }
 
   return (
     <div className="sidebar-container">

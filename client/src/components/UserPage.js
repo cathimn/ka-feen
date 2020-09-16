@@ -6,65 +6,30 @@ import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
 import EditUserPage from './EditUserPage';
-import Error from './Error';
-
-function SupportModal ({ loggedIn, user, setSupportModalDisplay }) {
-  return (
-    <div id="support-modal" className="modal-container">
-      <div
-        className="modal-display"
-        style={{ width: "400px", textAlign: "left" }}
-      >
-        <button
-          className="modal-close"
-          onClick={() => setSupportModalDisplay(false)}
-        >
-          <i className="fa fa-close" aria-hidden="true" />
-        </button>
-        
-      </div>
-    </div>
-  );
-}
+import Post from './Post';
 
 export default function () {
   const { user } = useParams();
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
-  const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
-  const [validUser, setValidUser] = useState();
   const [userPageInfo, setUserPageInfo] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
-  const [editable, setEditable] = useState(false);
-  const [supportModalDisplay, setSupportModalDisplay] = useState(false);
 
-  useEffect(() => {
-    async function fetchAllUsers() {
-      const response = await fetch(`${apiUrl}/users`);
-      const data = await response.json();
-      setUsers([...data.users.map((user) => user.username)]);
-    }
-
-    fetchAllUsers();
-  }, [])
+  const [privateDonation, setPrivateDonation] = useState(false);
+  const [donationMessage, setDonationMessage] = useState("");
+  const [supportAmount, setSupportAmount] = useState(1);
 
   useEffect(() => {
     async function fetchUserPageInfo() {
       const response = await fetch(`${apiUrl}/users/${user}`);
       if (response.ok) {
-        setValidUser(true);
         const data = await response.json();
         setUserPageInfo({ ...data });
-      } else {
-        setValidUser(false);
       }
-      setLoaded(true)
+      setLoaded(true);
     }
-    fetchUserPageInfo();
-  }, [user, users])
 
-  useEffect(() => {
     async function followingCheck() {
       const response = await fetch(`${apiUrl}/follows`, {
         headers: { Authorization: `Bearer ${loggedIn}` },
@@ -73,13 +38,23 @@ export default function () {
       const usernames = data.following.map((user) => user.username);
       setIsFollowing(usernames.includes(user));
     }
+
+    fetchUserPageInfo();
     if (loggedIn) {
-      if (user === loggedInUser.username) {
-        setEditable(true);
-      }
       followingCheck();
     }
-  }, [loggedIn])
+  }, [loggedIn, user])
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({
+      "user_id": user,
+      "supporter": loggedInUser.id,
+      "amount": supportAmount,
+      "body": donationMessage,
+      "private": privateDonation,
+    })
+  }
 
   if (!loaded) {
     return null;
@@ -89,11 +64,9 @@ export default function () {
     return <EditUserPage />
   }
 
-  if (loaded && !validUser) {
-    return <Error />
+  if (loaded && Object.keys(userPageInfo).length === 0) {
+    return <Redirect to="/notfound" />
   }
-
-  console.log(`loaded? ${loaded}, loggedIn? ${loggedInUser.username}, validUser? ${validUser}`)
 
   return (
     <>
@@ -137,9 +110,7 @@ export default function () {
           </div>
           <div className="userpage-buttons">
             <button
-              id="support-button"
-              onClick={() => setSupportModalDisplay(true)}
-            >
+              id="support-button">
               <i className="fa fa-coffee" />
               &nbsp;Support
             </button>
@@ -160,6 +131,8 @@ export default function () {
             </h3>
             <p>{userPageInfo.bio}</p>
             {userPageInfo.tags ? userPageInfo.tags.map(el => <span>{el.tag_name}</span>) : null}
+            {userPageInfo.total_support > 0
+              ? <div><i className="fa fa-coffee"></i> x {userPageInfo.total_support} received</div> : null}
           </div>
           <div className="userpage-right">
             <div className="userpage-support">
@@ -167,22 +140,52 @@ export default function () {
                 Buy some caffeine for{" "}
                 {userPageInfo.display_name || userPageInfo.username}
               </h3>
-              <div>
-                <i className="fa fa-coffee" /> $3 each
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ fontSize: "20px", alignSelf: "center" }}>
+                  <i className="fa fa-coffee" /> $3 each
+                </div>
+                <form id="support-form" onSubmit={e => e.preventDefault()}>
+                  <button
+                    type="button"
+                    disabled={supportAmount === 1}
+                    onClick={() => setSupportAmount(supportAmount - 1)}
+                  ><i className="fa fa-minus" /></button>
+                  <input
+                    type="number"
+                    min="1"
+                    onChange={(e) => setSupportAmount(Number(e.target.value))}
+                    value={supportAmount} ></input>
+                  <button
+                    onClick={() => setSupportAmount(supportAmount + 1)}
+                  ><i className="fa fa-plus" /></button>
+                </form>
               </div>
-              <form>
-                <input type="number" defaultValue="1"></input>
-              </form>
+              <textarea
+                placeholder="Your message..."
+                value={donationMessage}
+                onChange={e => setDonationMessage(e.target.value)}></textarea><br/>
+              <span
+                onClick={e => setPrivateDonation(!privateDonation)}
+                className={privateDonation ? "checkbox checked" : "checkbox"}>
+                {privateDonation ? <i className="fa fa-check" /> : null}
+              </span>
+              <label>Anonymous donation</label><br/>
+              <button
+                disabled={supportAmount === 0}
+                onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
             </div>
             <div className="userpage-posts">
               <h3>Feed</h3>
-              {userPageInfo.userpage_feed.map(post => {
+              {userPageInfo.userpage_feed? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
-                  return <div className="userpage-post">{post.author} bought some caffeine for {userPageInfo.display_name || userPageInfo.username}<p>{post.body}</p></div>
+                  return (
+                  <Post key={post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
                 } else {
-                  return <div className="userpage-post">{post.author} posted <p>{post.body}</p></div>
+                  return (
+                  <Post key={post.id} post={post} />
+                  )
                 }}
-              )}
+              ) : null}
             </div>
           </div>
         </div>

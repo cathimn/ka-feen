@@ -1,6 +1,9 @@
 .userpage-container {
-  margin-left: 250px;
-  margin-right: 250px;
+  /* margin-left: 250px;
+  margin-right: 250px; */
+  margin: 0 auto;
+  padding: 0 250px;
+  /* width: 70%; */
 }
 
 .userpage-topbar {
@@ -54,10 +57,11 @@
   padding: 10px 60px;
   color: white;
   margin-right: 10px;
+  font-weight: 600;
 }
 
 #support-button:hover {
-  transition: background-color .5s;
+  transition: background-color .25s;
   background-color:rgb(127, 108, 255);
 }
 
@@ -75,25 +79,150 @@
 .userpage-main {
   margin-top: 50px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 400px 1fr;
 }
 
 .userpage-left {
   border-radius: 10px;
-  box-shadow: 0 0 5px lavender;
+  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 5px rgba(230, 230, 250, 0.5);
   margin-right: 40px;
   padding: 15px;
+  height: min-content;
+}
+
+.userpage-support {
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 5px rgba(230, 230, 250, 0.5);
+  padding: 20px;
+}
+
+.userpage-support > textarea {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 16px;
+  border-radius: 5px;
+  margin: 10px auto;
+  padding: 10px;
+  border: 2px solid lavender;
+}
+
+#support-form > input:hover,
+.userpage-support > textarea:hover {
+  transition: border .25s;
+  border: 2px solid slateblue;
+}
+
+.userpage-support {
+  position: relative;
+}
+
+.userpage-support > span.checkbox {
+  position: absolute;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  border: 2px solid lavender;
+  border-radius: 5px;
+}
+
+.userpage-support > span.checkbox:hover {
+  transition: border .25s;
+  border: 2px solid slateblue;
+}
+
+.userpage-support > span.checkbox.checked {
+  background-color: lavender;
+  color: slateblue;
+}
+
+.userpage-support > span.checkbox.checked:hover {
+  border: 2px solid lavender;
+}
+
+.userpage-support > label {
+  position: absolute;
+  height: 20px;
+  margin-left: 30px;
+  margin-top: 2px;
+}
+
+.userpage-support > button {
+  width: 100%;
+  color: white;
+  background-color: slateblue;
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  padding: 10px 0px;
+  border-radius: 50px;
+}
+
+.userpage-support > button:hover {
+  cursor: pointer;
+  transition: background-color .25s;
+  background-color: rgb(127, 108, 255)
+}
+
+.userpage-support > button:disabled {
+  cursor: not-allowed;
+  color: gray;
+  background-color: darkgray;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#support-form > input {
+  text-align: center;
+  font-size: 20px;
+  border: none;
+  padding: 10px;
+  border-radius: 50px;
+  border: 2px solid lavender;
+  width: 60px;
+  margin: 0 5px;
+}
+
+#support-form > button {
+  cursor: pointer;
+  color: slateblue;
+  background-color: lavender;
+  padding: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+#support-form > button:disabled {
+  color: gray;
+  background-color: lightgray;
 }
 
 .userpage-posts {
+  margin-top: 20px;
   border-radius: 10px;
-  box-shadow: 0 0 5px lavender;
-  padding: 10px;
+  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 5px rgba(230, 230, 250, 0.5);
+  padding: 20px;
 }
 
 .userpage-post {
-  margin: 20px 0px;
-  padding: 5px;
+  margin-top: 20px;
+  padding: 10px;
+}
+
+.userpage-post > p {
+  margin-top: 10px;
+  padding: 10px;
   border-radius: 10px;
   box-shadow: 0 0 15px lavender;
 }

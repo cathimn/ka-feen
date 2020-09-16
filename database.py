@@ -24,7 +24,9 @@ with app.app_context():
                  password = SEED_USERS_PASSWORD)
   luna = User(username='lunacat',
               email='luna@thecat.com',
-              password = SEED_USERS_PASSWORD)
+              password = SEED_USERS_PASSWORD,
+              bio = "A small cat with big dreams!",
+              display_name = "mewna")
   cath = User(username='cath',
               email='cath@thecat.com',
               password = SEED_USERS_PASSWORD)
@@ -80,6 +82,10 @@ with app.app_context():
   cath.add_tag(Tag.query.filter(Tag.id == 1).first())
   cath.add_tag(Tag.query.filter(Tag.id == 4).first())
   cath.add_tag(Tag.query.filter(Tag.id == 15).first())
+
+  luna.add_tag(Tag.query.filter(Tag.id == 10).first())
+  luna.add_tag(Tag.query.filter(Tag.id == 11).first())
+  luna.add_tag(Tag.query.filter(Tag.id == 12).first())
 
 
   test = Support(user_id=2,

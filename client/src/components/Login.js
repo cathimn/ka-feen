@@ -15,6 +15,8 @@ export default function () {
     e.preventDefault();
     dispatch(login(email, password));
     // if no errors
+    setPassword('');
+    setEmail('');
     setLoginModalDisplay(false);
   }
 
