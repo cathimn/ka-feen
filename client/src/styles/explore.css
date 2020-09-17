@@ -1,0 +1,111 @@
+.search-form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+.search-form > input {
+  font-size: 16px;
+  padding: 20px 50px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: 0 0 15px lavender;
+}
+
+.search-form > input:hover {
+  transition: box-shadow .25s;
+  box-shadow: 0 0 15px lavender, 0 0 5px rgba(105, 90, 205, 0.5);
+}
+
+.search-form > button {
+  position: absolute;
+  right: 0;
+  background-color: lavender;
+  margin: 10px;
+  padding: 10px 20px;
+  font-weight: 600;
+  font-size: 16px;
+  color: slateblue;
+  border-radius: 50px;
+}
+
+.search-form > button:hover {
+  transition: background-color .5s;
+  background-color: rgb(221, 221, 255);
+}
+
+.search-form > i {
+  position: absolute;
+  left: 0;
+  margin: 20px;
+}
+
+.explore-categories {
+  display: flex;
+  overflow: auto;
+  margin: 0 30px 20px 30px;
+  height: 100px;
+}
+
+.explore-categories__tags {
+  box-shadow: 0 0 15px lavender;
+  /* padding: 20px; */
+  background-color: white;
+  border-radius: 10px;
+  width: 100px;
+}
+
+.explore-usercard {
+  text-align: center;
+  position: relative;
+  height: 300px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px lavender;
+  margin: 20px;
+}
+
+.usercard-bigavatar {
+  margin-top: 25px;
+  border: 2px solid whitesmoke;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+}
+
+.usercard-bigbanner {
+  top: 0;
+  width: 100%;
+  background-color: whitesmoke;
+  height: 125px;
+  border-radius: 20px 20px 0 0;
+}
+
+.usercard-biginfo {
+  height: 175px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.usercard-biginfo > p {
+  font-size: 16px;
+  overflow: scroll;
+  margin: 10px 0;
+}
+
+.usercard-biginfo > button {
+  align-self: center;
+  border: 2px solid slateblue;
+  padding: 5px;
+  border-radius: 50px;
+  color: darkslateblue;
+  width: 100px;
+}
+
+.usercard-biginfo > button:hover {
+  cursor: pointer;
+  box-shadow: 0 0 5px lavender;
+}

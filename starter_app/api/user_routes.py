@@ -70,7 +70,6 @@ def update_tags(tag_id):
   current_user = get_jwt_identity()
   if not current_user:
     return jsonify(msg="Invalid user"), 400
-
   
   tag = Tag.query.filter(Tag.id == tag_id).first()
   if not tag:

@@ -20,10 +20,18 @@ function Navbar () {
     </div>
     <div className="navbar">
       <div id="navbar_logo">
-        <span>
-          <i className="fa fa-coffee" />
-        </span>
-        <span>&nbsp; Ka-feen</span>
+        <Link to="/">
+          <span>
+            <i className="fa fa-coffee"
+              style={{
+                color: "slateblue",
+                padding: "8px",
+                borderRadius: "50%",
+                backgroundColor: "whitesmoke",
+                boxShadow: "inset 0 0 15px lavender, inset 0 0 5px lavender" }}/>
+          </span>
+          <span>&nbsp;Ka-feen</span>
+        </Link>
       </div>
       <ul style={{ display: "flex" }}>
         {loggedIn ? (

@@ -19,8 +19,10 @@
   font-weight: 600;
 }
 
-#navbar_logo > span {
+#navbar_logo > a {
   align-self: center;
+  text-decoration: none;
+  color: black;
 }
 
 .navbar > ul > li,

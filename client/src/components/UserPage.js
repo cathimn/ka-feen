@@ -128,6 +128,7 @@ export default function () {
           </div>
           <div className="userpage-buttons">
             <button
+              className={userPageInfo.accept_payments ? "" : "hidden"}
               id="support-button">
               <i className="fa fa-coffee" />
               &nbsp;Support
@@ -145,7 +146,7 @@ export default function () {
         <div className="userpage-main">
           <div className="userpage-left">
             <h3>
-              Support {userPageInfo.display_name || userPageInfo.username}
+              <span>{userPageInfo.accept_payments ? "Support" : "About"}</span> {userPageInfo.display_name || userPageInfo.username}
             </h3>
             <p>{userPageInfo.bio}</p>
             {userPageInfo.tags ? userPageInfo.tags.map(el => <span>{el.tag_name}</span>) : null}
@@ -153,7 +154,7 @@ export default function () {
               ? <div><i className="fa fa-coffee"></i> x {userPageInfo.total_support} received</div> : null}
           </div>
           <div className="userpage-right">
-            <div className="userpage-support">
+            <div className={userPageInfo.accept_payments ? "userpage-support" : "hidden"}>
               <h3>
                 Buy some caffeine for{" "}
                 {userPageInfo.display_name || userPageInfo.username}

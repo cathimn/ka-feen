@@ -66,14 +66,23 @@
 }
 
 #follow-button {
+  font-size: 14px;
   padding: 10px 15px;
   border: 2px solid black;
+  height: 40px;
+}
+
+#follow-button:hover {
+  transition: color .25s, border .25s;
+  border: 2px solid slateblue;
+  color: slateblue;
 }
 
 #following-button {
   background-color: whitesmoke;
   padding: 5px 15px;
   color: gray;
+  height: 40px;
 }
 
 .userpage-main {
@@ -101,7 +110,7 @@
   box-sizing: border-box;
   font-size: 16px;
   border-radius: 5px;
-  margin: 10px auto;
+  margin: 10px auto 20px auto;
   padding: 10px;
   border: 2px solid lavender;
 }
@@ -209,7 +218,6 @@ input[type=number] {
 }
 
 .userpage-posts {
-  margin-top: 20px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 5px rgba(230, 230, 250, 0.5);
   padding: 20px;
