@@ -9,6 +9,7 @@ from starter_app.api.user_routes import user_routes
 from starter_app.api.session_routes import session_routes
 from starter_app.api.follow_routes import follow_routes
 from starter_app.api.post_routes import post_routes
+from starter_app.api.support_routes import support_routes
 
 from starter_app.config import Config
 
@@ -22,6 +23,7 @@ app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(session_routes, url_prefix='/api/session')
 app.register_blueprint(follow_routes, url_prefix='/api/follows')
 app.register_blueprint(post_routes, url_prefix='/api/posts')
+app.register_blueprint(support_routes, url_prefix='/api/supports')
 db.init_app(app)
 
 ## Application Security

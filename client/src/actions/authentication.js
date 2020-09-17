@@ -45,9 +45,9 @@ export const login = (email, password) => async (dispatch) => {
   });
 
   if (response.ok) {
-    const { token, id, username } = await response.json();
+    const { token, id, username, display_name } = await response.json();
     window.localStorage.setItem(TOKEN_KEY, token);
-    const user = { id: id, username: username };
+    const user = { id: id, username: username, display_name: display_name };
     window.localStorage.setItem(USER_KEY, JSON.stringify(user));
     dispatch(setToken(token));
     dispatch(setUser(user));

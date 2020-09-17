@@ -9,7 +9,8 @@ const initState = {
   token: null,
   user: {
     id: null,
-    username: null
+    username: null,
+    display_name: null
   }
 }
 
@@ -39,7 +40,8 @@ const authReducer = (state = initState, action) => {
       const nextState = { ...state };
       nextState.user = {
         id: null,
-        username: null
+        username: null,
+        display_name: null,
       };
       return nextState;
     }

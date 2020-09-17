@@ -27,9 +27,9 @@
   flex-direction: column;
   justify-content: space-between;
   margin-top: 15px;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 20px;
-  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 15px lavender;
+  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 15px rgba(230, 230, 250, 0.75);
 }
 
 .post-arrow {

@@ -50,4 +50,4 @@ def index():
   user.session_token = access_token
   db.session.add(user)
   db.session.commit()
-  return jsonify(token=access_token, id=user.id, username=user.username), 200
+  return jsonify(token=access_token, id=user.id, username=user.username, display_name=user.display_name), 200

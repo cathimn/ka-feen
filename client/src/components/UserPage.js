@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -15,7 +15,7 @@ export default function () {
   const [loaded, setLoaded] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
-
+  const [newPost, setNewPost] = useState(null);
   const [privateDonation, setPrivateDonation] = useState(false);
   const [donationMessage, setDonationMessage] = useState("");
   const [supportAmount, setSupportAmount] = useState(1);
@@ -40,20 +40,29 @@ export default function () {
     }
 
     fetchUserPageInfo();
+    setNewPost(false);
     if (loggedIn) {
       followingCheck();
     }
-  }, [loggedIn, user])
+  }, [loggedIn, user, newPost])
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      "user_id": user,
-      "supporter": loggedInUser.id,
-      "amount": supportAmount,
-      "body": donationMessage,
-      "private": privateDonation,
-    })
+    await fetch(`${apiUrl}/supports`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+          "user_id": userPageInfo.id,
+          "supporter_id": loggedInUser.id,
+          "amount": supportAmount,
+          "body": donationMessage,
+          "private": privateDonation,
+        })
+    });
+    setNewPost(true);
+    setSupportAmount(1);
+    setDonationMessage("");
+    setPrivateDonation(false);
   }
 
   const follow = async () => {
@@ -128,6 +137,9 @@ export default function () {
           </div>
           <div className="userpage-buttons">
             <button
+              onClick={() => {
+                window.scrollTo({ top: 200, left: 0, behavior: "smooth" });
+              }}
               className={userPageInfo.accept_payments ? "" : "hidden"}
               id="support-button">
               <i className="fa fa-coffee" />
@@ -146,15 +158,29 @@ export default function () {
         <div className="userpage-main">
           <div className="userpage-left">
             <h3>
-              <span>{userPageInfo.accept_payments ? "Support" : "About"}</span> {userPageInfo.display_name || userPageInfo.username}
+              <span>
+                {userPageInfo.accept_payments ? "Support" : "About"}</span>&nbsp;
+                {userPageInfo.display_name || userPageInfo.username}
             </h3>
-            <p>{userPageInfo.bio}</p>
-            {userPageInfo.tags ? userPageInfo.tags.map(el => <span>{el.tag_name}</span>) : null}
-            {userPageInfo.total_support > 0
-              ? <div><i className="fa fa-coffee"></i> x {userPageInfo.total_support} received</div> : null}
+            <p style={{margin: "5px 0"}}>{userPageInfo.bio}</p>
+            <div className="userpage-tag_container">
+              {userPageInfo.tags
+                ?
+                userPageInfo.tags.map(el =>
+                  <span key={el.id} className="userpage-tag">
+                    {el.tag_name}</span>)
+                : null}
+            </div>
+            <div style={{fontSize: "18px"}}>
+              {userPageInfo.total_support > 0
+                ? <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
+              <strong>{userPageInfo.total_support}</strong>
+              &nbsp;Received</div> : null}
+            </div>
           </div>
           <div className="userpage-right">
-            <div className={userPageInfo.accept_payments ? "userpage-support" : "hidden"}>
+            <div
+              className={userPageInfo.accept_payments ? "userpage-support" : "hidden"}>
               <h3>
                 Buy some caffeine for{" "}
                 {userPageInfo.display_name || userPageInfo.username}
@@ -192,16 +218,23 @@ export default function () {
               <button
                 disabled={supportAmount === 0}
                 onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
+              {loggedInUser
+              ?
+              <div style={{
+                textAlign:"center",
+                marginTop: "10px"}}>
+                  Signed in as {loggedInUser.display_name || loggedInUser.username}
+              </div> : null}
             </div>
             <div className="userpage-posts">
               <h3>Feed</h3>
               {userPageInfo.userpage_feed? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
-                  <Post key={post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
+                  <Post key={"support"+post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
                 } else {
                   return (
-                  <Post key={post.id} post={post} />
+                  <Post key={"post"+post.id} post={post} />
                   )
                 }}
               ) : null}

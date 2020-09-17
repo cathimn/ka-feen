@@ -13,6 +13,8 @@ function Explore () {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [searched, setSearched] = useState(null);
+  const [taggedUsers, setTaggedUsers] = useState([]);
+  const [currentTag, setCurrentTag] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -38,8 +40,11 @@ function Explore () {
     search();
   }
 
-  const fetchTaggedUsers = (e) => {
-    console.log(e.target.id)
+  const fetchTaggedUsers = async (tagId, tag) => {
+    setCurrentTag(tag);
+    const response = await fetch(`${apiUrl}/users/tag/id=${tagId}`);
+    const responseData = await response.json();
+    setTaggedUsers([...responseData.users_with_tag]);
   }
 
   return (
@@ -60,7 +65,11 @@ function Explore () {
           </span>
           <h3 className="content-header">All Kinds of Creators Use Ka-feen</h3>
           <form className="search-form" onSubmit={handleSearch}>
-            <input type="text" placeholder="Search creators" value={query} onChange={(e) => setQuery(e.target.value)}></input>
+            <input
+              type="text"
+              placeholder="Search creators"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}></input>
             <button type="submit">Search</button>
             <i className="fa fa-search" />
           </form>
@@ -94,15 +103,52 @@ function Explore () {
             <>
               <h3 className="content-header">Categories</h3>
               <ul className="explore-categories">
+                <li className="explore-categories__tags"
+                  onClick={() => {
+                    setTaggedUsers([])
+                    setCurrentTag(null)}}>
+                  Featured
+                </li>
                 {categories.map((tag) => (
                   <li
                     key={tag.id}
-                    className="explore-categories__tags" onClick={fetchTaggedUsers}>
+                    className="explore-categories__tags"
+                    onClick={() => fetchTaggedUsers(tag.id, tag.tag_name)}>
                     {tag.tag_name}
                   </li>
                 ))}
               </ul>
+              {taggedUsers.length > 0
+              ?
+              <>
+              <h3>Users tagged with {currentTag}</h3>
+              <div style={loggedIn
+                ? { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }
+                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
+              {taggedUsers.map(user =>
+                <Link to={`/${user.username}`} >
+                  <div className="explore-usercard">
+                    <div
+                      className="usercard-bigbanner"
+                      style={{ backgroundImage: `url(${user.banner_url})` }}>
+                      <img
+                        className="usercard-bigavatar"
+                        src={user.avatar_url} />
+                    </div>
+                    <div className="usercard-biginfo">
+                      <h3>{user.display_name || user.username}</h3>
+                      <p>{user.bio}</p>
+                      <button>View Page</button>
+                    </div>
+                  </div>
+                </Link>)}
+              </div>
+              </>
+              :
+              <>
+              {currentTag !== null ? <h3>No results for {currentTag}</h3> : ""}
               <h3 className="content-header">Featured Creators</h3>
+              </>}
             </>}
         </div>
       </div>

@@ -101,6 +101,7 @@ def users_with_tag(tag_id):
     "id": user.id,
     "avatar_url": user.avatar_url,
     "banner_url": user.banner_url,
+    "bio": user.bio,
     "username": user.username,
     "display_name": user.display_name,
   } for user in request]}

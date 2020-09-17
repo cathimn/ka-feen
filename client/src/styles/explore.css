@@ -44,16 +44,21 @@
 .explore-categories {
   display: flex;
   overflow: auto;
-  margin: 0 30px 20px 30px;
-  height: 100px;
+  /* margin: 10px 30px 20px 30px; */
+  padding: 20px 0px;
 }
 
 .explore-categories__tags {
-  box-shadow: 0 0 15px lavender;
-  /* padding: 20px; */
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  height: min-content;
+  padding: 20px;
+  margin: 10px;
   background-color: white;
   border-radius: 10px;
-  width: 100px;
+  box-shadow: 0 0 10px lavender;
 }
 
 .explore-usercard {
