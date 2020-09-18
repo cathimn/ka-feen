@@ -12,12 +12,21 @@ def search(query):
   return {"results": [result.to_dict() for result in res]}
 
 
-@user_routes.route('/settings')
+@user_routes.route('/settings', methods=["GET", "PATCH", "DELETE"])
 @jwt_required
 def user_settings():
   current_user = get_jwt_identity()
   user = User.query.filter(User.email == current_user).first()
-  return user.to_dict()
+  return {
+    "username": user.username,
+    "display_name": user.display_name,
+    "avatar_url": user.avatar_url,
+    "banner_url": user.banner_url,
+    "accept_payments": user.accept_payments,
+    "id": user.id,
+    "bio": user.bio,
+    "tags": user.to_dict()["tags"]
+  }
 
 
 @user_routes.route('/')

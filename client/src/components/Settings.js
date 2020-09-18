@@ -13,6 +13,11 @@ export default function () {
   const [loaded, setLoaded] = useState(false);
   const [tags, setTags] = useState([]);
   const [userData, setUserData] = useState({});
+  const [username, setUsername] = useState('');
+  const [displayName, setDisplayName] = useState('');
+  const [bio, setBio] = useState('');
+  const [userTags, setUserTags] = useState([]);
+  const [payment, setPayment] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,6 +34,8 @@ export default function () {
       });
       const userInfoData = await requestUserInfo.json();
       setUserData(userInfoData);
+      setUserTags(userInfoData.tags);
+      setPayment(userInfoData.accept_payments);
     }
     
     if (loggedIn) {
@@ -37,6 +44,11 @@ export default function () {
     
     setLoaded(true);
   }, [dispatch, loggedIn])
+
+  const removeTag = e => {
+    e.preventDefault();
+    console.log(e.target.id)
+  }
 
   if (!loggedIn && loaded) {
     return <Redirect to="/" />
@@ -56,32 +68,44 @@ export default function () {
               <input
                 type="text"
                 name="displayName"
-              ></input>
+                placeholder={userData.display_name}
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                ></input>
             </div>
             <div>
               <label htmlFor="username">Username</label> <br />
               <input
                 type="text"
                 name="username"
-              ></input>
+                placeholder={userData.username}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                ></input>
             </div>
             <div>
               <label htmlFor="bio">About You</label> <br />
               <textarea
                 name="bio"
+                rows="5"
+                placeholder={userData.bio}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
               ></textarea>
             </div>
             <div>
-              <label htmlFor="payments">Accept "Payments"</label> <br />
-              <input type="checkbox"/>
+              <label>Accept "Payments"</label> <br />
+              <div htmlFor="payments" className="slider">
+              {payment ? "accepts" : "deneis"}
+              </div>
             </div>
             <div style={{ height: "150px" }}>
               <label htmlFor="tags">What do you do?</label><br />
               <ul className="settings-tags">
                 {userData.tags ? userData.tags.map(tag =>
                   <li key={tag.id}>
-                    {tag.tag_name}
-                    <i className="fa fa-close" />
+                    <span>{tag.tag_name}</span>
+                    <button onClick={removeTag}><i className="fa fa-close" /></button>
                   </li>) : null}
                 <input type="text"></input>
               </ul>

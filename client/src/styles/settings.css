@@ -5,8 +5,13 @@
 }
 
 .settings-form > div > label {
-  font-size: 14px;
   font-weight: 600;
+}
+
+.slider {
+  width: 50px;
+  height: 20px;
+  background-color: red;
 }
 
 .settings-form > div > input,
@@ -15,16 +20,15 @@
   width: 100%;
   padding: 15px;
   border-radius: 10px;
-  border: 1px solid gray;
+  border: 2px solid lavender;
   margin-top: 10px;
   margin-bottom: 25px;
 }
 
 .settings-tags {
   display: flex;
-  padding: 15px;
+  flex-wrap: wrap;
   border-radius: 10px;
-  border: 1px solid gray;
   margin-top: 10px;
 }
 
@@ -33,18 +37,23 @@
   justify-content: space-between;
   background-color: lavender;
   color: slateblue;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   padding: 5px 15px;
   border-radius: 25px;
   margin-right: 10px;
+  align-content: center;
 }
 
-.settings-tags > li > i {
+.settings-tags > li > span,
+.settings-tags > li > button {
   padding: 0;
-  margin-left: 10px;
-  color: deeppink;
+  margin: 5px;
   align-self: center;
+}
+.settings-tags > li > button > i {
+  padding: 0;
+  color: red;
 }
 
 .settings-form > button {
