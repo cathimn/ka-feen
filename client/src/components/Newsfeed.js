@@ -34,7 +34,7 @@ export default function () {
       <div className="content">
         <h3 className="content-header">Newsfeed</h3>
         <div className="content-break"></div>
-        <div style={{ width: "500px"}}>
+        <div style={{ width: "550px"}}>
         {feed.map(post => <Post key={post.id} post={post} />)}
         </div>
       </div>

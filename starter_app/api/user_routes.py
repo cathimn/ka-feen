@@ -38,9 +38,9 @@ def user(username, page):
   feed = user.posts + supports + supported
   total_support = len(supports)
   feed.sort(key=lambda x: x.created_at, reverse=True)
-  if page == 0:
+  if page_int == 0:
     feed_page = feed[0:10]
-  else:
+  elif page_int > 0:
     feed_page = feed[(10 * page_int) + 1 : (10 * page_int + 1)]
   user = user.to_dict()
   return {

@@ -49,9 +49,19 @@ export default function () {
 
   useEffect(() => {
     async function addToFeed() {
-      const response = await fetch(`${apiUrl}/users/${user}/page=${feedPage}`)
+      const response = await fetch(`${apiUrl}/users/${user}/page=${feedPage}`);
+      const data = await response.json();
+      // const feed = data.userpage_feed;
     }
   }, [feedPage])
+
+  const handleSupportClick = () => {
+    document.getElementById("support").focus();
+    const supportBox = document.getElementById("support-box");
+    window.scrollTo({ top: supportBox.offsetTop - 75, left: 0, behavior: "smooth" });
+    supportBox.classList.add("focus");
+    setTimeout(() => {supportBox.classList.remove("focus")}, 1000)
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -144,9 +154,7 @@ export default function () {
           </div>
           <div className="userpage-buttons">
             <button
-              onClick={() => {
-                window.scrollTo({ top: 200, left: 0, behavior: "smooth" });
-              }}
+              onClick={handleSupportClick}
               className={userPageInfo.accept_payments ? "" : "hidden"}
               id="support-button">
               <i className="fa fa-coffee" />
@@ -154,7 +162,7 @@ export default function () {
             </button>
             {isFollowing ? (
               <button id="following-button" onClick={unfollow}>
-                <i className="fa fa-user" />
+                <i className="fa fa-user" />&nbsp;
                 <i className="fa fa-check" />
               </button>
             ) : (
@@ -162,92 +170,96 @@ export default function () {
             )}
           </div>
         </div>
-        <div className="userpage-main">
-          <div className="userpage-left">
-            <h3>
-              <span>
-                {userPageInfo.accept_payments ? "Support" : "About"}</span>&nbsp;
-                {userPageInfo.display_name || userPageInfo.username}
-            </h3>
-            <p style={{margin: "5px 0"}}>{userPageInfo.bio}</p>
-            <div className="userpage-tag_container">
-              {userPageInfo.tags
-                ?
-                userPageInfo.tags.map(el =>
-                  <span key={el.id} className="userpage-tag">
-                    {el.tag_name}</span>)
-                : null}
-            </div>
-            <div style={{fontSize: "18px"}}>
-              {userPageInfo.total_support > 0
-                ? <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
+      </div>
+      <div className="userpage-main">
+        <div className="userpage-left">
+          <h3>
+            <span>
+              {userPageInfo.accept_payments ? "Support" : "About"}</span>&nbsp;
+              {userPageInfo.display_name || userPageInfo.username}
+          </h3>
+          <p style={{ margin: "5px 0" }}>{userPageInfo.bio}</p>
+          <div className="userpage-tag_container">
+            {userPageInfo.tags
+              ?
+              userPageInfo.tags.map(el =>
+                <span key={el.id} className="userpage-tag">
+                  {el.tag_name}</span>)
+              : null}
+          </div>
+          <div style={{ fontSize: "18px" }}>
+            {userPageInfo.total_support > 0
+              ? <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
               <strong>{userPageInfo.total_support}</strong>
               &nbsp;Received</div> : null}
-            </div>
           </div>
-          <div className="userpage-right">
-            <div
-              className={userPageInfo.accept_payments ? "userpage-support" : "hidden"}>
-              <h3>
-                Buy some caffeine for{" "}
-                {userPageInfo.display_name || userPageInfo.username}
-              </h3>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ fontSize: "20px", alignSelf: "center" }}>
-                  <i className="fa fa-coffee" /> $3 each
+        </div>
+        <div className="userpage-right">
+          <div
+            id="support-box"
+            className={userPageInfo.accept_payments ? "userpage-support" : "hidden"}>
+            <h3>
+              Buy some caffeine for{" "}
+              {userPageInfo.display_name || userPageInfo.username}
+            </h3>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div style={{ fontSize: "20px", alignSelf: "center" }}>
+                <i className="fa fa-coffee" /> $3 each
                 </div>
-                <form id="support-form" onSubmit={e => e.preventDefault()}>
-                  <button
-                    type="button"
-                    disabled={supportAmount === 1}
-                    onClick={() => setSupportAmount(supportAmount - 1)}
-                  ><i className="fa fa-minus" /></button>
-                  <input
-                    type="number"
-                    min="1"
-                    onChange={(e) => setSupportAmount(Number(e.target.value))}
-                    value={supportAmount} ></input>
-                  <button
-                    onClick={() => setSupportAmount(supportAmount + 1)}
-                  ><i className="fa fa-plus" /></button>
-                </form>
-              </div>
-              <textarea
-                placeholder="Your message..."
-                value={donationMessage}
-                onChange={e => setDonationMessage(e.target.value)}></textarea><br/>
-              <span
-                onClick={e => setPrivateDonation(!privateDonation)}
-                className={privateDonation ? "checkbox checked" : "checkbox"}>
-                {privateDonation ? <i className="fa fa-check" /> : null}
-              </span>
-              <label>Anonymous donation</label><br/>
-              <button
-                disabled={supportAmount === 0}
-                onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
-              {loggedInUser
+              <form id="support-form" onSubmit={e => e.preventDefault()}>
+                <button
+                  type="button"
+                  disabled={supportAmount === 1}
+                  onClick={() => setSupportAmount(supportAmount - 1)}
+                ><i className="fa fa-minus" /></button>
+                <input
+                  type="number"
+                  min="1"
+                  onChange={(e) => setSupportAmount(Number(e.target.value))}
+                  value={supportAmount} ></input>
+                <button
+                  onClick={() => setSupportAmount(supportAmount + 1)}
+                ><i className="fa fa-plus" /></button>
+              </form>
+            </div>
+            <textarea
+              id="support"
+              placeholder="Your message..."
+              value={donationMessage}
+              onChange={e => setDonationMessage(e.target.value)}></textarea><br />
+            <span
+              onClick={e => setPrivateDonation(!privateDonation)}
+              className={privateDonation ? "checkbox checked" : "checkbox"}>
+              {privateDonation ? <i className="fa fa-check" /> : null}
+            </span>
+            <label>Anonymous donation</label><br />
+            <button
+              disabled={supportAmount === 0}
+              onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
+            {loggedInUser
               ?
               <div style={{
-                textAlign:"center",
-                marginTop: "10px"}}>
-                  Signed in as {loggedInUser.display_name || loggedInUser.username}
+                textAlign: "center",
+                marginTop: "10px"
+              }}>
+                Signed in as {loggedInUser.display_name || loggedInUser.username}
               </div> : null}
-            </div>
-            <div className="userpage-posts">
-              <h3>Feed</h3>
-              {userPageInfo.userpage_feed
+          </div>
+          <div className="userpage-posts">
+            <h3>Feed</h3>
+            {userPageInfo.userpage_feed
               ? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
-                  <Post key={"support"+post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
+                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
                 } else {
                   return (
-                  <Post key={"post"+post.id} post={post} />
+                    <Post key={"post" + post.id} post={post} />
                   )
-                }}
+                }
+              }
               ) : null}
-              <button onClick={() => setFeedPage(feedPage + 1)}>Load more...</button>
-            </div>
+            <button onClick={() => setFeedPage(feedPage + 1)}>Load more...</button>
           </div>
         </div>
       </div>

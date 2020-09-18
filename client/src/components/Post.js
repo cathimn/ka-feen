@@ -30,7 +30,7 @@ export default function ({ post }) {
             ? <span>&nbsp;bought some caffeine for&nbsp;
               <strong>{post.supported}</strong></span>
             : <span>&nbsp;posted</span>}</div>
-          <div>{post.posted_on}</div>
+          <div style={{ fontSize: "14px", color: "gray" }}>{post.posted_on}</div>
         </div>
       </div>
       {post.body
@@ -45,7 +45,6 @@ export default function ({ post }) {
       </div>
       </>
       : null}
-      
         {/* <div className="post-buttons">
           <div className="post-like">
             <button className="like-button">

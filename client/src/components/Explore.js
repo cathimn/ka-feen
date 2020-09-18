@@ -41,9 +41,9 @@ function Explore () {
   }
 
   const fetchTaggedUsers = async (tagId, tag) => {
-    setCurrentTag(tag);
     const response = await fetch(`${apiUrl}/users/tag/id=${tagId}`);
     const responseData = await response.json();
+    setCurrentTag(tag);
     setTaggedUsers([...responseData.users_with_tag]);
   }
 

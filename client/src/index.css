@@ -40,13 +40,13 @@ button {
 }
 
 .container {
-  margin: 90px 150px 0px 150px;
+  margin: 90px 15%;
   display: grid;
   grid-template-columns: 215px auto;
 }
 
 .content {
-  /* width: 100%; */
+  width: 100%;
   padding: 0px 25px;
   display: flex;
   flex-direction: column;

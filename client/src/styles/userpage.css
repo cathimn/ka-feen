@@ -1,9 +1,6 @@
 .userpage-container {
-  /* margin-left: 250px;
-  margin-right: 250px; */
   margin: 0 auto;
-  padding: 0 250px;
-  /* width: 70%; */
+  width: 950px;
 }
 
 .userpage-topbar {
@@ -27,15 +24,13 @@
 }
 
 .userpage-info {
-  align-self: center;
   margin-left: 20px;
   padding: 10px;
   font-size: 14px;
 }
 
 .userpage-info > div {
-  margin-bottom: 5px;
-  margin-top: 5px;
+  margin: 5px auto;
 }
 
 .userpage-buttons {
@@ -58,6 +53,8 @@
   color: white;
   margin-right: 10px;
   font-weight: 600;
+  height: min-content;
+  white-space: nowrap;
 }
 
 #support-button:hover {
@@ -69,7 +66,7 @@
   font-size: 14px;
   padding: 10px 15px;
   border: 2px solid black;
-  height: 40px;
+  height: min-content;
 }
 
 #follow-button:hover {
@@ -82,21 +79,26 @@
   background-color: whitesmoke;
   padding: 5px 15px;
   color: gray;
-  height: 40px;
+  white-space: nowrap;
 }
 
 .userpage-main {
-  margin-top: 25px;
-  display: grid;
-  grid-template-columns: 400px 1fr;
+  margin: 25px auto;
+  display: flex;
+  justify-content: center;
 }
 
 .userpage-left {
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 5px rgba(230, 230, 250, 0.5);
-  margin-right: 40px;
+  margin-right: 25px;
   padding: 15px;
   height: min-content;
+  width: 375px;
+}
+
+.userpage-right {
+  width: 550px;
 }
 
 .userpage-support,
@@ -131,6 +133,12 @@
 
 .userpage-support {
   position: relative;
+  transition: box-shadow, .5s;
+}
+
+.userpage-support.focus {
+  transition: box-shadow, 1s;
+  box-shadow: 0 0 15px rgba(105, 90, 205, 0.5);
 }
 
 .userpage-support > span.checkbox {
