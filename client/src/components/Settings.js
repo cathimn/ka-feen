@@ -15,6 +15,10 @@ export default function () {
   const [userData, setUserData] = useState({});
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+
+  useEffect(() => {
     async function fetchData() {
       const response = await fetch(`${apiUrl}/users/tags`);
       const responseData = await response.json();
@@ -43,7 +47,7 @@ export default function () {
       <Navbar />
       <div className="container">
         <SidebarNav />
-        <div className="content">
+        <div className="content" style={{ width: "750px" }}>
           <h3 className="content-header">Settings</h3>
           <div className="content-break" />
           <form className="settings-form" name="settings">

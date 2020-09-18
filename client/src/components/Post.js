@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -39,7 +39,9 @@ export default function ({ post }) {
       <div className="post-arrow"></div>
       <div className="post-body">
         {post.image_url ? (
-          <img className="post-body__image" alt="post" src={post.image_url} />
+          <img
+            className="post-body__image"
+            alt="post" src={post.image_url} />
         ): null}
         <p className="post-body__text">{post.body}</p>
       </div>

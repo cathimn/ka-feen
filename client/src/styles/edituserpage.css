@@ -1,0 +1,65 @@
+#banner {
+  position: relative;
+  background-color: whitesmoke;
+}
+
+#banner-edit {
+  white-space: nowrap;
+  position: absolute;
+  top: 200px;
+  right: 250px;
+  background-color: whitesmoke;
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  color: darkslategray;
+}
+
+#banner-edit:hover {
+  background-color: white;
+}
+
+#settings-button,
+#edit-button {
+  width: 45px;
+  height: 45px;
+  background-color: whitesmoke;
+  color: gray;
+  border-radius: 50px;
+  font-size: 20px;
+  margin-left: 10px;
+}
+
+#add-image {
+  text-align: center;
+  margin: 5px 0;
+  background-color: whitesmoke;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+#add-image:hover {
+  cursor: pointer;
+}
+
+#add-post-button {
+  margin: 5px 0;
+  background-color: slateblue;
+  color: white;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+#remove-image-button {
+  text-align: center;
+  margin: 5px 0;
+  background-color: whitesmoke;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 5px;
+}

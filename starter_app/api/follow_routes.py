@@ -30,7 +30,7 @@ def follows():
 
   return {'following': [{
     "id": follow.id,
-    "avatarUrl": follow.avatar_url,
+    "avatar_url": follow.avatar_url,
     "username": follow.username,
-    "diplayName": follow.display_name,
+    "display_name": follow.display_name,
     } for follow in user.follows if follow.id != user.id]}

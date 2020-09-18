@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
 
-import SidebarNav from './SidebarNav';
+// import SidebarNav from './SidebarNav';
 
 function Navbar () {
   const loggedIn = useSelector((store) => store.authentication.token);
@@ -15,9 +15,9 @@ function Navbar () {
 
   return (
     <>
-    <div className={showSidebar ? "sidebar-collapse" : "sidebar-collapse hidden"}>
+    {/* <div className={showSidebar ? "sidebar-collapse" : "sidebar-collapse hidden"}>
       <SidebarNav />
-    </div>
+    </div> */}
     <div className="navbar">
       <div id="navbar_logo">
         <Link to="/">

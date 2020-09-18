@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { AppContext } from './AppContext';
 
@@ -14,13 +14,14 @@ import Following from './components/Following';
 import Explore from './components/Explore';
 import Settings from './components/Settings';
 import Error from './components/Error'
-
-import { apiUrl } from './config';
 import UserPage from './components/UserPage';
+import EditUserPage from './components/EditUserPage';
 import SupportPage from './components/SupportPage';
 
 function App() {
   const dispatch = useDispatch();
+
+  const loggedInUser = useSelector(store => store.authentication.user)
 
   const [loginModalDisplay, setLoginModalDisplay] = useState(false);
   const [signupModalDisplay, setSignupModalDisplay] = useState(false);
@@ -77,6 +78,9 @@ function App() {
           </Route>
           <Route exact path="/notfound">
             <Error />
+          </Route>
+          <Route exact path={`/${loggedInUser.username}`}>
+            <EditUserPage />
           </Route>
           <Route path="/:user">
             <UserPage />

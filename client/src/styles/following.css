@@ -1,10 +1,9 @@
 .following-view_button {
-  margin-right: 10px;
+  margin: 10px;
   padding: 5px 10px;
   border-radius: 10px;
   color: darkslateblue;
   background-color: lavender;
-  align-self: center;
   font-weight: 600;
   font-size: 16px;
 }

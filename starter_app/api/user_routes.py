@@ -41,7 +41,9 @@ def user(username, page):
   if page_int == 0:
     feed_page = feed[0:10]
   elif page_int > 0:
-    feed_page = feed[(10 * page_int) + 1 : (10 * page_int + 1)]
+    start = (10 * page_int )+ 1
+    end = 10 * (page_int + 1)
+    feed_page = feed[slice(start,end)]
   user = user.to_dict()
   return {
     "id": user["id"],
@@ -54,6 +56,7 @@ def user(username, page):
     "bio": user["bio"],
     "userpage_feed": [item.to_dict() for item in feed_page],
     "total_support": total_support,
+    "end_of_feed": True if len(feed_page) < 9 else None
   }
 
 @user_routes.route('/feed')

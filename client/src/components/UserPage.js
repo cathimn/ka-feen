@@ -1,25 +1,27 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
-import EditUserPage from './EditUserPage';
 import Post from './Post';
+import { AppContext } from '../AppContext';
 
 export default function () {
   const { user } = useParams();
+  const { setLoginModalDisplay } = useContext(AppContext);
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(null);
   const [userPageInfo, setUserPageInfo] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
+  const [feedPage, setFeedPage] = useState(1);
   const [newPost, setNewPost] = useState(null);
   const [privateDonation, setPrivateDonation] = useState(false);
   const [donationMessage, setDonationMessage] = useState("");
   const [supportAmount, setSupportAmount] = useState(1);
-  const [feedPage, setFeedPage] = useState(0);
 
   useEffect(() => {
     async function fetchUserPageInfo() {
@@ -47,13 +49,21 @@ export default function () {
     }
   }, [loggedIn, user, newPost])
 
-  useEffect(() => {
-    async function addToFeed() {
-      const response = await fetch(`${apiUrl}/users/${user}/page=${feedPage}`);
-      const data = await response.json();
-      // const feed = data.userpage_feed;
-    }
-  }, [feedPage])
+  const addToFeed = async () => {
+    setLoading(true);
+    const response = await fetch(`${apiUrl}/users/${user}/page=${feedPage}`);
+    const data = await response.json();
+    const end = data.end_of_feed;
+    const feed = data.userpage_feed;
+    const current = userPageInfo.userpage_feed;
+    setUserPageInfo({
+      ...userPageInfo,
+      "end_of_feed": end,
+      "userpage_feed": [...current, ...feed]
+    })
+    setFeedPage(feedPage + 1);
+    setLoading(false);
+  }
 
   const handleSupportClick = () => {
     document.getElementById("support").focus();
@@ -65,21 +75,28 @@ export default function () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await fetch(`${apiUrl}/supports`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-          "user_id": userPageInfo.id,
-          "supporter_id": loggedInUser.id,
-          "amount": supportAmount,
-          "body": donationMessage,
-          "private": privateDonation,
-        })
-    });
-    setNewPost(true);
-    setSupportAmount(1);
-    setDonationMessage("");
-    setPrivateDonation(false);
+
+    if (!loggedIn) {
+      setLoginModalDisplay(true);
+    } else {
+      await fetch(`${apiUrl}/supports`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${loggedIn}`,
+          "Content-Type": "application/json" },
+        body: JSON.stringify({
+            "user_id": userPageInfo.id,
+            "supporter_id": loggedInUser.id,
+            "amount": supportAmount,
+            "body": donationMessage,
+            "private": privateDonation,
+          })
+      });
+      setNewPost(true);
+      setSupportAmount(1);
+      setDonationMessage("");
+      setPrivateDonation(false);
+    }
   }
 
   const follow = async () => {
@@ -104,10 +121,6 @@ export default function () {
     return null;
   }
 
-  if (loaded && user === loggedInUser.username) {
-    return <EditUserPage />
-  }
-
   if (loaded && Object.keys(userPageInfo).length === 0) {
     return <Redirect to="/notfound" />
   }
@@ -116,17 +129,10 @@ export default function () {
     <>
       <Navbar />
       <div
-        style={
-          userPageInfo.banner_url
-            ? {
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                backgroundImage: `url(${userPageInfo.banner_url})`,
-                height: "250px",
-              }
-            : { dispay: "hidden" }
-        }
-      />
+        className={userPageInfo.banner_url ? "userpage-banner" : "hidden"}
+        style={ userPageInfo.banner_url
+          ? { backgroundImage: `url(${userPageInfo.banner_url})` }
+          : {}}/>
       <div
         className="userpage-container"
         style={
@@ -155,7 +161,6 @@ export default function () {
           <div className="userpage-buttons">
             <button
               onClick={handleSupportClick}
-              className={userPageInfo.accept_payments ? "" : "hidden"}
               id="support-button">
               <i className="fa fa-coffee" />
               &nbsp;Support
@@ -236,11 +241,16 @@ export default function () {
             <button
               disabled={supportAmount === 0}
               onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
-            {loggedInUser
+            {loggedIn
               ?
               <div style={{
-                textAlign: "center",
-                marginTop: "10px"
+                margin: "15px auto 0px auto",
+                fontSize: "14px",
+                // backgroundColor: "whitesmoke",
+                width: "min-content",
+                whiteSpace: "nowrap",
+                // padding: "5px",
+                // borderRadius: "25px"
               }}>
                 Signed in as {loggedInUser.display_name || loggedInUser.username}
               </div> : null}
@@ -259,7 +269,10 @@ export default function () {
                 }
               }
               ) : null}
-            <button onClick={() => setFeedPage(feedPage + 1)}>Load more...</button>
+            {userPageInfo.end_of_feed ? null
+            : <button id="load-more" onClick={() => addToFeed()}>
+              {loading ? "Loading..." : "Load more..."}
+              </button>}
           </div>
         </div>
       </div>

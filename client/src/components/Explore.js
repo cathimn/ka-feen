@@ -53,12 +53,8 @@ function Explore () {
       <div className="container">
         {loggedIn ? <SidebarNav /> : null}
         <div
+          style={loggedIn ? { width: "725px" } :{ width: "950px" }}
           className="content"
-          style={
-            loggedIn
-              ? { display: "grid", gridTemplateColumns: "1fr" }
-              : { display: "grid", gridTemplateColumns: "1fr", gridColumn: "1/3" }
-          }
         >
           <span style={{ fontSize: "14px", color: "gray" }}>
             Explore Ka-feen
@@ -78,8 +74,8 @@ function Explore () {
             <>
               <h3>Results</h3>
               <div style={loggedIn
-                ? { display: "grid", gridTemplateColumns: "1fr 1fr 1fr"}
-                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
+                ? { display: "grid", gridTemplateColumns: "1fr 1fr"}
+                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
                 {results.map(result =>
                 <Link to={`/${result.username}`} >
                   <div className="explore-usercard">
@@ -88,7 +84,8 @@ function Explore () {
                       style={{ backgroundImage: `url(${result.banner_url})` }}>
                     <img
                       className="usercard-bigavatar"
-                      src={result.avatar_url} />
+                      src={result.avatar_url}
+                      alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
                       <h3>{result.display_name || result.username}</h3>
@@ -123,8 +120,8 @@ function Explore () {
               <>
               <h3>Users tagged with {currentTag}</h3>
               <div style={loggedIn
-                ? { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }
-                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr" }}>
+                ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
+                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               {taggedUsers.map(user =>
                 <Link to={`/${user.username}`} >
                   <div className="explore-usercard">
@@ -133,7 +130,8 @@ function Explore () {
                       style={{ backgroundImage: `url(${user.banner_url})` }}>
                       <img
                         className="usercard-bigavatar"
-                        src={user.avatar_url} />
+                        src={user.avatar_url}
+                        alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
                       <h3>{user.display_name || user.username}</h3>

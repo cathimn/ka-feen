@@ -1,6 +1,7 @@
 .sidebar-container {
   font-size: 16px;
   font-weight: 600;
+  width: 225px;
 }
 
 .sidebar-container > ul > a,

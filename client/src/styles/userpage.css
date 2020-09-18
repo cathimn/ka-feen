@@ -8,11 +8,19 @@
   justify-content: space-between;
 }
 
+.userpage-banner {
+  background-position: center;
+  background-size: cover;
+  height: 250px;
+}
+
 .userpage-avatarinfo {
   display: flex;
 }
 
 .userpage-avatar {
+  background-position: center;
+  background-size: cover;
   border-radius: 150px;
   max-width: 115px;
   max-height: 115px;
@@ -41,10 +49,6 @@
 .userpage-buttons > button {
   font-size: 16px;
   border-radius: 50px;
-}
-
-.userpage-buttons > button:hover {
-  cursor: pointer;
 }
 
 #support-button {
@@ -184,7 +188,6 @@
 }
 
 .userpage-support > button:hover {
-  cursor: pointer;
   transition: background-color .25s;
   background-color: rgb(127, 108, 255)
 }
@@ -219,7 +222,6 @@ input[type=number] {
 }
 
 #support-form > button {
-  cursor: pointer;
   color: slateblue;
   background-color: lavender;
   padding: 10px;

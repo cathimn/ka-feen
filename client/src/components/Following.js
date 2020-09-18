@@ -22,7 +22,7 @@ const FollowCard = ({ user }) => (
           style={{
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundImage: `url(${user.avatarUrl})` }}
+            backgroundImage: `url(${user.avatar_url})` }}
         />
         <div
           style={{
@@ -31,8 +31,11 @@ const FollowCard = ({ user }) => (
             justifyContent: "center",
           }}
         >
-          <span>{user.displayName || user.username}</span>
-          <span style={{ color: "gray" }}>Following</span>
+          <span>
+            {user.display_name
+            ? <>{user.display_name} <span style={{color: "grey", fontSize: "14px" }}>({user.username})</span></>
+            : user.username }</span>
+          <span style={{ color: "gray", fontSize: "14px" }}>Following</span>
         </div>
       </div>
       <Link to={`/${user.username}`}>

@@ -33,24 +33,28 @@ button {
   border: none;
 }
 
+button:hover {
+  cursor: pointer;
+}
+
 .hidden {
-  /* display: none; */
   opacity: 0;
   height: 0;
 }
 
 .container {
-  margin: 90px 15%;
-  display: grid;
-  grid-template-columns: 215px auto;
+  width: 950px;
+  margin: 90px auto;
+  display: flex;
+  justify-content: center;
 }
 
 .content {
-  width: 100%;
+  width: 750px;
+  height: min-content;
   padding: 0px 25px;
   display: flex;
   flex-direction: column;
-  height: min-content;
 }
 
 .content-break {
@@ -84,3 +88,4 @@ a {
 @import './styles/following.css';
 @import './styles/userpage.css';
 @import './styles/explore.css';
+@import './styles/edituserpage.css';

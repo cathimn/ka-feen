@@ -32,11 +32,11 @@ export default function () {
     <div className="container">
       <SidebarNav />
       <div className="content">
-        <h3 className="content-header">Newsfeed</h3>
-        <div className="content-break"></div>
-        <div style={{ width: "550px"}}>
+      <h3 className="content-header">Newsfeed</h3>
+      <div style={{ width: "500px" }}>
+      <div className="content-break"></div>
         {feed.map(post => <Post key={post.id} post={post} />)}
-        </div>
+      </div>
       </div>
     </div>
     </>
