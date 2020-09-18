@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-export default function ({ post, support }) {
+export default function ({ post }) {
+  const loggedInUser = useSelector((store) => store.authentication.user);
 
   return (
     <div className="post-container">
       <div className="post-header">
-        <div className="post-avatar" />
+        <Link to={post.private_supporter ? "/" : `/${post.username}`}>
+          <div className="post-avatar"
+            style={{
+              backgroundImage: `url(${post.author_avatar})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover"}} />
+        </Link>
         <div className="post-info">
-          <div><strong>{post.author}</strong>{support ? <span>&nbsp;bought some caffeine for <strong>{support}</strong></span> : null}</div>
+          <div>
+            <strong>
+              {post.private_supporter
+              ? post.private_supporter
+              : ( post.supporter === loggedInUser.username ||
+                  post.supporter === loggedInUser.display_name ||
+                  post.author === loggedInUser.username ||
+                  post.author === loggedInUser.display_name )
+                ? "You"
+                : post.supporter || post.author}</strong>
+            {post.supported
+            ? <span>&nbsp;bought some caffeine for&nbsp;
+              <strong>{post.supported}</strong></span>
+            : <span>&nbsp;posted</span>}</div>
           <div>{post.posted_on}</div>
         </div>
       </div>

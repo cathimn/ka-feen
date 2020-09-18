@@ -77,6 +77,8 @@
   border-radius: 50%;
   width: 70px;
   height: 70px;
+  object-fit: cover;
+  object-position: center;
 }
 
 .usercard-bigbanner {
@@ -85,6 +87,8 @@
   background-color: whitesmoke;
   height: 125px;
   border-radius: 20px 20px 0 0;
+  background-position: center;
+  background-size: cover;
 }
 
 .usercard-biginfo {

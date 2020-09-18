@@ -19,6 +19,7 @@ export default function () {
   const [privateDonation, setPrivateDonation] = useState(false);
   const [donationMessage, setDonationMessage] = useState("");
   const [supportAmount, setSupportAmount] = useState(1);
+  const [feedPage, setFeedPage] = useState(0);
 
   useEffect(() => {
     async function fetchUserPageInfo() {
@@ -45,6 +46,12 @@ export default function () {
       followingCheck();
     }
   }, [loggedIn, user, newPost])
+
+  useEffect(() => {
+    async function addToFeed() {
+      const response = await fetch(`${apiUrl}/users/${user}/page=${feedPage}`)
+    }
+  }, [feedPage])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -228,7 +235,8 @@ export default function () {
             </div>
             <div className="userpage-posts">
               <h3>Feed</h3>
-              {userPageInfo.userpage_feed? userPageInfo.userpage_feed.map(post => {
+              {userPageInfo.userpage_feed
+              ? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
                   <Post key={"support"+post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
@@ -238,6 +246,7 @@ export default function () {
                   )
                 }}
               ) : null}
+              <button onClick={() => setFeedPage(feedPage + 1)}>Load more...</button>
             </div>
           </div>
         </div>

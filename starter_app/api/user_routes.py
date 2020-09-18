@@ -26,15 +26,22 @@ def index():
   return {"users": [user.to_dict() for user in response]}
 
 
-@user_routes.route('/<username>')
-def user(username):
+@user_routes.route('/<username>/page=<page>')
+@user_routes.route('/<username>', defaults={"page": 0})
+def user(username, page):
+  page_int = int(page)
   user = User.query.filter(User.username == username).first()
   if not user:
     return jsonify(msg="Invalid user"), 401
   supports = Support.query.filter(Support.user_id == user.id).all()
-  feed = user.posts + supports
+  supported = Support.query.filter(Support.supporter_id == user.id).filter(Support.private == False).all()
+  feed = user.posts + supports + supported
   total_support = len(supports)
   feed.sort(key=lambda x: x.created_at, reverse=True)
+  if page == 0:
+    feed_page = feed[0:10]
+  else:
+    feed_page = feed[(10 * page_int) + 1 : (10 * page_int + 1)]
   user = user.to_dict()
   return {
     "id": user["id"],
@@ -45,7 +52,7 @@ def user(username):
     "tags": user["tags"],
     "accept_payments": user["accept_payments"],
     "bio": user["bio"],
-    "userpage_feed": [item.to_dict() for item in feed],
+    "userpage_feed": [item.to_dict() for item in feed_page],
     "total_support": total_support,
   }
 

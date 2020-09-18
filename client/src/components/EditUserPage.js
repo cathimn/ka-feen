@@ -43,7 +43,12 @@ export default function () {
         style={{ marginTop: "25px"}}>
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
-            <div className="userpage-avatar" />
+            <div className="userpage-avatar"
+              style={{
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundImage: `url(${userPageInfo.avatar_url})`
+              }}/>
             <div className="userpage-info">
               <h1>{userPageInfo.display_name || userPageInfo.username}</h1>
               <div style={{ color: "slategray" }}>

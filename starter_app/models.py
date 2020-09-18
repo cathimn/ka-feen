@@ -132,7 +132,9 @@ class Post(db.Model):
   def to_dict(self):
     return {
         "id": self.id,
-        "author": User.query.get(self.user_id).username,
+        "username": User.query.get(self.user_id).username,
+        "author": User.query.get(self.user_id).display_name or User.query.get(self.user_id).username,
+        "author_avatar": User.query.get(self.user_id).avatar_url,
         "body": self.body,
         "image_url": self.image_url,
         "posted_on": self.created_at
@@ -161,7 +163,14 @@ class Support(db.Model):
   def to_dict(self):
     return {
       "id": self.id,
-      "author": "Somebody" if self.private else User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "username": User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "private_supporter": "Somebody" if self.private else None,
+      "author_avatar": "https://i.pinimg.com/originals/b5/44/9c/b5449ce322241ee890cf849a898a6c1b.png" if self.private else
+        User.query.filter(User.id == self.supporter_id).first().to_dict()["avatar_url"],
+      "supporter": User.query.filter(User.id == self.supporter_id).first().to_dict()["display_name"] or
+        User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "supported": User.query.filter(User.id == self.user_id).first().to_dict()["display_name"] or
+        User.query.filter(User.id == self.user_id).first().to_dict()["username"],
       "amount": self.amount,
       "body": self.body,
       "posted_on": self.created_at,
