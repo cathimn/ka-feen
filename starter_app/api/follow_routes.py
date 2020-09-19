@@ -27,7 +27,6 @@ def follows():
     db.session.commit()
     return jsonify(msg=f'{user.username} has unfollowed {unfollow}!')
 
-
   return {'following': [{
     "id": follow.id,
     "avatar_url": follow.avatar_url,

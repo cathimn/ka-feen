@@ -9,9 +9,43 @@
 }
 
 .slider {
-  width: 50px;
-  height: 20px;
-  background-color: red;
+  position: relative;
+  width: 70px;
+  height: 36px;
+  border-radius: 50px;
+  margin: 15px 0 35px 0px;
+  align-content: center;
+  transition: background-color, .5s;
+  cursor: pointer;
+}
+
+.slider-true {
+  position: absolute;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  right: 3px;
+  top: 3px;
+  background-color: slateblue;
+  transition: position, .5s;
+  display: flex;
+  justify-content: center;
+}
+
+.slider-true > i {
+  margin: auto 0px;
+  color: whitesmoke;
+}
+
+.slider-false {
+  transition: position, .5s;
+  position: absolute;
+  border-radius: 100%;
+  width: 30px;
+  height: 30px;
+  left: 3px;
+  top: 3px;
+  background-color: darkgray;
 }
 
 .settings-form > div > input,
@@ -23,6 +57,7 @@
   border: 2px solid lavender;
   margin-top: 10px;
   margin-bottom: 25px;
+  font-size: 16px;
 }
 
 .settings-tags {
@@ -30,19 +65,26 @@
   flex-wrap: wrap;
   border-radius: 10px;
   margin-top: 10px;
+  height: min-content;
 }
 
 .settings-tags > li {
   display: flex;
   justify-content: space-between;
   background-color: lavender;
-  color: slateblue;
+  color: darkslateblue;
   font-size: 14px;
   font-weight: 600;
   padding: 5px 15px;
   border-radius: 25px;
-  margin-right: 10px;
+  margin: 0px 10px 10px 0;
   align-content: center;
+  cursor: default;
+}
+
+.settings-tags > li.unselected {
+  background-color: lightgray;
+  color: rgb(54, 54, 54);
 }
 
 .settings-tags > li > span,
@@ -51,9 +93,14 @@
   margin: 5px;
   align-self: center;
 }
+
 .settings-tags > li > button > i {
   padding: 0;
-  color: red;
+  color: rgb(255, 75, 105);
+}
+
+.settings-tags > li.unselected > button > i {
+  color: white
 }
 
 .settings-form > button {

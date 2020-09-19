@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from starter_app.models import db, User, Tag, Support, users_tags
 
@@ -12,7 +12,7 @@ def search(query):
   return {"results": [result.to_dict() for result in res]}
 
 
-@user_routes.route('/settings', methods=["GET", "PATCH", "DELETE"])
+@user_routes.route('/settings')
 @jwt_required
 def user_settings():
   current_user = get_jwt_identity()
@@ -20,13 +20,18 @@ def user_settings():
   return {
     "username": user.username,
     "display_name": user.display_name,
-    "avatar_url": user.avatar_url,
-    "banner_url": user.banner_url,
     "accept_payments": user.accept_payments,
     "id": user.id,
     "bio": user.bio,
     "tags": user.to_dict()["tags"]
   }
+
+
+@user_routes.route('/update', methods=["PUT"])
+@jwt_required
+def change_settings():
+  print(request.json)
+  return "ok"
 
 
 @user_routes.route('/')

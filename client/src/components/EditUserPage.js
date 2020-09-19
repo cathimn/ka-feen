@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 
@@ -33,7 +33,7 @@ export default function () {
 
     fetchUserPageInfo();
     setNewPost(false);
-  }, [newPost])
+  }, [newPost, loggedInUser.username])
 
   const handleImageChange = (e) => {
     setImage({
