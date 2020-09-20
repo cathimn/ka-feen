@@ -114,3 +114,20 @@
   background-color: lavender;
   color: darkslateblue;
 }
+
+.settings-form > button:disabled {
+  color: gray;
+  background-color: whitesmoke;
+}
+
+.success-toast {
+  top: 100px;
+  font-weight: 600;
+  font-size: 18px;
+  position: absolute;
+  background-color: lavender;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 5px 10px lightgray;
+}
+

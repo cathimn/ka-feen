@@ -54,6 +54,12 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
+
+export const update = (username, displayName) => dispatch => {
+  window.localStorage.setItem(USER_KEY, JSON.stringify({"username": username, "display_name": displayName}))
+  dispatch(loadToken());
+}
+
 export const logout = () => async (dispatch, getState) => {
   const { authentication: { token } } = getState();
   const response = await fetch(`${apiUrl}/session/logout`, {

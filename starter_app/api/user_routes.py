@@ -30,8 +30,38 @@ def user_settings():
 @user_routes.route('/update', methods=["PUT"])
 @jwt_required
 def change_settings():
-  print(request.json)
-  return "ok"
+  current_user_email = get_jwt_identity()
+  user = User.query.filter(User.email == current_user_email).first()
+  new_username = request.json.get("username")
+  new_display_name = request.json.get("display_name")
+  new_bio = request.json.get("bio")
+  new_payments = request.json.get("accept_payments")
+  if new_username:
+    user.username = new_username
+  if new_display_name:
+    user.display_name = new_display_name
+  if new_bio:
+    user.bio = new_bio
+  user.accept_payments = new_payments
+
+  tags_to_add = request.json.get("tags_to_add")
+  for tag in tags_to_add:
+    new_tag = Tag.query.get(tag)
+    user.add_tag(new_tag)
+  tags_to_remove = request.json.get("tags_to_remove")
+  for tag in tags_to_remove:
+    new_tag = Tag.query.get(tag)
+    user.remove_tag(new_tag)
+  db.session.add(user)
+  db.session.commit()
+  return {
+      "username": user.username,
+      "display_name": user.display_name,
+      "accept_payments": user.accept_payments,
+      "id": user.id,
+      "bio": user.bio,
+      "tags": user.to_dict()["tags"]
+  }
 
 
 @user_routes.route('/')

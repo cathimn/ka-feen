@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { apiUrl } from '../config';
+import { update } from '../actions/authentication';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
@@ -18,8 +20,10 @@ export default function () {
   const [bio, setBio] = useState('');
   const [userTags, setUserTags] = useState([]);
   const [payment, setPayment] = useState(null);
+  const [paymentChanged, setPaymentChanged] = useState(null);
   const [tagsToAdd, setTagsToAdd] = useState([]);
   const [tagsToRemove, setTagsToRemove] = useState([]);
+  const [updated, setUpdated] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -45,7 +49,7 @@ export default function () {
     }
     
     setLoaded(true);
-  }, [dispatch, loggedIn])
+  }, [loggedIn])
 
   const removeTag = (e, id) => {
     e.preventDefault();
@@ -64,6 +68,7 @@ export default function () {
 
   const handleToggle = e => {
     setPayment(!payment);
+    setPaymentChanged(true);
   }
 
   const handleSubmit = async e => {
@@ -74,14 +79,29 @@ export default function () {
         Authorization: `Bearer ${loggedIn}`,
         "Content-Type": "application/json" },
       body: JSON.stringify({
-        "username": username && username !== userInfoData.username ? username : null,
-        "display_name": displayName,
+        "username": username && username !== userData.username ? username : null,
+        "display_name": displayName && displayName !== userData.display_name ? displayName : null,
         "accept_payments": payment,
-        "bio": bio,
+        "bio": bio && bio !== userData.bio ? bio : null,
         "tags_to_add": tagsToAdd,
         "tags_to_remove": tagsToRemove,
       }),
     });
+
+    if (response.ok) {
+      const res = await response.json();
+      setUsername('');
+      setDisplayName('');
+      setBio('');
+      setUserData({...res})
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      })
+      setUpdated(true);
+      dispatch(update(res.username, res.display_name));
+    }
   }
 
   if (!loggedIn && loaded) {
@@ -93,6 +113,12 @@ export default function () {
       <Navbar />
       <div className="container">
         <SidebarNav />
+        {updated ?
+        <div className="success-toast">
+          Successfully updated your <Link to={userData.username}>profile</Link>!&nbsp;
+          <button onClick={() => setUpdated(false)}>
+            <i className="fa fa-close" />
+          </button></div> : null}
         <div className="content" style={{ width: "750px" }}>
           <h3 className="content-header">Settings</h3>
           <div className="content-break" />
@@ -156,7 +182,16 @@ export default function () {
                   <button onClick={(e) => addTag(e, tag.id, tag.tag_name)}><i className="fa fa-plus"/></button></li>)}
               </ul>
             </div>
-            <button onClick={handleSubmit} htmlFor="settings" type="submit">Save Changes</button>
+            <button
+            id="setting-submit"
+            disabled={
+              username === "" &&
+              displayName === "" &&
+              bio === "" &&
+              tagsToAdd.length === 0 &&
+              tagsToRemove.length === 0 &&
+              !paymentChanged}
+            onClick={handleSubmit} htmlFor="settings" type="submit">Save Changes</button>
           </form>
         </div>
       </div>

@@ -159,12 +159,13 @@ export default function () {
             </div>
           </div>
           <div className="userpage-buttons">
+            {userPageInfo.accept_payments ?
             <button
               onClick={handleSupportClick}
               id="support-button">
               <i className="fa fa-coffee" />
               &nbsp;Support
-            </button>
+            </button> : null}
             {isFollowing ? (
               <button id="following-button" onClick={unfollow}>
                 <i className="fa fa-user" />&nbsp;
@@ -257,7 +258,7 @@ export default function () {
           </div>
           <div className="userpage-posts">
             <h3>Feed</h3>
-            {userPageInfo.userpage_feed
+            {userPageInfo.userpage_feed.length > 0
               ? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
@@ -268,7 +269,8 @@ export default function () {
                   )
                 }
               }
-              ) : null}
+              ):
+              <div>Nothing to see here.</div>}
             {userPageInfo.end_of_feed ? null
             : <button id="load-more" onClick={() => addToFeed()}>
               {loading ? "Loading..." : "Load more..."}
