@@ -62,7 +62,7 @@ def change_settings():
       "bio": user.bio,
       "tags": user.to_dict()["tags"]
   }
-
+  
 
 @user_routes.route('/')
 def index():

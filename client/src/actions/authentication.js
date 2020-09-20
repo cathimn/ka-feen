@@ -55,8 +55,8 @@ export const login = (email, password) => async (dispatch) => {
 };
 
 
-export const update = (username, displayName) => dispatch => {
-  window.localStorage.setItem(USER_KEY, JSON.stringify({"username": username, "display_name": displayName}))
+export const update = (id, username, displayName) => dispatch => {
+  window.localStorage.setItem(USER_KEY, JSON.stringify({"id": id, "username": username, "display_name": displayName}))
   dispatch(loadToken());
 }
 

@@ -33,7 +33,7 @@ export default function ({ post }) {
           <div style={{ fontSize: "14px", color: "gray" }}>{post.posted_on}</div>
         </div>
       </div>
-      {post.body
+      {post.body || post.image_url
       ?
       <>
       <div className="post-arrow"></div>

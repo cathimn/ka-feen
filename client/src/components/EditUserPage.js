@@ -56,7 +56,7 @@ export default function () {
 
     let formData = new FormData();
     formData.append("user_id", loggedInUser.id);
-    formData.append("body", postBody);
+    formData.append("body", postBody ? postBody : "");
     formData.append("image", image.raw);
 
     const response = await fetch(`${apiUrl}/posts`, {

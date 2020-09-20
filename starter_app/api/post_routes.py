@@ -35,13 +35,13 @@ def index():
     if not user_id:
       return jsonify(msg="Invalid user"), 401
     body = request.form["body"]
-    if not body:
+    if not body and not "image" in request.files:
       return jsonify(msg="Requires content"), 401
     post = Post(user_id=user_id, body=body)
     if "image" in request.files:
       file = request.files["image"]
       file.filename = secure_filename(file.filename)
-      folder = f'{user_id}/posts/'
+      folder = f'{user_id}/posts/{post.id}'
       output = upload_to_s3(file, folder, BUCKET_NAME)
       image_url = (str(output))
       post.image_url = image_url
