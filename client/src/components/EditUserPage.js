@@ -145,12 +145,10 @@ export default function () {
                     {el.tag_name}</span>)
                 : null}
             </div>
-            <div style={{ fontSize: "18px" }}>
-              {userPageInfo.total_support > 0
-                ? <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
-              <strong>{userPageInfo.total_support}</strong>
-              &nbsp;Received</div> : null}
-            </div>
+            {userPageInfo.total_support > 0
+              ? <div style={{ fontSize: "18px" }}><i className="fa fa-coffee" />&nbsp;x&nbsp;
+            <strong>{userPageInfo.total_support}</strong>
+            &nbsp;Received</div> : null}
           </div>
           <div className="userpage-right">
             <div className="userpage-create_post">

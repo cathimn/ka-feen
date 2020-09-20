@@ -51,3 +51,17 @@ def index():
   db.session.add(user)
   db.session.commit()
   return jsonify(token=access_token, id=user.id, username=user.username, display_name=user.display_name), 200
+
+
+# @session.routes.route("/check", methods=["GET"])
+# @jwt_required
+# def verify():
+#   current_user_email = get_jwt_identity()
+#   user = User.query.filter(User.email == current_user_email)
+#   if not user:
+#     user.session_token = None
+#     db.session.add(user)
+#     db.session.commit()
+#     return jsonify(msg="Session removed"), 200
+  
+#   return user.session_token

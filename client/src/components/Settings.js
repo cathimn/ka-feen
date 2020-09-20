@@ -116,7 +116,7 @@ export default function () {
         <SidebarNav />
         {updated ?
         <div className="success-toast">
-          Successfully updated your <Link to={userData.username}>profile</Link>!&nbsp;
+          Successfully updated your <Link to={userData.username} style={{ textDecoration: "underline" }}>profile</Link>!&nbsp;
           <button onClick={() => setUpdated(false)}>
             <i className="fa fa-close" />
           </button></div> : null}
