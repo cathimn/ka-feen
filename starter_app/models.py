@@ -41,8 +41,7 @@ class User(db.Model):
   display_name = db.Column(db.String(40))
   hashed_password = db.Column(db.String(100), nullable=False)
   session_token = db.Column(db.String(), unique=True)
-  avatar_url = db.Column(db.String(
-  ), default="https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png")
+  avatar_url = db.Column(db.String())
   banner_url = db.Column(db.String())
   bio = db.Column(db.String())
   accept_payments = db.Column(db.Boolean, default=False)

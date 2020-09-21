@@ -22,7 +22,7 @@ const FollowCard = ({ user }) => (
           style={{
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundImage: `url(${user.avatar_url})` }}
+            backgroundImage: `url(${user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})` }}
         />
         <div
           style={{

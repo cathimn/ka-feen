@@ -91,7 +91,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${result.banner_url})` }}>
                     <img
                       className="usercard-bigavatar"
-                      src={result.avatar_url}
+                          src={result.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
                       alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
@@ -137,7 +137,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${user.banner_url})` }}>
                       <img
                         className="usercard-bigavatar"
-                        src={user.avatar_url}
+                        src={user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
                         alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
@@ -164,7 +164,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${user.banner_url})` }}>
                       <img
                         className="usercard-bigavatar"
-                        src={user.avatar_url}
+                        src={user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
                         alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">

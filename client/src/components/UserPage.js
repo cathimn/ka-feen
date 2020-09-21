@@ -153,10 +153,10 @@ export default function () {
               style={{
                 backgroundPosition: "center",
                 backgroundSize: "cover",
-                backgroundImage: `url(${userPageInfo.avatar_url})` }}
+                backgroundImage: `url(${userPageInfo.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})` }}
             />
-            <div className="userpage-info">
-              <div>Buy some caffeine for</div>
+            <div className="userpage-info" style={ !userPageInfo.accept_payments ? { display: "flex", flexDirection: "column", justifyContent: "center"} : {}}>
+              <div>{userPageInfo.accept_payments ? "Buy some caffeine for" : null}</div>
               <h1>{userPageInfo.display_name || userPageInfo.username}</h1>
               <div style={{ color: "slategray" }}>
                 ka-feen.herokuapp.com/{userPageInfo.username}
