@@ -77,7 +77,7 @@ function Explore () {
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr"}
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
                 {results.map(result =>
-                <Link to={`/${result.username}`} >
+                <Link key={result.id} to={`/${result.username}`} >
                   <div className="explore-usercard">
                     <div
                       className="usercard-bigbanner"
@@ -123,7 +123,7 @@ function Explore () {
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               {taggedUsers.map(user =>
-                <Link to={`/${user.username}`} >
+                <Link key={user.id} to={`/${user.username}`} >
                   <div className="explore-usercard">
                     <div
                       className="usercard-bigbanner"

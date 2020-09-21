@@ -37,7 +37,7 @@ function Navbar () {
         {loggedIn ? (
           <> 
             <Link to={`/${loggedInUser.username}`}>
-              <li><div style={{ backgroundImage: `` }}></div>Your Page</li>
+              <li><div style={{ backgroundImage: `` }}></div><i className="fa fa-user"/>&nbsp;Your Page</li>
             </Link>
             <Link to="/newsfeed">
               <li>

@@ -100,7 +100,6 @@ export default function () {
         behavior: "smooth"
       })
       setUpdated(true);
-      console.log(res)
       dispatch(update(res.id, res.username, res.display_name));
     }
   }

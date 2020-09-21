@@ -15,11 +15,15 @@ export default function () {
   const [loading, setLoading] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
   const [feedPage, setFeedPage] = useState(1);
-  const [processing, setProcessing] = useState(null);
+  const [processingPost, setProcessingPost] = useState(null);
   const [postBody, setPostBody] = useState("");
   const [image, setImage] = useState({ preview: "", raw: ""});
   const [error, setError] = useState("");
   const [newPost, setNewPost] = useState(null);
+
+  const [processingImage, setProcessingImage] = useState(null);
+  const [avatar, setAvatar] = useState({ preview: "", raw: "" })
+  const [banner, setBanner] = useState({ preview: "", raw: "" })
 
   useEffect(() => {
     async function fetchUserPageInfo() {
@@ -44,11 +48,11 @@ export default function () {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setProcessing(true);
+    setProcessingPost(true);
 
     if (postBody.length === 0 && image.preview === "") {
       setError("Your post needs some content.")
-      setProcessing(false);
+      setProcessingPost(false);
       return
     } else {
       setError("");
@@ -72,7 +76,36 @@ export default function () {
       setImage({ preview: "", raw: "" });
     }
 
-    setProcessing(false);
+    setProcessingPost(false);
+  }
+
+  const handleAvatarChange = (e) => {
+    setAvatar({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+  }
+
+  const handleBannerChange = (e) => {
+    setBanner({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+  }
+
+  const submitChanges = async (e) => {
+    e.preventDefault();
+    setProcessingImage(true);
+    let formData = new FormData();
+    formData.append("banner", banner.raw)
+    formData.append("avatar", avatar.raw)
+    const response = await fetch(`${apiUrl}/users/update/image`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${loggedIn}` },
+      body: formData
+    })
+
+    if (response.ok) {
+      const res = await response.json()
+      setProcessingImage(false);
+      setBanner({ preview: "", raw: "" });
+      setAvatar({ preview: "", raw: "" });
+      setUserPageInfo({...res})
+    }
   }
 
   const addToFeed = async () => {
@@ -101,17 +134,30 @@ export default function () {
       <div
         id="banner"
         className="userpage-banner"
-        style={{backgroundImage: `url(${userPageInfo.banner_url})`}}>
-        {/* <button id="banner-edit">
-          <i className="fa fa-picture-o"/>&nbsp;Change cover
-        </button> */}
+        style={banner.preview ? { backgroundImage: `url(${banner.preview})` } : { backgroundImage: `url(${userPageInfo.banner_url})` }}>
+        <input
+          onChange={handleBannerChange}
+          className="hidden"
+          id="banner-upload"
+          type="file"
+          accept=".png,.jpg,.jpeg,.gif"></input>
       </div>
       <div className="userpage-container"
         style={{ marginTop: "25px"}}>
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
             <div className="userpage-avatar"
-              style={{backgroundImage: `url(${userPageInfo.avatar_url})`}}/>
+              style={avatar.preview ? {backgroundImage: `url(${avatar.preview})`} : {backgroundImage: `url(${userPageInfo.avatar_url})`}}>
+              <label htmlFor="avatar-upload" id="edit-button">
+                <i className="fa fa-pencil" />
+              </label>
+              <input
+                onChange={handleAvatarChange}
+                className="hidden"
+                id="avatar-upload"
+                type="file"
+                accept=".png,.jpg,.jpeg,.gif"></input>
+            </div>
             <div className="userpage-info" style={{
               display: "flex",
               flexDirection: "column",
@@ -123,9 +169,13 @@ export default function () {
             </div>
           </div>
           <div className="userpage-buttons">
-            <button id="edit-button">
-              <i className="fa fa-pencil" />
-            </button>
+            <label htmlFor="banner-upload" id="banner-edit">
+              <i className="fa fa-picture-o" />&nbsp;Change cover
+            </label>
+            {banner.preview || avatar.preview ?
+              <button id="banneravatar-submit" onClick={submitChanges}>
+                {processingImage ? "Processing..." : "Submit changes"}
+              </button> : null}
             <Link to="/settings">
               <button id="settings-button">
                 <i className="fa fa-cog" />
@@ -178,9 +228,9 @@ export default function () {
                 <i className="fa fa-image" /> Add Image
               </label>
               <button
-                disabled={processing}
+                disabled={processingPost}
                 onClick={handleSubmit}
-                id="add-post-button">{processing && error === "" ? "Sending..." : "Post"}</button>
+                id="add-post-button">{processingPost && error === "" ? "Sending..." : "Post"}</button>
             </div>
             <div className="userpage-posts">
               <h3>Feed</h3>

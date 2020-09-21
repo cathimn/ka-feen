@@ -20,7 +20,7 @@ export default function () {
       const responseData = await response.json();
       setFeed(responseData.feed);
     }
-    fetchData();
+    if (loggedIn) fetchData();
   }, [loggedIn])
 
   if (!loggedIn) {

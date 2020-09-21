@@ -1,8 +1,30 @@
+import os
+import boto3
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from starter_app.models import db, User, Tag, Support, users_tags
+from werkzeug.utils import secure_filename
 
 user_routes = Blueprint('users', __name__)
+
+BUCKET_URL = os.environ.get('BUCKET_URL')
+BUCKET_NAME = os.environ.get('BUCKET_NAME')
+ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+SECRET_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+
+s3 = boto3.client(
+    "s3",
+    aws_access_key_id=ACCESS_KEY,
+    aws_secret_access_key=SECRET_KEY
+)
+
+def upload_to_s3(file, folder, bucket_name, acl="public-read"):
+  try:
+    s3.upload_fileobj(file, bucket_name, folder + file.filename,
+                      ExtraArgs={"ACL": acl, "ContentType": file.content_type})
+  except Exception as e:
+    return e
+  return f'{BUCKET_URL}/{folder}{file.filename}'
 
 
 @user_routes.route('/search=<query>')
@@ -62,7 +84,37 @@ def change_settings():
       "bio": user.bio,
       "tags": user.to_dict()["tags"]
   }
-  
+
+
+@user_routes.route('/update/image', methods=["POST"])
+@jwt_required
+def change_image():
+  current_user_email = get_jwt_identity()
+  user = User.query.filter(User.email == current_user_email).first()
+  if "banner" in request.files:
+    folder = f'{user.id}/banner/'
+    file = request.files["banner"]
+    file.filename = secure_filename(file.filename)
+    response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
+    for object in response['Contents']:
+      s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
+    output = upload_to_s3(file, folder, BUCKET_NAME)
+    image_url = str(output)
+    user.banner_url = image_url
+  if "avatar" in request.files:
+    folder = f'{user.id}/avatar/'
+    file = request.files["avatar"]
+    file.filename = secure_filename(file.filename)
+    response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
+    for object in response['Contents']:
+      s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
+    output = upload_to_s3(file, folder, BUCKET_NAME)
+    image_url = str(output)
+    user.avatar_url = image_url
+  db.session.add(user)
+  db.session.commit()
+  return user.to_dict()
+
 
 @user_routes.route('/')
 def index():

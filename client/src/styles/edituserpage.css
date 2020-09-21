@@ -1,33 +1,30 @@
 #banner {
-  position: relative;
   background-color: whitesmoke;
 }
 
 #banner-edit {
+  font-size: 16px;
   white-space: nowrap;
-  position: absolute;
-  top: 200px;
-  right: 250px;
   background-color: whitesmoke;
   padding: 10px 15px;
-  border-radius: 10px;
+  border-radius: 50px;
   font-weight: 600;
-  color: darkslategray;
 }
 
-#banner-edit:hover {
-  background-color: white;
-}
-
-#settings-button,
-#edit-button {
+#settings-button {
   width: 45px;
   height: 45px;
   background-color: whitesmoke;
-  color: gray;
   border-radius: 50px;
   font-size: 20px;
   margin-left: 10px;
+}
+
+#edit-button {
+  cursor: pointer;
+  background-color: lavender;
+  padding: 10px 15px;
+  border-radius: 50px;
 }
 
 #add-image {
@@ -62,4 +59,10 @@
   font-size: 14px;
   padding: 10px;
   border-radius: 5px;
+}
+
+#banneravatar-submit {
+  background-color: lavender;
+  padding: 0 20px;
+  font-weight: 600;
 }
