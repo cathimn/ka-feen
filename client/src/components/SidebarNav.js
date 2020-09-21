@@ -39,12 +39,12 @@ export default function () {
           </span>
           <span>Explore</span>
         </Link>
-        <Link to="/support">
+        {/* <Link to="/support">
           <span>
             <i className="fa fa-list" />
           </span>
           <span>Received & Given</span>
-        </Link>
+        </Link> */}
         <Link to="/following">
             <span>
               <i className="fa fa-users" />

@@ -14,6 +14,7 @@ function Explore () {
   const [results, setResults] = useState([]);
   const [searched, setSearched] = useState(null);
   const [taggedUsers, setTaggedUsers] = useState([]);
+  const [featured, setFeatured] = useState([]);
   const [currentTag, setCurrentTag] = useState(null);
 
   useEffect(() => {
@@ -22,7 +23,13 @@ function Explore () {
       const responseData = await response.json();
       setCategories(responseData.tags);
     }
+    async function fetchFeatured() {
+      const response = await fetch(`${apiUrl}/users/featured`);
+      const responseData = await response.json();
+      setFeatured([...responseData.users]);
+    }
     fetchData();
+    fetchFeatured();
   }, [])
 
   const handleSearch = (e) => {
@@ -146,6 +153,28 @@ function Explore () {
               <>
               {currentTag !== null ? <h3>No results for {currentTag}</h3> : ""}
               <h3 className="content-header">Featured Creators</h3>
+              <div style={loggedIn
+                ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
+                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+              {featured.map(user =>
+                <Link key={user.id} to={`/${user.username}`} >
+                  <div className="explore-usercard">
+                    <div
+                      className="usercard-bigbanner"
+                      style={{ backgroundImage: `url(${user.banner_url})` }}>
+                      <img
+                        className="usercard-bigavatar"
+                        src={user.avatar_url}
+                        alt="user avatar" />
+                    </div>
+                    <div className="usercard-biginfo">
+                      <h3>{user.display_name || user.username}</h3>
+                      <p>{user.bio}</p>
+                      <button>View Page</button>
+                    </div>
+                  </div>
+                </Link>)}
+                </div>
               </>}
             </>}
         </div>

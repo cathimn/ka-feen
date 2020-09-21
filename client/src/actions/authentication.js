@@ -54,6 +54,23 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
+export const signup = (username, email, password) => async (dispatch) => {
+  const response = await fetch(`${apiUrl}/session`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, email, password }),
+  })
+
+  if (response.ok) {
+    const { token, id, username, display_name } = await response.json();
+    window.localStorage.setItem(TOKEN_KEY, token);
+    const user = { id: id, username: username, display_name: display_name };
+    window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+    dispatch(setToken(token));
+    dispatch(setUser(user))
+  }
+}
+
 
 export const update = (id, username, displayName) => dispatch => {
   window.localStorage.setItem(USER_KEY, JSON.stringify({"id": id, "username": username, "display_name": displayName}))

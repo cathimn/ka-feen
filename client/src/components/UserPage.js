@@ -78,6 +78,7 @@ export default function () {
 
     if (!loggedIn) {
       setLoginModalDisplay(true);
+      return
     } else {
       await fetch(`${apiUrl}/supports`, {
         method: "POST",
@@ -100,6 +101,10 @@ export default function () {
   }
 
   const follow = async () => {
+    if (!loggedIn) {
+      setLoginModalDisplay(true);
+      return;
+    }
     const response = await fetch(`${apiUrl}/follows`, {
       method: "POST",
       headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },

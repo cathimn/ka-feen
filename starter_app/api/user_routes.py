@@ -95,9 +95,10 @@ def change_image():
     folder = f'{user.id}/banner/'
     file = request.files["banner"]
     file.filename = secure_filename(file.filename)
-    response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
-    for object in response['Contents']:
-      s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
+    if user.banner_url:
+      response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
+      for object in response['Contents']:
+        s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
     output = upload_to_s3(file, folder, BUCKET_NAME)
     image_url = str(output)
     user.banner_url = image_url
@@ -105,9 +106,10 @@ def change_image():
     folder = f'{user.id}/avatar/'
     file = request.files["avatar"]
     file.filename = secure_filename(file.filename)
-    response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
-    for object in response['Contents']:
-      s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
+    if user.avatar_url:
+      response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
+      for object in response['Contents']:
+        s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])
     output = upload_to_s3(file, folder, BUCKET_NAME)
     image_url = str(output)
     user.avatar_url = image_url
@@ -119,6 +121,12 @@ def change_image():
 @user_routes.route('/')
 def index():
   response = User.query.all()
+  return {"users": [user.to_dict() for user in response]}
+
+
+@user_routes.route('/featured')
+def featured():
+  response = User.query.limit(6).all()
   return {"users": [user.to_dict() for user in response]}
 
 

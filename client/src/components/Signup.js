@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import { AppContext } from "../AppContext";
-// import { signup } from "../actions/authentication";
+import { signup } from "../actions/authentication";
 
 export default function () {
   const { signupModalDisplay, setSignupModalDisplay, setLoginModalDisplay } = useContext(AppContext);
@@ -10,11 +10,11 @@ export default function () {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // dispatch(signup(username, email, password));
+    dispatch(signup(username, email, password));
     setSignupModalDisplay(false);
   };
 

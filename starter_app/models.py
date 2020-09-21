@@ -41,7 +41,8 @@ class User(db.Model):
   display_name = db.Column(db.String(40))
   hashed_password = db.Column(db.String(100), nullable=False)
   session_token = db.Column(db.String(), unique=True)
-  avatar_url = db.Column(db.String())
+  avatar_url = db.Column(db.String(
+  ), default="https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png")
   banner_url = db.Column(db.String())
   bio = db.Column(db.String())
   accept_payments = db.Column(db.Boolean, default=False)
@@ -165,7 +166,7 @@ class Support(db.Model):
       "id": self.id,
       "username": User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
       "private_supporter": "Somebody" if self.private else None,
-      "author_avatar": "https://i.pinimg.com/originals/b5/44/9c/b5449ce322241ee890cf849a898a6c1b.png" if self.private else
+      "author_avatar": "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png" if self.private else
         User.query.filter(User.id == self.supporter_id).first().to_dict()["avatar_url"],
       "supporter": User.query.filter(User.id == self.supporter_id).first().to_dict()["display_name"] or
         User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],

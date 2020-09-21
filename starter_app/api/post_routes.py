@@ -41,10 +41,11 @@ def index():
     if "image" in request.files:
       file = request.files["image"]
       file.filename = secure_filename(file.filename)
-      folder = f'{user_id}/posts/{post.id}'
+      folder = f'{user_id}/posts/'
       output = upload_to_s3(file, folder, BUCKET_NAME)
       image_url = (str(output))
       post.image_url = image_url
+      print(image_url)
 
     db.session.add(post)
     db.session.commit()

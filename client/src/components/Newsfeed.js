@@ -36,6 +36,7 @@ export default function () {
       <div style={{ width: "500px" }}>
       <div className="content-break"></div>
         {feed.map(post => <Post key={post.id} post={post} />)}
+        {feed.length === 0 ? "Nothing here yet!" : null}
       </div>
       </div>
     </div>

@@ -24,6 +24,12 @@ export default function () {
     if (e.target.id === 'login_modal') setLoginModalDisplay(false);
   }
 
+  const demoLogin = (e) => {
+    e.preventDefault();
+    setEmail("captain@thecat.com");
+    setPassword("astinkycheese");
+  }
+
   return (
     <div
       id="login_modal"
@@ -55,7 +61,7 @@ export default function () {
           />
           <button type="submit">Log in</button>
         </form>
-        <button className="modal-link">
+        <button onClick={demoLogin} className="modal-link">
           Log in with a demo account.
         </button>
         <br/>
