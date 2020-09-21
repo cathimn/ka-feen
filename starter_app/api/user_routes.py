@@ -115,7 +115,10 @@ def change_image():
     user.avatar_url = image_url
   db.session.add(user)
   db.session.commit()
-  return user.to_dict()
+  return {
+    "avatar_url": user.avatar_url,
+    "banner_url": user.banner_url
+  }
 
 
 @user_routes.route('/')

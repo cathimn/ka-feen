@@ -100,11 +100,10 @@ export default function () {
     })
 
     if (response.ok) {
-      const res = await response.json()
       setProcessingImage(false);
       setBanner({ preview: "", raw: "" });
       setAvatar({ preview: "", raw: "" });
-      setUserPageInfo({...res})
+      setNewPost(true);
     }
   }
 
