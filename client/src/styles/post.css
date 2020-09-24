@@ -43,7 +43,6 @@
 }
 
 .post-body > p {
-  /* padding: 20px 10px; */
   font-size: 16px;
 }
 
@@ -54,10 +53,9 @@
   border-radius: 5px;
 }
 
-/* .post-buttons {
+.post-buttons {
   display: flex;
-  padding: 5px;
-  align-content: center;
+  margin-top: 15px;
 }
 
 .like-button > i {
@@ -67,13 +65,9 @@
 }
 
 .like-button > i:hover {
-  color: palevioletred;
+  color: rgb(255, 92, 113);
 }
 
-.like-button > i.liked {
-  color: palevioletred;
+.like-button.liked > i {
+  color: rgb(255, 92, 113);
 }
-
-.like-button > i.liked:hover {
-  color: lightgray;
-} */

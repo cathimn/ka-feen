@@ -21,7 +21,7 @@ export default function () {
       setFeed(responseData.feed);
     }
     if (loggedIn) fetchData();
-  }, [loggedIn])
+  }, [])
 
   if (!loggedIn) {
     return <Redirect to="/" />

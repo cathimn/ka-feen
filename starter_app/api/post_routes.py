@@ -1,5 +1,5 @@
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from starter_app.models import db, User, Post, users_likes
 from werkzeug.utils import secure_filename
 import boto3
@@ -50,3 +50,20 @@ def index():
     db.session.add(post)
     db.session.commit()
     return post.to_dict()
+
+
+@post_routes.route('/like', methods=["POST", "DELETE"])
+@jwt_required
+def like_post():
+  post_id = request.json.get("post_id")
+  post = Post.query.get(int(post_id))
+  current_user_email = get_jwt_identity()
+  user = User.query.filter(User.email == current_user_email).first()
+  if request.method == "POST":
+    user.like_post(post)
+  if request.method == "DELETE":
+    user.unlike_post(post)
+  db.session.add(user)
+  db.session.commit()
+  return {"likers": post.to_dict()["likers"]}
+

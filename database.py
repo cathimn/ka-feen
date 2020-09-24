@@ -60,6 +60,10 @@ with app.app_context():
   db.session.add(
       Post(user_id=3, body="HELLO WORLD"))
 
+  cath.like_post(post1)
+  bobo.like_post(post1)
+  jee.like_post(post1)
+
   captain.follow(captain)
   luna.follow(luna)
   cath.follow(cath)

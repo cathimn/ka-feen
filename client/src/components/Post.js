@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { apiUrl } from '../config';
+
 export default function ({ post }) {
+  const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
+  const [likes, setLike] = useState([...post.likers]);
+
+  const handleLikeClick = async (e, post) => {
+    e.preventDefault();
+    if (likes.includes(loggedInUser.id)) {
+      const response = await fetch(`${apiUrl}/posts/like`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${loggedIn}`,
+         "Content-Type": "application/json" },
+        body: JSON.stringify({"post_id": post})
+      })
+      const res = await response.json();
+      setLike([...res.likers])
+    } else {
+      const response = await fetch(`${apiUrl}/posts/like`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${loggedIn}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "post_id": post })
+      })
+      const res = await response.json();
+      console.log(res)
+      setLike([...res.likers])
+    }
+  }
 
   return (
     <div className="post-container">
@@ -44,20 +74,17 @@ export default function ({ post }) {
             alt="post" src={post.image_url} />
         ): null}
         <p className="post-body__text">{post.body}</p>
+        <div className="post-buttons">
+          <button
+            onClick={e => handleLikeClick(e, post.id, likes)}
+            className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
+            <i className="fa fa-heart" />
+          </button>
+          <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
+        </div>
       </div>
       </>
       : null}
-        {/* <div className="post-buttons">
-          <div className="post-like">
-            <button className="like-button">
-              <i className="fa fa-heart" />
-              <span>&nbsp; 350</span>
-            </button>
-          </div>
-          <div className="post-remove">
-            <i className="fa fa-ellipsis-h" />
-          </div>
-        </div> */}
     </div>
 
   )

@@ -1,16 +1,20 @@
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+from sqlalchemy.orm import joinedload
 
 db = SQLAlchemy()
 
 following = db.Table(
     'follows',
-    db.Column('user_id', db.Integer, db.ForeignKey(
-        'users.id'), primary_key=True),
-    db.Column('follow_id', db.Integer, db.ForeignKey(
-        'users.id'), primary_key=True),
-)
+    db.Column('user_id',
+              db.Integer,
+              db.ForeignKey('users.id'),
+              primary_key=True),
+    db.Column('follow_id',
+              db.Integer,
+              db.ForeignKey('users.id'),
+              primary_key=True))
 
 users_tags = db.Table(
     'users_tags',
@@ -18,7 +22,9 @@ users_tags = db.Table(
               db.Integer,
               db.ForeignKey('users.id'),
               primary_key=True),
-    db.Column('tag_id', db.Integer, db.ForeignKey('tags.id'),
+    db.Column('tag_id',
+              db.Integer,
+              db.ForeignKey('tags.id'),
               primary_key=True))
 
 users_likes = db.Table(
@@ -31,6 +37,7 @@ users_likes = db.Table(
               db.Integer,
               db.ForeignKey('posts.id'),
               primary_key=True))
+
 
 class User(db.Model):
   __tablename__ = 'users'
@@ -47,9 +54,17 @@ class User(db.Model):
   accept_payments = db.Column(db.Boolean, default=False)
   created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
-  user_likes = db.relationship('Post', secondary=users_likes, lazy="subquery", back_populates="users")
-  user_tags = db.relationship('Tag', secondary=users_tags, lazy="subquery", back_populates='users')
-  posts = db.relationship('Post', lazy="subquery", back_populates='user')
+  user_likes = db.relationship('Post',
+                              secondary=users_likes,
+                              lazy="subquery",
+                              back_populates="likers")
+  user_tags = db.relationship('Tag',
+                              secondary=users_tags,
+                              lazy="subquery",
+                              back_populates='users')
+  posts = db.relationship('Post',
+                          lazy="subquery",
+                          back_populates='user')
   follows = db.relationship('User',
                             lazy="subquery",
                             secondary=following,
@@ -99,10 +114,14 @@ class User(db.Model):
   def like_post(self, post_to_like):
     if post_to_like not in self.user_likes:
       self.user_likes.append(post_to_like)
+    if self not in post_to_like.likers:
+      post_to_like.likers.append(self)
 
   def unlike_post(self, post_to_unlike):
     if post_to_unlike in self.user_likes:
       self.user_likes.remove(post_to_unlike)
+    if self in post_to_unlike.likers:
+      post_to_unlike.likers.remove(self)
 
   def add_tag(self, tag_to_add):
     if tag_to_add not in self.user_tags:
@@ -126,18 +145,20 @@ class Post(db.Model):
   updated_at = db.Column(db.DateTime)
 
   user = db.relationship('User', lazy="subquery", back_populates='posts')
-  users = db.relationship('User', secondary=users_likes, lazy="subquery",
-                          back_populates='user_likes')
+  likers = db.relationship('User', secondary=users_likes, lazy="subquery", back_populates="user_likes")
 
   def to_dict(self):
     return {
         "id": self.id,
-        "username": User.query.get(self.user_id).username,
-        "author": User.query.get(self.user_id).display_name or User.query.get(self.user_id).username,
-        "author_avatar": User.query.get(self.user_id).avatar_url,
+        "username": self.user.username,
+        "author": self.user.display_name or self.user.username,
+        "author_avatar": self.user.avatar_url,
         "body": self.body,
         "image_url": self.image_url,
-        "posted_on": self.created_at
+        "posted_on": self.created_at,
+        "likers": [user.id for user in User.query.join(
+          users_likes, (users_likes.c.user_id == User.id)).filter(
+          users_likes.c.post_id == self.id)]
     }
 
 
