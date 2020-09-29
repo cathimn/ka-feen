@@ -73,9 +73,9 @@ function App() {
           <Route exact path="/newsfeed">
             <Newsfeed />
           </Route>
-          {/* <Route exact path="/support">
+          <Route exact path="/support">
             <SupportPage />
-          </Route> */}
+          </Route>
           <Route exact path="/notfound">
             <Error />
           </Route>

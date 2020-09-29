@@ -21,3 +21,6 @@ def index():
     db.session.add(new_support)
     db.session.commit()
     return new_support.to_dict()
+  if request.method == 'GET':
+    supports = Support.query.filter(Support.user_id == current_user.id).all()
+    return {"supported": [support.to_dict() for support in supports]}

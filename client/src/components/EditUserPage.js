@@ -129,7 +129,7 @@ export default function () {
   
   return (
     <>
-      <Navbar />
+      <Navbar showHamburger={true}/>
       <div
         id="banner"
         className="userpage-banner"

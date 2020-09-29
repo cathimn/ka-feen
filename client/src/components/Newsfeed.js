@@ -20,15 +20,15 @@ export default function () {
       const responseData = await response.json();
       setFeed(responseData.feed);
     }
-    if (loggedIn) fetchData();
-  }, [])
+    fetchData();
+  }, [loggedIn])
 
   if (!loggedIn) {
     return <Redirect to="/" />
   }
   return (
     <>
-    <Navbar />
+    <Navbar showHamburger={false} />
     <div className="container">
       <SidebarNav />
       <div className="content">

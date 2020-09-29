@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
 
-// import SidebarNav from './SidebarNav';
+import SidebarNav from './SidebarNav';
 
-function Navbar () {
+function Navbar ({ showHamburger }) {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const { setLoginModalDisplay, setSignupModalDisplay } = useContext(AppContext);
@@ -15,9 +15,12 @@ function Navbar () {
 
   return (
     <>
-    {/* <div className={showSidebar ? "sidebar-collapse" : "sidebar-collapse hidden"}>
-      <SidebarNav />
-    </div> */}
+    {showHamburger
+        ? <div className={showSidebar ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
+          <SidebarNav />
+        </div>
+    : null}
+    
     <div className="navbar">
       <div id="navbar_logo">
         <Link to="/">
@@ -44,9 +47,9 @@ function Navbar () {
                 <i className="fa fa-home" />
               </li>
             </Link>
-            <li onClick={() => setShowSidebar(!showSidebar)}>
-              <i className="fa fa-bars" />
-            </li>
+              {showHamburger ? <li onClick={() => setShowSidebar(!showSidebar)}>
+                <i className="fa fa-bars" />
+              </li> : null}
           </>
         ) : (
           <>

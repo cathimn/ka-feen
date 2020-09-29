@@ -7,7 +7,7 @@ import { apiUrl } from '../config';
 export default function ({ post }) {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
-  const [likes, setLike] = useState([...post.likers]);
+  const [likes, setLike] = useState(post.likers ? [...post.likers] : null);
 
   const handleLikeClick = async (e, post) => {
     e.preventDefault();
@@ -30,7 +30,6 @@ export default function ({ post }) {
         body: JSON.stringify({ "post_id": post })
       })
       const res = await response.json();
-      console.log(res)
       setLike([...res.likers])
     }
   }
@@ -40,10 +39,7 @@ export default function ({ post }) {
       <div className="post-header">
         <Link to={post.private_supporter ? "/" : `/${post.username}`}>
           <div className="post-avatar"
-            style={{
-              backgroundImage: `url(${post.author_avatar || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover"}} />
+            style={{ backgroundImage: `url(${post.author_avatar || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})`}} />
         </Link>
         <div className="post-info">
           <div>
@@ -74,14 +70,17 @@ export default function ({ post }) {
             alt="post" src={post.image_url} />
         ): null}
         <p className="post-body__text">{post.body}</p>
+        {likes
+        ?
         <div className="post-buttons">
-          <button
-            onClick={e => handleLikeClick(e, post.id, likes)}
-            className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
-            <i className="fa fa-heart" />
-          </button>
-          <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
+        <button
+          onClick={e => handleLikeClick(e, post.id, likes)}
+          className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
+          <i className="fa fa-heart" />
+        </button>
+        <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
         </div>
+        : null}
       </div>
       </>
       : null}

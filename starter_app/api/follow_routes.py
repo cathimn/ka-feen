@@ -13,7 +13,6 @@ def follows():
 
   if request.method == 'POST':
     follow = request.json.get("follow")
-    print(follow)
     to_follow = User.query.filter(User.username == follow).first()
     user.follow(to_follow)
     db.session.add(user)

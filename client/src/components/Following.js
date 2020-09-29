@@ -20,9 +20,8 @@ const FollowCard = ({ user }) => (
         <div
           className="post-avatar"
           style={{
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundImage: `url(${user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})` }}
+            backgroundImage: `url(${user.avatar_url ||
+            "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})` }}
         />
         <div
           style={{
@@ -33,7 +32,11 @@ const FollowCard = ({ user }) => (
         >
           <span>
             {user.display_name
-            ? <>{user.display_name} <span style={{color: "grey", fontSize: "14px" }}>({user.username})</span></>
+            ?
+            <>
+            {user.display_name}&nbsp;
+            <span style={{color: "grey", fontSize: "14px" }}>({user.username})</span>
+            </>
             : user.username }</span>
           <span style={{ color: "gray", fontSize: "14px" }}>Following</span>
         </div>

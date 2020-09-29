@@ -132,7 +132,7 @@ export default function () {
 
   return (
     <>
-      <Navbar />
+      <Navbar showHamburger={true} />
       <div
         className={userPageInfo.banner_url ? "userpage-banner" : "hidden"}
         style={ userPageInfo.banner_url
