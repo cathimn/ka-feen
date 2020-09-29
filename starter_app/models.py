@@ -53,7 +53,7 @@ class User(db.Model):
   banner_url = db.Column(db.String())
   bio = db.Column(db.String())
   accept_payments = db.Column(db.Boolean, default=False)
-  created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+  created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
   user_likes = db.relationship('Post',
                               secondary=users_likes,
@@ -142,7 +142,7 @@ class Post(db.Model):
   image_url = db.Column(db.String())
   created_at = db.Column(db.DateTime,
                           nullable=False,
-                          default=datetime.utcnow)
+                          default=datetime.now())
   updated_at = db.Column(db.DateTime)
 
   user = db.relationship('User', lazy="subquery", back_populates='posts')
@@ -174,7 +174,7 @@ class Support(db.Model):
   amount = db.Column(db.Integer, nullable=False)
   body = db.Column(db.Text)
   private = db.Column(db.Boolean)
-  created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+  created_at = db.Column(db.DateTime, nullable=False, default=datetime.now())
 
   supported_user = db.relationship('User', foreign_keys=[user_id])
   supporting_user = db.relationship('User', foreign_keys=[supporter_id])
@@ -189,6 +189,7 @@ class Support(db.Model):
       "private_supporter": "Somebody" if self.private else None,
       "author_avatar": "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png" if self.private else
         User.query.filter(User.id == self.supporter_id).first().to_dict()["avatar_url"],
+      "supported_avatar": User.query.filter(User.id == self.user_id).first().to_dict()["avatar_url"],
       "supporter": User.query.filter(User.id == self.supporter_id).first().to_dict()["display_name"] or
         User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
       "supported": User.query.filter(User.id == self.user_id).first().to_dict()["display_name"] or

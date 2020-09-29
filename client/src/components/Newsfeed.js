@@ -11,6 +11,7 @@ import Post from './Post';
 export default function () {
   const loggedIn = useSelector((store) => store.authentication.token);
   const [feed, setFeed] = useState([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -19,6 +20,7 @@ export default function () {
       });
       const responseData = await response.json();
       setFeed(responseData.feed);
+      setLoaded(true);
     }
     fetchData();
   }, [loggedIn])
@@ -35,8 +37,10 @@ export default function () {
       <h3 className="content-header">Newsfeed</h3>
       <div style={{ width: "500px" }}>
       <div className="content-break"></div>
-        {feed.map(post => <Post key={post.id} post={post} />)}
-        {feed.length === 0 ? "Nothing here yet!" : null}
+        {loaded ?
+        feed.length === 0 && "Nothing to see here." ||
+        feed.map(post => <Post key={post.id} post={post} />)
+        : null}
       </div>
       </div>
     </div>

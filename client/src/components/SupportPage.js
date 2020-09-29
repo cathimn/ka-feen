@@ -8,16 +8,22 @@ import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
 const SupportCard = ({ type, support }) => (
-  <div style={{ margin: "25px 0px" }}>
+  <div style={{ marginTop: "25px" }}>
     <div style={{ display: "flex", marginBottom: "10px" }}>
-      <div style={{ backgroundImage: `url(${support.author_avatar})` }} className="post-avatar"></div>
+      <div
+        className="post-avatar"
+        style={
+          type === "given" ?
+          { backgroundImage: `url(${support.supported_avatar})` } :
+          { backgroundImage: `url(${support.author_avatar})` }}></div>
       <div style={{ display: "flex", flexDirection: "column" }}>
-        <span>{support.private_supporter || support.supporter}</span>
+        {type === "received" ? <span>{support.private_supporter || support.supporter}</span>
+        : <span>Supported: {support.supported}{support.private_supporter && " (Anonymously)"}</span>}
         <span style={{ color: "gray" }}>{support.posted_on}</span>
       </div>
     </div>
     <span>Amount: ${support.amount * 3}</span><br/>
-    {support.body ? <span>Message: {support.body}</span> : null}
+      {support.body && <span>{type==="given" && "Your "}Message: {support.body}</span>}
     <div className="content-break" style={{ marginTop: "25px"}} />
   </div>
 );
@@ -26,6 +32,8 @@ export default function () {
   const loggedIn = useSelector((store) => store.authentication.token);
   const [received, setReceived] = useState([]);
   const [given, setGiven] = useState([]);
+  const [tab, setTab] = useState("received");
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -35,6 +43,7 @@ export default function () {
       const responseData = await response.json();
       setReceived(responseData.received);
       setGiven(responseData.given)
+      setLoaded(true);
     }
     fetchData();
   }, [loggedIn])
@@ -51,11 +60,30 @@ export default function () {
         <div className="content">
           <h3 className="content-header">Support</h3>
           <div className="content-break" />
-          <div>
-            Received Given
-            {received.map(support => <SupportCard key={support.id} type="received" support={support} />)}
-            {given.map(support => <SupportCard key={support.id} type="given" support={support} />)}
+          <div style={{ alignSelf: "center", marginTop: "20px"}}>
+            <button
+              className={tab === "received" ? "support__tab-button selected" : "support__tab-button" }
+              onClick={() => setTab("received")}>Received</button>
+            <button
+              className={tab === "given" ? "support__tab-button selected" : "support__tab-button" }
+              onClick={() => setTab("given")}>Given</button>
           </div>
+          {tab === "received" ?
+            received.length === 0 && loaded ?
+            <p style={{ textAlign: "center", marginTop: "50px" }}>
+              Nothing to see here... <i className="fa fa-coffee" style={{ color: "slateblue" }} />
+            </p>
+            :
+            received.map(support => <SupportCard key={support.id} type="received" support={support} />)
+          : null}
+          {tab === "given" ?
+            given.length === 0 && loaded ?
+            <p style={{ textAlign: "center", marginTop: "50px" }}>
+              Nothing to see here. <i className="fa fa-coffee" />
+            </p>
+            :
+            given.map(support => <SupportCard key={support.id} type="given" support={support} />)
+          :null}
         </div>
       </div>
     </>

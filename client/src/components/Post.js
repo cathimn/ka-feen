@@ -70,8 +70,7 @@ export default function ({ post }) {
             alt="post" src={post.image_url} />
         ): null}
         <p className="post-body__text">{post.body}</p>
-        {likes
-        ?
+        {likes &&
         <div className="post-buttons">
         <button
           onClick={e => handleLikeClick(e, post.id, likes)}
@@ -79,8 +78,7 @@ export default function ({ post }) {
           <i className="fa fa-heart" />
         </button>
         <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
-        </div>
-        : null}
+        </div>}
       </div>
       </>
       : null}
