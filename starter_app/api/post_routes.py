@@ -4,6 +4,7 @@ from starter_app.models import db, User, Post, users_likes
 from werkzeug.utils import secure_filename
 import boto3
 import os
+from datetime import datetime
 
 post_routes = Blueprint('posts', __name__)
 
@@ -45,7 +46,7 @@ def index():
       output = upload_to_s3(file, folder, BUCKET_NAME)
       image_url = (str(output))
       post.image_url = image_url
-
+    post.created_at = datetime.now()
     db.session.add(post)
     db.session.commit()
     return post.to_dict()

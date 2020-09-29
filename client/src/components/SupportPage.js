@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import { apiUrl } from '../config';
 
@@ -15,9 +15,10 @@ const SupportCard = ({ type, support }) => (
         style={
           type === "given" ?
           { backgroundImage: `url(${support.supported_avatar})` } :
-          { backgroundImage: `url(${support.author_avatar})` }}></div>
+          { backgroundImage: `url(${support.author_avatar})` }} />
       <div style={{ display: "flex", flexDirection: "column" }}>
-        {type === "received" ? <span>{support.private_supporter || support.supporter}</span>
+        {type === "received"
+        ? <span>{support.private_supporter || support.supporter}</span>
         : <span>Supported: {support.supported}{support.private_supporter && " (Anonymously)"}</span>}
         <span style={{ color: "gray" }}>{support.posted_on}</span>
       </div>
@@ -71,7 +72,13 @@ export default function () {
           {tab === "received" ?
             received.length === 0 && loaded ?
             <p style={{ textAlign: "center", marginTop: "50px" }}>
-              Nothing to see here... <i className="fa fa-coffee" style={{ color: "slateblue" }} />
+              Nothing to see here... <i className="fa fa-coffee" style={{ color: "slateblue" }} /><br/><br/>
+              <span style={{ color: "gray"}}>To receive support, please ensure you have
+              <br />"Accept Payments" enabled in&nbsp;
+              <Link to="/settings"
+                style={{
+                  color: "darkslateblue",
+                  textDecoration: "solid underline darkslateblue"}}>your settings</Link>!</span>
             </p>
             :
             received.map(support => <SupportCard key={support.id} type="received" support={support} />)
@@ -79,7 +86,13 @@ export default function () {
           {tab === "given" ?
             given.length === 0 && loaded ?
             <p style={{ textAlign: "center", marginTop: "50px" }}>
-              Nothing to see here. <i className="fa fa-coffee" />
+              Nothing to see here... <i className="fa fa-coffee" style={{ color: "slateblue" }} /><br/><br/>
+              <span style={{ color: "gray" }}>Find awesome creators to support<br/> on our&nbsp;
+              <Link to="/settings"
+                    style={{
+                      color: "darkslateblue",
+                      textDecoration: "solid underline darkslateblue"
+                    }}>explore page</Link>!</span>
             </p>
             :
             given.map(support => <SupportCard key={support.id} type="given" support={support} />)

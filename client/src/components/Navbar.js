@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -9,16 +9,18 @@ import SidebarNav from './SidebarNav';
 function Navbar ({ showHamburger }) {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
-  const { setLoginModalDisplay, setSignupModalDisplay } = useContext(AppContext);
-
-  const [showSidebar, setShowSidebar] = useState();
+  const {
+    setLoginModalDisplay,
+    setSignupModalDisplay,
+    sidebarDisplay,
+    setSidebarDisplay } = useContext(AppContext);
 
   return (
     <>
-    {showHamburger
-        ? <div className={showSidebar ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
-          <SidebarNav />
-        </div>
+    {showHamburger ?
+      <div className={sidebarDisplay ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
+        <SidebarNav />
+      </div>
     : null}
     
     <div className="navbar">
@@ -47,7 +49,7 @@ function Navbar ({ showHamburger }) {
                 <i className="fa fa-home" />
               </li>
             </Link>
-              {showHamburger ? <li onClick={() => setShowSidebar(!showSidebar)}>
+              {showHamburger ? <li onClick={() => setSidebarDisplay(!sidebarDisplay)}>
                 <i className="fa fa-bars" />
               </li> : null}
           </>

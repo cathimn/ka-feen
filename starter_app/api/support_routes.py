@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from starter_app.models import db, User, Support
+from datetime import datetime
 
 support_routes = Blueprint('supports', __name__)
 
@@ -17,6 +18,7 @@ def index():
       amount=request.json.get("amount"),
       body=request.json.get("body"),
       private=request.json.get("private"),
+      created_at=datetime.now()
       )
     db.session.add(new_support)
     db.session.commit()

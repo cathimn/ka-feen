@@ -44,10 +44,11 @@
 
 .sidebar-collapse {
   transition: right .25s;
-  position: absolute;
-  /* width: 215px; */
+  position: fixed;
+  z-index: 1;
   right: 0px;
   height: 100%;
+  margin-top: -100px;
   padding: 100px 45px;
   background-color: white;
   box-shadow: 0 0 15px lavender;

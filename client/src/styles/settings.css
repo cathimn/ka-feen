@@ -120,7 +120,8 @@
   background-color: whitesmoke;
 }
 
-.success-toast {
+.success-toast,
+.error-toast {
   top: 100px;
   font-weight: 600;
   font-size: 18px;
@@ -129,5 +130,9 @@
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 5px 10px lightgray;
+}
+
+.error-toast {
+  background-color: rgb(255, 183, 183);
 }
 

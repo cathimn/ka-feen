@@ -60,6 +60,9 @@ def change_settings():
   new_payments = request.json.get("accept_payments")
   if new_username:
     user.username = new_username
+    username_check = User.query.filter(User.username == new_username)
+    if username_check:
+      return jsonify(msg="Username already exists."), 401
   if new_display_name:
     user.display_name = new_display_name
   if new_bio:
@@ -106,7 +109,7 @@ def change_image():
     folder = f'{user.id}/avatar/'
     file = request.files["avatar"]
     file.filename = secure_filename(file.filename)
-    if user.avatar_url:
+    if user.avatar_url and user.avatar_url != "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png":
       response = s3.list_objects_v2(Bucket=BUCKET_NAME, Prefix=folder)
       for object in response['Contents']:
         s3.delete_object(Bucket=BUCKET_NAME, Key=object['Key'])

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
 
 import { AppContext } from './AppContext';
 
@@ -20,23 +20,26 @@ import SupportPage from './components/SupportPage';
 
 function App() {
   const dispatch = useDispatch();
+  let history = useHistory();
 
   const loggedInUser = useSelector(store => store.authentication.user)
 
   const [loginModalDisplay, setLoginModalDisplay] = useState(false);
   const [signupModalDisplay, setSignupModalDisplay] = useState(false);
+  const [sidebarDisplay, setSidebarDisplay] = useState(false);
 
   const [loaded, setLoaded] = useState(false);
 
   const closeAllModals = () => {
     setLoginModalDisplay(false);
     setSignupModalDisplay(false);
+    setSidebarDisplay(false);
   }
 
   useEffect(() => {
     dispatch(loadToken());
     setLoaded(true);
-  }, [dispatch])
+  }, [dispatch, history])
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
@@ -55,6 +58,8 @@ function App() {
         setLoginModalDisplay,
         signupModalDisplay,
         setSignupModalDisplay,
+        sidebarDisplay,
+        setSidebarDisplay,
       }}
     >
       <Login />

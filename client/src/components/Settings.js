@@ -25,6 +25,8 @@ export default function () {
   const [tagsToRemove, setTagsToRemove] = useState([]);
   const [updated, setUpdated] = useState(false);
 
+  const [error, setError] = useState("");
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [])
@@ -94,14 +96,17 @@ export default function () {
       setDisplayName('');
       setBio('');
       setUserData({...res})
-      window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth"
-      })
-      setUpdated(true);
       dispatch(update(res.id, res.username, res.display_name));
+    } else {
+      const err = await response.json();
+      setError(err.msg);
     }
+    setUpdated(true);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    })
   }
 
   if (!loggedIn && loaded) {
@@ -114,8 +119,10 @@ export default function () {
       <div className="container">
         <SidebarNav />
         {updated ?
-        <div className="success-toast">
-          Successfully updated your <Link to={userData.username} style={{ textDecoration: "underline" }}>profile</Link>!&nbsp;
+          <div className={error === "" ? "success-toast" : "error-toast"}>
+          {error === ""
+            ? <span>Successfully updated your <Link to={userData.username} style={{ textDecoration: "underline" }}>profile</Link>!&nbsp;</span>
+            : <span>{error}</span>}
           <button onClick={() => setUpdated(false)}>
             <i className="fa fa-close" />
           </button></div> : null}
@@ -133,9 +140,11 @@ export default function () {
                 onChange={(e) => setDisplayName(e.target.value)}
                 ></input>
             </div>
-            <div>
-              <label htmlFor="username">Username</label> <br />
+            <div style={{ position: "relative" }}>
+              <label htmlFor="username">Username</label> <br/>
+              <span style={{ position: "absolute", top: "47px", left: "15px", color: "darkslateblue"}}>ka-feen.herokuapp.com/</span>
               <input
+                style={{ paddingLeft: "197px" }}
                 type="text"
                 name="username"
                 placeholder={userData.username}

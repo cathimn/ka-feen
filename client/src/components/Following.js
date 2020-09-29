@@ -20,8 +20,7 @@ const FollowCard = ({ user }) => (
         <div
           className="post-avatar"
           style={{
-            backgroundImage: `url(${user.avatar_url ||
-            "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})` }}
+            backgroundImage: `url(${user.avatar_url})` }}
         />
         <div
           style={{
@@ -63,16 +62,12 @@ export default function () {
       const responseData = await response.json();
       setFollows(responseData.following);
     }
-    if (loggedIn) fetchData();
+    fetchData();
     setLoaded(true);
   }, [dispatch, loggedIn]);
 
   if (!loggedIn && loaded) {
     return <Redirect to="/" />
-  }
-
-  if (!loaded) {
-    return null;
   }
 
   return (
@@ -83,9 +78,18 @@ export default function () {
       <div className="content">
         <h3 className="content-header">Following</h3>
         <div className="content-break" />
-        <div className={loaded ? "slide-in" : "slide-in hidden"}>
-          {follows.map(user => <FollowCard key={user.id} user={user} />)}
-        </div>
+        {follows.length === 0
+        ? <p style={{
+            alignSelf: "center",
+            padding: "50px",
+            textAlign: "center",
+            color: "gray" }}>
+            You haven't followed anyone yet, so let's&nbsp;
+            <Link to="/explore"
+              style={{
+                color: "darkslateblue",
+                textDecoration: "solid underline darkslateblue"}}>explore</Link>!</p>
+        : follows.map(user => <FollowCard key={user.id} user={user} />)}
       </div>
     </div>
     </>

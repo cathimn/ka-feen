@@ -36,11 +36,13 @@ export default function () {
       <div className="content">
       <h3 className="content-header">Newsfeed</h3>
       <div style={{ width: "500px" }}>
-      <div className="content-break"></div>
-        {loaded ?
-        feed.length === 0 && "Nothing to see here." ||
-        feed.map(post => <Post key={post.id} post={post} />)
-        : null}
+      <div className="content-break" />
+      <div id="info">
+        Welcome to Ka-feen! This site is inspired by Ko-fi
+      </div>
+      {loaded && feed.length === 0
+      ? "Nothing to see here."
+      : feed.map(post => <Post key={post.id} post={post} />)}
       </div>
       </div>
     </div>

@@ -91,7 +91,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${result.banner_url})` }}>
                     <img
                       className="usercard-bigavatar"
-                          src={result.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+                          src={result.avatar_url}
                       alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
@@ -125,7 +125,7 @@ function Explore () {
               {taggedUsers.length > 0
               ?
               <>
-              <h3>Users tagged with {currentTag}</h3>
+              <h3 className="content-header">Users tagged with {currentTag}</h3>
               <div style={loggedIn
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
@@ -137,7 +137,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${user.banner_url})` }}>
                       <img
                         className="usercard-bigavatar"
-                        src={user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+                        src={user.avatar_url}
                         alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">
@@ -151,7 +151,7 @@ function Explore () {
               </>
               :
               <>
-              {currentTag !== null ? <h3>No results for {currentTag}</h3> : ""}
+              {currentTag !== null ? <h3 className="content-header">No results for {currentTag}</h3> : ""}
               <h3 className="content-header">Featured Creators</h3>
               <div style={loggedIn
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
@@ -164,7 +164,7 @@ function Explore () {
                       style={{ backgroundImage: `url(${user.banner_url})` }}>
                       <img
                         className="usercard-bigavatar"
-                        src={user.avatar_url || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+                        src={user.avatar_url}
                         alt="user avatar" />
                     </div>
                     <div className="usercard-biginfo">

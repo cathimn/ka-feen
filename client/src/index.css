@@ -67,12 +67,12 @@ button:hover {
   padding: 10px 0;
 }
 
-.slide-in.hidden {
-  visibility: hidden;
-}
-
-.slide-in {
-
+#info {
+  position: fixed;
+  right: 200px;
+  background-color: lavender;
+  width: 300px;
+  height: 300px;
 }
 
 a {

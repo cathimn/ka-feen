@@ -35,13 +35,13 @@ def index():
   if request.method == 'PUT':
     user = User.query.filter(User.email == email).first()
     if not user or not user.check_password(password):
-        return jsonify(msg="Bad email/password combination."), 401
+      return jsonify(msg="Bad email/password combination."), 401
 
   # SIGN UP
   elif request.method =="POST":
     username = request.json.get("username")
     if not username:
-        return jsonify(msg="Missing username"), 400
+      return jsonify(msg="Missing username"), 400
     user = User(username=username, email=email, password=password)
     user.follow(user)
 
@@ -53,15 +53,11 @@ def index():
   return jsonify(token=access_token, id=user.id, username=user.username, display_name=user.display_name), 200
 
 
-# @session.routes.route("/check", methods=["GET"])
+# @session.routes.route("/", methods=["GET"])
 # @jwt_required
 # def verify():
 #   current_user_email = get_jwt_identity()
 #   user = User.query.filter(User.email == current_user_email)
 #   if not user:
-#     user.session_token = None
-#     db.session.add(user)
-#     db.session.commit()
-#     return jsonify(msg="Session removed"), 200
-  
-#   return user.session_token
+#     return jsonify(msg="Invalid session"), 401
+#   return user.session_token;
