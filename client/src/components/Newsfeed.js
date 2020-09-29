@@ -12,6 +12,11 @@ export default function () {
   const loggedIn = useSelector((store) => store.authentication.token);
   const [feed, setFeed] = useState([]);
   const [loaded, setLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [feedPage, setFeedPage] = useState(1);
+
+  const [end, setEnd] = useState(false);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -22,8 +27,22 @@ export default function () {
       setFeed(responseData.feed);
       setLoaded(true);
     }
-    fetchData();
+    if (loggedIn) fetchData();
   }, [loggedIn])
+
+  const addToFeed = async () => {
+    setLoading(true);
+    const response = await fetch(`${apiUrl}/users/feed/page=${feedPage}`, {
+      headers: { Authorization: `Bearer ${loggedIn}` },
+    });
+    const data = await response.json();
+    const endFeed = data.end_of_feed;
+    const newFeed = data.feed;
+    setFeed([...feed, ...newFeed]);
+    if (endFeed) setEnd(true);
+    setFeedPage(feedPage + 1);
+    setLoading(false);
+  }
 
   if (!loggedIn) {
     return <Redirect to="/" />
@@ -43,6 +62,10 @@ export default function () {
       {loaded && feed.length === 0
       ? "Nothing to see here."
       : feed.map(post => <Post key={post.id} post={post} />)}
+      {end ? null
+        : loaded && <button id="load-more" onClick={() => addToFeed()}>
+          {loading ? "Loading..." : "Load more..."}
+        </button>}
       </div>
       </div>
     </div>

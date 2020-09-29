@@ -169,13 +169,24 @@ def user(username, page):
     "end_of_feed": True if len(feed_page) < 9 else None
   }
 
-@user_routes.route('/feed')
+
+@user_routes.route('/feed/page=<page>')
+@user_routes.route('/feed', defaults={"page": 0})
 @jwt_required
-def feed():
+def feed(page):
+  page_int = int(page)
   current_user = get_jwt_identity()
   user = User.query.filter(User.email == current_user).first()
   response = user.retrieve_feed()
-  return {"feed": [post for post in response]}
+  if page_int == 0:
+    feed_page = response[0:10]
+  elif page_int > 0:
+    start = (10 * page_int) + 1
+    end = 10 * (page_int + 1)
+    feed_page = response[slice(start, end)]
+  return {
+    "feed": [post for post in feed_page],
+    "end_of_feed": True if len(feed_page) < 9 else None}
 
 
 @user_routes.route('/tags')

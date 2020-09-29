@@ -177,7 +177,9 @@ export default function () {
             <div>
               <label htmlFor="tags">What do you do?</label><br />
               <ul className="settings-tags">
-                {userTags.map(tag =>
+                {userTags.length === 0 
+                ? <span style={{ color: "gray", marginBottom: "10px" }}>Choose some interests from below!</span> :
+                userTags.map(tag =>
                   <li key={tag.id}>
                     <span>{tag.tag_name}</span>
                     <button onClick={(e) => removeTag(e, tag.id)} ><i className="fa fa-close" /></button>
