@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from sqlalchemy.orm import joinedload
+import humanize
 
 db = SQLAlchemy()
 
@@ -155,7 +156,7 @@ class Post(db.Model):
         "author_avatar": self.user.avatar_url,
         "body": self.body,
         "image_url": self.image_url,
-        "posted_on": self.created_at,
+        "posted_on": humanize.naturaltime(datetime.now() - self.created_at),
         "likers": [user.id for user in User.query.join(
           users_likes, (users_likes.c.user_id == User.id)).filter(
           users_likes.c.post_id == self.id)]
@@ -194,7 +195,7 @@ class Support(db.Model):
         User.query.filter(User.id == self.user_id).first().to_dict()["username"],
       "amount": self.amount,
       "body": self.body,
-      "posted_on": self.created_at,
+      "posted_on": humanize.naturaltime(datetime.now() - self.created_at),
     }
 
   @property

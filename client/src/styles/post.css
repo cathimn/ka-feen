@@ -68,6 +68,7 @@
 
 .like-button > i:hover {
   color: rgb(255, 92, 113);
+  transition: color .15s;
 }
 
 .like-button.liked > i {

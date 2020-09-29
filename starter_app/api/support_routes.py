@@ -23,4 +23,7 @@ def index():
     return new_support.to_dict()
   if request.method == 'GET':
     supports = Support.query.filter(Support.user_id == current_user.id).all()
-    return {"supported": [support.to_dict() for support in supports]}
+    supported_by = Support.query.filter(Support.supporter_id == current_user.id).all();
+    return {
+      "received": [support.to_dict() for support in supports],
+      "given": [support.to_dict() for support in supported_by]}

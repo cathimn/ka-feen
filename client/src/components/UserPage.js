@@ -190,6 +190,7 @@ export default function () {
               {userPageInfo.display_name || userPageInfo.username}
           </h3>
           <p style={{ margin: "5px 0" }}>{userPageInfo.bio}</p>
+          {userPageInfo.tags.length > 0 ?
           <div className="userpage-tag_container">
             {userPageInfo.tags
               ?
@@ -198,12 +199,14 @@ export default function () {
                   {el.tag_name}</span>)
               : null}
           </div>
+          : null}
+          {userPageInfo.total_support > 0 ?
           <div style={{ fontSize: "18px" }}>
-            {userPageInfo.total_support > 0
-              ? <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
+              <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
               <strong>{userPageInfo.total_support}</strong>
-              &nbsp;Received</div> : null}
+              &nbsp;Received</div> 
           </div>
+          : null}
         </div>
         <div className="userpage-right">
           <div

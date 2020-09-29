@@ -7,10 +7,25 @@ import { apiUrl } from '../config';
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
+const SupportCard = ({ type, support }) => (
+  <div style={{ margin: "25px 0px" }}>
+    <div style={{ display: "flex", marginBottom: "10px" }}>
+      <div style={{ backgroundImage: `url(${support.author_avatar})` }} className="post-avatar"></div>
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        <span>{support.private_supporter || support.supporter}</span>
+        <span style={{ color: "gray" }}>{support.posted_on}</span>
+      </div>
+    </div>
+    <span>Amount: ${support.amount * 3}</span><br/>
+    {support.body ? <span>Message: {support.body}</span> : null}
+    <div className="content-break" style={{ marginTop: "25px"}} />
+  </div>
+);
+
 export default function () {
   const loggedIn = useSelector((store) => store.authentication.token);
-  const [supported, setSupported] = useState([]);
-  console.log(supported)
+  const [received, setReceived] = useState([]);
+  const [given, setGiven] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -18,7 +33,8 @@ export default function () {
         headers: { Authorization: `Bearer ${loggedIn}` },
       });
       const responseData = await response.json();
-      setSupported(responseData.supported);
+      setReceived(responseData.received);
+      setGiven(responseData.given)
     }
     fetchData();
   }, [loggedIn])
@@ -37,15 +53,8 @@ export default function () {
           <div className="content-break" />
           <div>
             Received Given
-            {supported.map(support =>
-            <div style={{ margin: "25px 0px" }}>
-                <div style={{ backgroundImage: `url(${support.author_avatar})`}} className="post-avatar"></div>
-                <span>{support.private_supporter || support.supporter}</span>
-                <span>{support.posted_on}</span>
-                <p>{support.body}</p>
-                <span>Amount: $ {support.amount * 3}</span>
-                <div className="content-break" />
-            </div>)}
+            {received.map(support => <SupportCard key={support.id} type="received" support={support} />)}
+            {given.map(support => <SupportCard key={support.id} type="given" support={support} />)}
           </div>
         </div>
       </div>
