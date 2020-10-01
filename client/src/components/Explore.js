@@ -56,7 +56,7 @@ function Explore () {
 
   return (
     <>
-      <Navbar showHamburger={false}/>
+      <Navbar/>
       <div className="container">
         {loggedIn ? <SidebarNav /> : null}
         <div

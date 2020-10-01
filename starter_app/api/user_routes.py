@@ -166,7 +166,7 @@ def user(username, page):
     "bio": user["bio"],
     "userpage_feed": [item.to_dict() for item in feed_page],
     "total_support": total_support,
-    "end_of_feed": True if len(feed_page) < 9 else None
+    "end_of_feed": True if len(feed_page) < 9 else False
   }
 
 
@@ -186,7 +186,7 @@ def feed(page):
     feed_page = response[slice(start, end)]
   return {
     "feed": [post for post in feed_page],
-    "end_of_feed": True if len(feed_page) < 9 else None}
+    "end_of_feed": True if len(feed_page) < 9 else False}
 
 
 @user_routes.route('/tags')

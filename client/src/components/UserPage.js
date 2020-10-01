@@ -14,11 +14,11 @@ export default function () {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const [loaded, setLoaded] = useState(false);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const [feedPage, setFeedPage] = useState(1);
-  const [newPost, setNewPost] = useState(null);
+  const [newPost, setNewPost] = useState(false);
   const [privateDonation, setPrivateDonation] = useState(false);
   const [donationMessage, setDonationMessage] = useState("");
   const [supportAmount, setSupportAmount] = useState(1);
@@ -56,6 +56,8 @@ export default function () {
     const end = data.end_of_feed;
     const feed = data.userpage_feed;
     const current = userPageInfo.userpage_feed;
+    console.log(current)
+    console.log(feed)
     setUserPageInfo({
       ...userPageInfo,
       "end_of_feed": end,
@@ -132,7 +134,7 @@ export default function () {
 
   return (
     <>
-      <Navbar showHamburger={true} />
+      <Navbar />
       <div
         className={userPageInfo.banner_url ? "userpage-banner" : "hidden"}
         style={ userPageInfo.banner_url
@@ -245,6 +247,7 @@ export default function () {
               onClick={e => setPrivateDonation(!privateDonation)}
               className={privateDonation ? "checkbox checked" : "checkbox"}>
               {privateDonation ? <i className="fa fa-check" /> : null}
+              <button></button>
             </span>
             <label>Anonymous donation</label><br />
             <button
@@ -255,11 +258,8 @@ export default function () {
               <div style={{
                 margin: "15px auto 0px auto",
                 fontSize: "14px",
-                // backgroundColor: "whitesmoke",
                 width: "min-content",
                 whiteSpace: "nowrap",
-                // padding: "5px",
-                // borderRadius: "25px"
               }}>
                 Signed in as {loggedInUser.display_name || loggedInUser.username}
               </div> : null}
@@ -279,10 +279,13 @@ export default function () {
               }
               ):
               <div>Nothing to see here.</div>}
-            {userPageInfo.end_of_feed ? null
-            : <button id="load-more" onClick={() => addToFeed()}>
+            {userPageInfo.end_of_feed
+            ? null
+            :
+            <button id="load-more" onClick={() => addToFeed()}>
               {loading ? "Loading..." : "Load more..."}
-              </button>}
+            </button>
+            }
           </div>
         </div>
       </div>

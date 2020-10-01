@@ -14,7 +14,6 @@ export default function () {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [feedPage, setFeedPage] = useState(1);
-
   const [end, setEnd] = useState(false);
 
 
@@ -24,6 +23,7 @@ export default function () {
         headers: { Authorization: `Bearer ${loggedIn}` },
       });
       const responseData = await response.json();
+      setEnd(responseData.end_of_feed);
       setFeed(responseData.feed);
       setLoaded(true);
     }
@@ -36,10 +36,9 @@ export default function () {
       headers: { Authorization: `Bearer ${loggedIn}` },
     });
     const data = await response.json();
-    const endFeed = data.end_of_feed;
     const newFeed = data.feed;
     setFeed([...feed, ...newFeed]);
-    if (endFeed) setEnd(true);
+    setEnd(data.end_of_feed);
     setFeedPage(feedPage + 1);
     setLoading(false);
   }
@@ -49,24 +48,21 @@ export default function () {
   }
   return (
     <>
-    <Navbar showHamburger={false} />
+    <Navbar />
     <div className="container">
       <SidebarNav />
       <div className="content">
       <h3 className="content-header">Newsfeed</h3>
       <div style={{ width: "500px" }}>
-      <div className="content-break" />
-      <div id="info">
-        Welcome to Ka-feen! This site is inspired by Ko-fi
-      </div>
-      {loaded && feed.length === 0
-      ? "Nothing to see here."
-      : feed.map(post => <Post key={post.id} post={post} />)}
-      {end ? null
-        : loaded && <button id="load-more" onClick={() => addToFeed()}>
-          {loading ? "Loading..." : "Load more..."}
-        </button>}
-      </div>
+        <div className="content-break" />
+        {loaded && feed.length === 0
+        ? "Nothing to see here."
+        : feed.map(post => <Post key={post.id} post={post} />)}
+        {end ? null
+          : loaded && <button id="load-more" onClick={() => addToFeed()}>
+            {loading ? "Loading..." : "Load more..."}
+          </button>}
+        </div>
       </div>
     </div>
     </>

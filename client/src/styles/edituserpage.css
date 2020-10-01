@@ -33,6 +33,14 @@
   border-radius: 50px;
 }
 
+
+#banneravatar-submit:hover,
+#add-post-button:hover,
+#edit-button:hover {
+  transition: background-color .5s;
+  background-color: rgb(124, 109, 224);
+}
+
 #add-image {
   text-align: center;
   margin: 5px 0;
@@ -43,8 +51,13 @@
   border-radius: 5px;
 }
 
+#banner-edit:hover,
+#settings-button:hover,
+#remove-image-button:hover,
 #add-image:hover {
   cursor: pointer;
+  transition: background-color .25s;
+  background-color: rgb(235, 235, 235);
 }
 
 #add-post-button {
@@ -68,7 +81,9 @@
 }
 
 #banneravatar-submit {
-  background-color: lavender;
+  margin-right: 10px;
+  color: white;
+  background-color: slateblue;
   padding: 0 20px;
   font-weight: 600;
 }

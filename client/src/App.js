@@ -45,6 +45,9 @@ function App() {
     document.addEventListener("keydown", (e) => {
       if (e.key === "Escape") closeAllModals();
     });
+    document.addEventListener("click", (e) => {
+      if (e.target.id !== "hamburger") setSidebarDisplay(false);
+    })
   }, []);
 
   if (!loaded) {

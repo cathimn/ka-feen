@@ -111,12 +111,11 @@ export default function () {
     setLoading(true);
     const response = await fetch(`${apiUrl}/users/${loggedInUser.username}/page=${feedPage}`);
     const data = await response.json();
-    const end = data.end_of_feed;
     const feed = data.userpage_feed;
     const current = userPageInfo.userpage_feed;
     setUserPageInfo({
       ...userPageInfo,
-      "end_of_feed": end,
+      "end_of_feed": data.end_of_feed,
       "userpage_feed": [...current, ...feed]
     })
     setFeedPage(feedPage + 1);
@@ -129,24 +128,28 @@ export default function () {
   
   return (
     <>
-      <Navbar showHamburger={true}/>
-      <div
-        id="banner"
-        className="userpage-banner"
-        style={banner.preview ? { backgroundImage: `url(${banner.preview})` } : { backgroundImage: `url(${userPageInfo.banner_url})` }}>
-        <input
-          onChange={handleBannerChange}
-          className="hidden"
-          id="banner-upload"
-          type="file"
-          accept=".png,.jpg,.jpeg,.gif"></input>
-      </div>
+      <Navbar/>
+      {userPageInfo.banner_url || banner.preview ? 
+        <div
+          id="banner"
+          className="userpage-banner"
+          style={
+            banner.preview
+            ? { backgroundImage: `url(${banner.preview})` }
+            : { backgroundImage: `url(${userPageInfo.banner_url})`}} />
+      : null}
+      <input
+        onChange={handleBannerChange}
+        className="hidden"
+        id="banner-upload"
+        type="file"
+        accept=".png,.jpg,.jpeg,.gif" />
       <div className="userpage-container"
-        style={{ marginTop: "25px"}}>
+        style={ userPageInfo.banner_url || banner.preview ? { marginTop: "25px"} : {marginTop: "100px"}}>
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
             <div className="userpage-avatar"
-              style={avatar.preview ? {backgroundImage: `url(${avatar.preview})`} : {backgroundImage: `url(${userPageInfo.avatar_url})`}}>
+              style={avatar.preview ? { backgroundImage: `url(${avatar.preview})`} : {backgroundImage: `url(${userPageInfo.avatar_url})`}}>
               <label htmlFor="avatar-upload" id="edit-button">
                 <i className="fa fa-pencil" />
               </label>
@@ -168,13 +171,13 @@ export default function () {
             </div>
           </div>
           <div className="userpage-buttons">
-            <label htmlFor="banner-upload" id="banner-edit">
-              <i className="fa fa-picture-o" />&nbsp;Change cover
-            </label>
             {banner.preview || avatar.preview ?
               <button id="banneravatar-submit" onClick={submitChanges}>
                 {processingImage ? "Processing..." : "Submit changes"}
               </button> : null}
+            <label htmlFor="banner-upload" id="banner-edit">
+              <i className="fa fa-picture-o" />&nbsp;Change cover
+            </label>
             <Link to="/settings">
               <button id="settings-button">
                 <i className="fa fa-cog" />
@@ -186,14 +189,15 @@ export default function () {
           <div className="userpage-left">
             <h3>About</h3>
             <p style={{ margin: "5px 0" }}>{userPageInfo.bio}</p>
-            <div className="userpage-tag_container">
-              {userPageInfo.tags
-                ?
-                userPageInfo.tags.map(el =>
-                  <span key={el.id} className="userpage-tag">
-                    {el.tag_name}</span>)
-                : null}
-            </div>
+            {userPageInfo.tags.length > 0
+              ?
+              <div className="userpage-tag_container">
+              {userPageInfo.tags.map(el =>
+                <span key={el.id} className="userpage-tag">
+                  {el.tag_name}</span>
+              )}
+              </div>
+              : null}
             {userPageInfo.total_support > 0
               ? <div style={{ fontSize: "18px" }}><i className="fa fa-coffee" />&nbsp;x&nbsp;
             <strong>{userPageInfo.total_support}</strong>

@@ -92,6 +92,21 @@ a {
   border-bottom: 2px solid darkslateblue;
 }
 
+#get-started {
+  font-weight: 600;
+  border-radius: 50px;
+  font-size: 20px;
+  padding: 10px 20px;
+  background-color: slateblue;
+  margin-top: 10px;
+  color: white;
+}
+
+#get-started:hover {
+  transition: background-color .5s;
+  background-color: rgb(124, 109, 224);
+}
+
 @import './styles/modal.css';
 @import './styles/sidebar.css';
 @import './styles/navbar.css';

@@ -39,7 +39,9 @@ export default function ({ post }) {
       <div className="post-header">
         <Link to={post.private_supporter ? "/" : `/${post.username}`}>
           <div className="post-avatar"
-            style={{ backgroundImage: `url(${post.author_avatar || "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})`}} />
+            style={{
+              backgroundImage: `url(${post.author_avatar ||
+              "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})`}} />
         </Link>
         <div className="post-info">
           <div>

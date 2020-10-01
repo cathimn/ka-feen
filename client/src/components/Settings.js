@@ -69,6 +69,7 @@ export default function () {
   }
 
   const handleToggle = e => {
+    e.preventDefault();
     setPayment(!payment);
     setPaymentChanged(true);
   }
@@ -164,7 +165,7 @@ export default function () {
             </div>
             <div>
               <label>Accept "Payments"</label> <br />
-              <div
+              <button
                 onClick={handleToggle}
                 htmlFor="payments"
                 className="slider"
@@ -172,7 +173,7 @@ export default function () {
                 <div className={payment ? "slider-true" : "slider-false"}>
                   <i className={payment ? "fa fa-check" : ""} />
                 </div>
-              </div>
+              </button>
             </div>
             <div>
               <label htmlFor="tags">What do you do?</label><br />

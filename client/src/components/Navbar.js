@@ -6,7 +6,7 @@ import { AppContext } from '../AppContext';
 
 import SidebarNav from './SidebarNav';
 
-function Navbar ({ showHamburger }) {
+function Navbar () {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const {
@@ -15,15 +15,19 @@ function Navbar ({ showHamburger }) {
     sidebarDisplay,
     setSidebarDisplay } = useContext(AppContext);
 
+  const closeSidebar = (e) => {
+    if (e.target.id === 'sidebar') setSidebarDisplay(false);
+  }
+
   return (
     <>
-    {showHamburger ?
+    {loggedIn ?
       <div className={sidebarDisplay ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
         <SidebarNav />
       </div>
     : null}
     
-    <div className="navbar">
+    <div className="navbar" onClick={closeSidebar}>
       <div id="navbar_logo">
         <Link to="/">
           <span>
@@ -49,9 +53,9 @@ function Navbar ({ showHamburger }) {
                 <i className="fa fa-home" />
               </li>
             </Link>
-              {showHamburger ? <li onClick={() => setSidebarDisplay(!sidebarDisplay)}>
-                <i className="fa fa-bars" />
-              </li> : null}
+            <li onClick={() => setSidebarDisplay(!sidebarDisplay)}>
+              <i id="hamburger" className="fa fa-bars" />
+            </li>
           </>
         ) : (
           <>

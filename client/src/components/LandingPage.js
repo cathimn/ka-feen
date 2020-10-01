@@ -23,15 +23,9 @@ export default function () {
           <h1 style={{ fontSize: "50px"}}>Fund Your Passions</h1>
           <p style={{ width: "450px" }}>The friendly and free way for fans to support your work for the price of your favorite caffeinated beverage.</p>
           <button
-            onClick={() => setSignupModalDisplay(true)}
-            style={{
-              fontWeight: "600",
-              borderRadius: "50px",
-              fontSize: "20px",
-              padding: "10px 20px",
-              backgroundColor: "slateblue",
-              marginTop: "10px",
-              color: "white"}}>Get started for free!</button>
+            id="get-started"
+            onClick={() => setSignupModalDisplay(true)}>
+            Get started for free!</button>
         </div>
       </div>
     </>

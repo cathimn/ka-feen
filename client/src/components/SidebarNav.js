@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import { logout } from "../actions/authentication";
+import { AppContext } from "../AppContext";
 
 export default function () {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ export default function () {
   }
 
   return (
-    <div className="sidebar-container">
+    <div id="sidebar" className="sidebar-container">
       <ul>
         <Link to="/newsfeed">
           <span>
