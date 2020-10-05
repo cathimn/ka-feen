@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
+import Footer from './Footer';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
@@ -93,6 +94,7 @@ export default function () {
         : follows.map(user => <FollowCard key={user.id} user={user} />)}
       </div>
     </div>
+    <Footer />
     </>
   )
 }

@@ -9,7 +9,7 @@ import { Redirect } from 'react-router-dom';
 import { AppContext } from '../AppContext';
 
 export default function () {
-  const { currentUser, setCurrentUser } = useContext(AppContext);
+  const { currentUser } = useContext(AppContext);
   const [loaded, setLoaded] = useState(false);
   const [tags, setTags] = useState([]);
   const [userData, setUserData] = useState({});

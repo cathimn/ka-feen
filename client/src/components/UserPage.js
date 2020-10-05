@@ -248,8 +248,7 @@ export default function () {
             <span
               onClick={e => setPrivateDonation(!privateDonation)}
               className={privateDonation ? "checkbox checked" : "checkbox"}>
-              {privateDonation ? <i className="fa fa-check" /> : null}
-              <button></button>
+              {privateDonation && <i className="fa fa-check" />}
             </span>
             <label>Anonymous donation</label><br />
             <button

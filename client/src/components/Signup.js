@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 
 import { AppContext } from "../AppContext";
-import { signup } from "../actions/authentication";
 import { apiUrl, TOKEN_KEY, USER_KEY } from "../config";
 
 export default function () {

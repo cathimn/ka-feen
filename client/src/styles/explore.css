@@ -43,8 +43,32 @@
 
 .explore-categories {
   display: flex;
-  overflow: auto;
-  padding: 20px 0px;
+  overflow: hidden;
+  padding: 5px 0px;
+  margin: 0px 30px;
+}
+
+#categories-container {
+  position: relative;
+  width: 100%;
+}
+
+#categories {
+  scroll-behavior: smooth;
+}
+
+#scroll-right {
+  right: 0;
+}
+
+.categories-buttons {
+  position: absolute;
+  top: 35px;
+}
+
+.categories-buttons:hover {
+  transition: color .25s;
+  color: slateblue;
 }
 
 .explore-categories__tags {
@@ -60,6 +84,11 @@
   box-shadow: 0 0 10px lavender;
 }
 
+.explore-categories__tags:hover {
+  transition: box-shadow .15s;
+  box-shadow: 0 0 15px rgba(105, 90, 205, 0.1), 0 0 10px lavender;
+}
+
 .explore-usercard {
   text-align: center;
   position: relative;
@@ -67,6 +96,11 @@
   border-radius: 20px;
   box-shadow: 0 0 15px lavender;
   margin: 20px;
+}
+
+.explore-usercard:hover {
+  transition: box-shadow .15s;
+  box-shadow: 0 0 15px rgba(105, 90, 205, 0.1), 0 0 15px lavender;
 }
 
 .usercard-bigavatar {
@@ -102,7 +136,7 @@
 
 .usercard-biginfo > p {
   font-size: 16px;
-  overflow: scroll;
+  overflow: hidden;
   margin: 10px 0;
 }
 
@@ -116,5 +150,6 @@
 }
 
 .usercard-biginfo > button:hover {
-  box-shadow: 0 0 5px lavender;
+  transition: box-shadow .25s;
+  box-shadow: 0 0 10px lavender, 0 0 5px lavender;
 }

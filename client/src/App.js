@@ -52,6 +52,11 @@ function App() {
           username: res.username,
           displayName: res.displayName
         })
+        window.localStorage.setItem(USER_KEY, JSON.stringify({
+          id: res.id,
+          username: res.username,
+          displayName: res.displayName
+        }))
       }
       setLoaded(true);
     }

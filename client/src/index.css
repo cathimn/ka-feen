@@ -1,3 +1,7 @@
+html {
+  overflow-y: scroll;
+}
+
 div {
   box-sizing: border-box;
 }
@@ -20,6 +24,7 @@ h1, h2, h3 {
 body {
   margin: 0;
   overflow-x: hidden;
+  overflow-y: hidden;
 }
 
 ul {
@@ -44,7 +49,7 @@ button:hover {
 
 .container {
   width: 950px;
-  margin: 90px auto;
+  margin: 90px auto 25px auto;
   display: flex;
   justify-content: center;
 }
@@ -98,13 +103,31 @@ a {
   font-size: 20px;
   padding: 10px 20px;
   background-color: slateblue;
-  margin-top: 10px;
+  margin: 10px;
   color: white;
 }
 
 #get-started:hover {
   transition: background-color .5s;
   background-color: rgb(124, 109, 224);
+}
+
+#footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  position: sticky;
+  bottom: 0;
+  font-size: 14px;
+}
+
+#footer > li {
+  margin: 10px;
+}
+
+#footer > li > a {
+  color: darkslateblue;
+  text-decoration: underline;
 }
 
 @import './styles/modal.css';

@@ -54,6 +54,15 @@ function Explore () {
     setTaggedUsers([...responseData.users_with_tag]);
   }
 
+  const scrollRight = e => {
+    e.preventDefault();
+    document.getElementById("categories").scrollBy(550, 0);
+  }
+  const scrollLeft = e => {
+    e.preventDefault();
+    document.getElementById("categories").scrollBy(-550, 0);
+  }
+
   return (
     <>
       <Navbar/>
@@ -106,22 +115,27 @@ function Explore () {
           :
             <>
               <h3 className="content-header">Categories</h3>
-              <ul className="explore-categories">
-                <li className="explore-categories__tags"
-                  onClick={() => {
-                    setTaggedUsers([])
-                    setCurrentTag(null)}}>
-                  Featured
-                </li>
-                {categories.map((tag) => (
-                  <li
-                    key={tag.id}
-                    className="explore-categories__tags"
-                    onClick={() => fetchTaggedUsers(tag.id, tag.tag_name)}>
-                    {tag.tag_name}
+              <div id="categories-container">
+                <button id="scroll-left" className="categories-buttons" onClick={scrollLeft}><i className="fa fa-chevron-left" /></button>
+                <button id="scroll-right" className="categories-buttons" onClick={scrollRight}><i className="fa fa-chevron-right" /></button>
+                <ul id="categories" className="explore-categories">
+                  <li className="explore-categories__tags"
+                    onClick={() => {
+                      setTaggedUsers([])
+                      setCurrentTag(null)}}>
+                    Featured
                   </li>
-                ))}
-              </ul>
+                  {categories.map((tag) => (
+                    <li
+                      key={tag.id}
+                      className="explore-categories__tags"
+                      onClick={() => fetchTaggedUsers(tag.id, tag.tag_name)}>
+                      {tag.tag_name}
+                    </li>
+                  ))}
+                  <li style={{ width: "50px"}}>&nbsp;</li>
+                </ul>
+              </div>
               {taggedUsers.length > 0
               ?
               <>

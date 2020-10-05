@@ -78,11 +78,15 @@ export default function () {
   }
 
   const handleAvatarChange = (e) => {
-    setAvatar({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+    if (e.target.files[0]) {
+      setAvatar({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+    }
   }
 
   const handleBannerChange = (e) => {
-    setBanner({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+    if (e.target.files[0]) {
+      setBanner({ preview: URL.createObjectURL(e.target.files[0]), raw: e.target.files[0] })
+    }
   }
 
   const submitChanges = async (e) => {

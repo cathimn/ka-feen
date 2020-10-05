@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { AppContext } from "../AppContext";
 import { apiUrl, TOKEN_KEY, USER_KEY } from "../config";
