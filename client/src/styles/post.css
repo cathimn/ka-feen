@@ -1,6 +1,6 @@
 .post-container {
   padding: 15px 0px;
-  margin-bottom: 15px;
+  margin-top: 10px;
 }
 
 .post-header {
@@ -33,7 +33,7 @@
   margin-top: 15px;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 0 20px rgba(230, 230, 250, 0.5), 0 0 15px rgba(230, 230, 250, 0.75);
+  box-shadow: 0 0 30px rgba(230, 230, 250, .75), 0 0 15px rgba(230, 230, 250, 0.5);
 }
 
 .post-arrow {
@@ -41,9 +41,10 @@
   width: 20px;
   height: 20px;
   background-color: white;
-  margin-top: 10px;
-  margin-left: 35px;
+  margin-top: 5px;
+  margin-left: 40px;
   transform: rotate(45deg);
+  z-index: 1;
 }
 
 .post-body > p {
@@ -58,8 +59,10 @@
 }
 
 .post-buttons {
+  position: relative;
   display: flex;
   margin-top: 15px;
+  justify-content: space-between;
 }
 
 .like-button > i {
@@ -70,7 +73,7 @@
 
 .like-button > i:hover {
   color: rgb(255, 92, 113);
-  transition: color .15s;
+  transition: color .25s;
 }
 
 .like-button.liked > i {
@@ -78,6 +81,10 @@
 }
 
 .delete-button {
-  position: absolute;
-  right: 20px;
+  background-color: rgb(255, 92, 113);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 5px;
+  margin-right: 10px;
+  font-weight: 600;
 }

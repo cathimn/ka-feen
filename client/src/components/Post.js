@@ -8,6 +8,7 @@ export default function ({ post, setNewPost }) {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const [likes, setLike] = useState(post.likers ? [...post.likers] : null);
+  const [showDelete, setShowDelete] = useState();
 
   const deletePost = async (e, post) => {
     e.preventDefault();
@@ -81,7 +82,6 @@ export default function ({ post, setNewPost }) {
       <>
       <div className="post-arrow"></div>
       <div className="post-body">
-        <button className="delete-button" onClick={e => deletePost(e, post.id)}><i className="fa fa-close" /></button>
         {post.image_url &&
           <img
             className="post-body__image"
@@ -89,15 +89,22 @@ export default function ({ post, setNewPost }) {
         <p className="post-body__text">{post.body}</p>
         {likes &&
         <div className="post-buttons">
-          <button
-            onClick={e => handleLikeClick(e, post.id, likes)}
-            className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
-            <i className="fa fa-heart" />
-          </button>
-          <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
-          {loggedInUser.username === post.username
+          <div style={{ display: "flex" }}>
+            <button
+              onClick={e => handleLikeClick(e, post.id, likes)}
+              className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
+              <i className="fa fa-heart" />
+            </button>
+            <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
+          </div>
+          <div>
+            {showDelete &&
+            <button className="delete-button" onClick={e => deletePost(e, post.id)}>Delete</button>}
+            {loggedInUser.username === post.username
             && !post.supported
-            && <button><i className="fa fa-bars" /></button>}
+            && <button onClick={e => setShowDelete(!showDelete)}><i className="fa fa-ellipsis-h" style={{ color: "lightgray" }} /></button>}
+          </div>
+
           </div>}
       </div>
       </>

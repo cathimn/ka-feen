@@ -15,6 +15,7 @@ export default function () {
   const [loading, setLoading] = useState(false);
   const [feedPage, setFeedPage] = useState(1);
   const [end, setEnd] = useState(false);
+  const [newPost, setNewPost] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,7 +28,8 @@ export default function () {
       setLoaded(true);
     }
     if (loggedIn) fetchData();
-  }, [loggedIn])
+    setNewPost(false);
+  }, [loggedIn, newPost])
 
   const addToFeed = async () => {
     setLoading(true);
@@ -57,7 +59,7 @@ export default function () {
         <div className="content-break" />
         {loaded && feed.length === 0
         ? <div style={{ marginTop: "15px" }}>Nothing to see here.</div>
-        : feed.map(post => <Post key={post.id} post={post} />)}
+        : feed.map(post => <Post key={post.id} post={post} setNewPost={setNewPost}/>)}
         {end ? null
           : loaded && <button id="load-more" onClick={() => addToFeed()}>
             {loading ? "Loading..." : "Load more..."}

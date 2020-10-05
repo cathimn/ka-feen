@@ -237,21 +237,17 @@ export default function () {
             </div>
             <div className="userpage-posts">
               <h3>Feed</h3>
-              {userPageInfo.userpage_feed ? userPageInfo.userpage_feed.map(post => {
+              {userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
-                  return (
-                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username}/>)
+                  return <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username}/>
                 } else {
-                  return (
-                    <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
-                  )
+                  return <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
                 }
-              }
-              ) : null}
-              {userPageInfo.end_of_feed ? null
-                : <button id="load-more" onClick={() => addToFeed()}>
-                  {loading ? "Loading..." : "Load more..."}
-                </button>}
+              })}
+              {!userPageInfo.end_of_feed &&
+              <button id="load-more" onClick={() => addToFeed()}>
+                {loading ? "Loading..." : "Load more..."}
+              </button>}
             </div>
           </div>
         </div>
