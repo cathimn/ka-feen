@@ -240,10 +240,10 @@ export default function () {
               {userPageInfo.userpage_feed ? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
-                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
+                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username}/>)
                 } else {
                   return (
-                    <Post key={"post" + post.id} post={post} />
+                    <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
                   )
                 }
               }

@@ -24,6 +24,8 @@ const FollowCard = ({ user }) => (
         />
         <div
           style={{
+            position: "relative",
+            left: "15px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",

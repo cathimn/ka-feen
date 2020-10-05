@@ -109,7 +109,9 @@ export default function () {
     }
     const response = await fetch(`${apiUrl}/follows`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${loggedIn}`,
+        "Content-Type": "application/json" },
       body: JSON.stringify({ "follow": user })
     })
     if (response.ok) setIsFollowing(true);
@@ -118,7 +120,9 @@ export default function () {
   const unfollow = async () => {
     const response = await fetch(`${apiUrl}/follows`, {
       method: "DELETE",
-      headers: { Authorization: `Bearer ${loggedIn}`, "Content-Type": "application/json" },
+      headers: {
+        Authorization: `Bearer ${loggedIn}`,
+        "Content-Type": "application/json" },
       body: JSON.stringify({ "unfollow": user })
     })
     if (response.ok) setIsFollowing(false)
@@ -270,10 +274,10 @@ export default function () {
               ? userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
                   return (
-                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />)
+                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} setNewPost={setNewPost} />)
                 } else {
                   return (
-                    <Post key={"post" + post.id} post={post} />
+                    <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
                   )
                 }
               }

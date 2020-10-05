@@ -16,7 +16,7 @@ const SupportCard = ({ type, support }) => (
           type === "given" ?
           { backgroundImage: `url(${support.supported_avatar})` } :
           { backgroundImage: `url(${support.author_avatar})` }} />
-      <div style={{ display: "flex", flexDirection: "column" }}>
+      <div style={{ display: "flex", flexDirection: "column", position: "relative", left: "15px" }}>
         {type === "received"
         ? <span>{support.private_supporter || support.supporter}</span>
         : <span>Supported: {support.supported}{support.private_supporter && " (Anonymously)"}</span>}
@@ -88,7 +88,7 @@ export default function () {
             <p style={{ textAlign: "center", marginTop: "50px" }}>
               Nothing to see here... <i className="fa fa-coffee" style={{ color: "slateblue" }} /><br/><br/>
               <span style={{ color: "gray" }}>Find awesome creators to support<br/> on our&nbsp;
-              <Link to="/settings"
+              <Link to="/explore"
                     style={{
                       color: "darkslateblue",
                       textDecoration: "solid underline darkslateblue"

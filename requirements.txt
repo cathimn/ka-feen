@@ -15,4 +15,4 @@ WTForms==2.3.3
 psycopg2==2.8.5
 flask-jwt-extended==3.24.1
 boto3==1.15.1
-humanize = "*"
+humanize==2.6.0

@@ -48,12 +48,14 @@ export default function () {
         <h3>Log in</h3>
         <form className="modal-form" onSubmit={handleSubmit}>
           <input
+            required
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
           <input
+            required
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

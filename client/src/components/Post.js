@@ -4,10 +4,25 @@ import { Link } from 'react-router-dom';
 
 import { apiUrl } from '../config';
 
-export default function ({ post }) {
+export default function ({ post, setNewPost }) {
   const loggedIn = useSelector((store) => store.authentication.token);
   const loggedInUser = useSelector((store) => store.authentication.user);
   const [likes, setLike] = useState(post.likers ? [...post.likers] : null);
+
+  const deletePost = async (e, post) => {
+    e.preventDefault();
+    const response = await fetch(`${apiUrl}/posts`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${loggedIn}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ "post_id": post })
+    })
+    if (response.ok) {
+      setNewPost(true);
+    }
+  }
 
   const handleLikeClick = async (e, post) => {
     e.preventDefault();
@@ -37,7 +52,7 @@ export default function ({ post }) {
   return (
     <div className="post-container">
       <div className="post-header">
-        <Link to={post.private_supporter ? "/" : `/${post.username}`}>
+        <Link to={post.private_supporter ? "#" : `/${post.username}`}>
           <div className="post-avatar"
             style={{
               backgroundImage: `url(${post.author_avatar ||
@@ -66,21 +81,24 @@ export default function ({ post }) {
       <>
       <div className="post-arrow"></div>
       <div className="post-body">
-        {post.image_url ? (
+        <button className="delete-button" onClick={e => deletePost(e, post.id)}><i className="fa fa-close" /></button>
+        {post.image_url &&
           <img
             className="post-body__image"
-            alt="post" src={post.image_url} />
-        ): null}
+            alt="post" src={post.image_url} />}
         <p className="post-body__text">{post.body}</p>
         {likes &&
         <div className="post-buttons">
-        <button
-          onClick={e => handleLikeClick(e, post.id, likes)}
-          className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
-          <i className="fa fa-heart" />
-        </button>
-        <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
-        </div>}
+          <button
+            onClick={e => handleLikeClick(e, post.id, likes)}
+            className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
+            <i className="fa fa-heart" />
+          </button>
+          <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
+          {loggedInUser.username === post.username
+            && !post.supported
+            && <button><i className="fa fa-bars" /></button>}
+          </div>}
       </div>
       </>
       : null}

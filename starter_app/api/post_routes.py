@@ -50,6 +50,16 @@ def index():
     db.session.add(post)
     db.session.commit()
     return post.to_dict()
+  if request.method == "DELETE":
+    current_user_email = get_jwt_identity()
+    user = User.query.filter(User.email == current_user_email).first()
+    post_id = request.json.get("post_id")
+    post = Post.query.get(post_id)
+    if post.user.username is not user.username:
+      return jsonify(msg="Invalid user"), 401
+    db.session.delete(post)
+    db.session.commit()
+    return jsonify(msg="Successfully deleted post"), 200
 
 
 @post_routes.route('/like', methods=["POST", "DELETE"])

@@ -40,18 +40,21 @@ export default function () {
         <h3>Join Ka-feen! It's free.</h3>
         <form className="modal-form" onSubmit={handleSubmit}>
           <input
+            required
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
           />
           <input
+            required
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email"
           />
           <input
+            required
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}

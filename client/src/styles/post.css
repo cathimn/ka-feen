@@ -26,6 +26,7 @@
 }
 
 .post-body {
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -74,4 +75,9 @@
 
 .like-button.liked > i {
   color: rgb(255, 92, 113);
+}
+
+.delete-button {
+  position: absolute;
+  right: 20px;
 }

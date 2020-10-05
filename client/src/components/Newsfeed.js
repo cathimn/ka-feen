@@ -16,7 +16,6 @@ export default function () {
   const [feedPage, setFeedPage] = useState(1);
   const [end, setEnd] = useState(false);
 
-
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`${apiUrl}/users/feed`, {
@@ -46,6 +45,7 @@ export default function () {
   if (!loggedIn) {
     return <Redirect to="/" />
   }
+  
   return (
     <>
     <Navbar />
@@ -56,7 +56,7 @@ export default function () {
       <div style={{ width: "500px" }}>
         <div className="content-break" />
         {loaded && feed.length === 0
-        ? "Nothing to see here."
+        ? <div style={{ marginTop: "15px" }}>Nothing to see here.</div>
         : feed.map(post => <Post key={post.id} post={post} />)}
         {end ? null
           : loaded && <button id="load-more" onClick={() => addToFeed()}>
