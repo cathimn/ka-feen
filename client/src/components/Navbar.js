@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
@@ -7,9 +6,8 @@ import { AppContext } from '../AppContext';
 import SidebarNav from './SidebarNav';
 
 function Navbar () {
-  const loggedIn = useSelector((store) => store.authentication.token);
-  const loggedInUser = useSelector((store) => store.authentication.user);
   const {
+    currentUser,
     setLoginModalDisplay,
     setSignupModalDisplay,
     sidebarDisplay,
@@ -21,11 +19,10 @@ function Navbar () {
 
   return (
     <>
-    {loggedIn ?
-      <div className={sidebarDisplay ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
-        <SidebarNav />
-      </div>
-    : null}
+    {currentUser.token &&
+    <div className={sidebarDisplay ? "sidebar-collapse" : "sidebar-collapse collapsed"}>
+      <SidebarNav />
+    </div>}
     
     <div className="navbar" onClick={closeSidebar}>
       <div id="navbar_logo">
@@ -43,9 +40,9 @@ function Navbar () {
         </Link>
       </div>
       <ul style={{ display: "flex" }}>
-        {loggedIn ? (
+        {currentUser.token ? (
           <> 
-            <Link to={`/${loggedInUser.username}`}>
+            <Link to={`/${currentUser.username}`}>
               <li><div style={{ backgroundImage: `` }}></div><i className="fa fa-user"/>&nbsp;Your Page</li>
             </Link>
             <Link to="/newsfeed">

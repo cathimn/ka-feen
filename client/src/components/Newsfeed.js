@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 
 import { apiUrl } from "../config";
+import { AppContext } from "../AppContext";
 
 import Navbar from "./Navbar";
 import SidebarNav from "./SidebarNav";
 import Post from './Post';
 
 export default function () {
-  const loggedIn = useSelector((store) => store.authentication.token);
+  const { currentUser } = useContext(AppContext);
   const [feed, setFeed] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -20,21 +20,21 @@ export default function () {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`${apiUrl}/users/feed`, {
-        headers: { Authorization: `Bearer ${loggedIn}` },
+        headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       const responseData = await response.json();
       setEnd(responseData.end_of_feed);
       setFeed(responseData.feed);
       setLoaded(true);
     }
-    if (loggedIn) fetchData();
+    if (currentUser.token) fetchData();
     setNewPost(false);
-  }, [loggedIn, newPost])
+  }, [currentUser.token, newPost])
 
   const addToFeed = async () => {
     setLoading(true);
     const response = await fetch(`${apiUrl}/users/feed/page=${feedPage}`, {
-      headers: { Authorization: `Bearer ${loggedIn}` },
+      headers: { Authorization: `Bearer ${currentUser.token}` },
     });
     const data = await response.json();
     const newFeed = data.feed;
@@ -44,7 +44,7 @@ export default function () {
     setLoading(false);
   }
 
-  if (!loggedIn) {
+  if (!currentUser.token) {
     return <Redirect to="/" />
   }
   

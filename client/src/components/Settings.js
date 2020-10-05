@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { apiUrl } from '../config';
-import { update } from '../actions/authentication';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 import { Redirect } from 'react-router-dom';
+import { AppContext } from '../AppContext';
 
 export default function () {
-  const dispatch = useDispatch();
-  const loggedIn = useSelector((store) => store.authentication.token);
+  const { currentUser, setCurrentUser } = useContext(AppContext);
   const [loaded, setLoaded] = useState(false);
   const [tags, setTags] = useState([]);
   const [userData, setUserData] = useState({});
@@ -38,7 +36,7 @@ export default function () {
       setTags(responseData.tags);
       
       const requestUserInfo = await fetch(`${apiUrl}/users/settings`, {
-        headers: { Authorization: `Bearer ${loggedIn}` },
+        headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       const userInfoData = await requestUserInfo.json();
       setUserData(userInfoData);
@@ -46,12 +44,12 @@ export default function () {
       setPayment(userInfoData.accept_payments);
     }
     
-    if (loggedIn) {
+    if (currentUser.token) {
       fetchData();
     }
-    
+
     setLoaded(true);
-  }, [loggedIn])
+  }, [currentUser.token])
 
   const removeTag = (e, id) => {
     e.preventDefault();
@@ -79,7 +77,7 @@ export default function () {
     const response = await fetch(`${apiUrl}/users/update`, {
       method: "PUT",
       headers: {
-        Authorization: `Bearer ${loggedIn}`,
+        Authorization: `Bearer ${currentUser.token}`,
         "Content-Type": "application/json" },
       body: JSON.stringify({
         "username": username && username !== userData.username ? username : null,
@@ -97,7 +95,6 @@ export default function () {
       setDisplayName('');
       setBio('');
       setUserData({...res})
-      dispatch(update(res.id, res.username, res.display_name));
     } else {
       const err = await response.json();
       setError(err.msg);
@@ -110,7 +107,7 @@ export default function () {
     })
   }
 
-  if (!loggedIn && loaded) {
+  if (!currentUser.token && loaded) {
     return <Redirect to="/" />
   }
 

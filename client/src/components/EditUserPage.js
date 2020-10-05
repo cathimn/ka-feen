@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-
+import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
 import Post from './Post';
 
 export default function () {
-  const loggedIn = useSelector((store) => store.authentication.token);
-  const loggedInUser = useSelector((store) => store.authentication.user);
+  const { currentUser } = useContext(AppContext);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
@@ -27,7 +25,7 @@ export default function () {
 
   useEffect(() => {
     async function fetchUserPageInfo() {
-      const response = await fetch(`${apiUrl}/users/${loggedInUser.username}`);
+      const response = await fetch(`${apiUrl}/users/${currentUser.username}`);
       if (response.ok) {
         const data = await response.json();
         setUserPageInfo({ ...data });
@@ -37,7 +35,7 @@ export default function () {
 
     fetchUserPageInfo();
     setNewPost(false);
-  }, [newPost, loggedInUser.username])
+  }, [newPost, currentUser.username])
 
   const handleImageChange = (e) => {
     setImage({
@@ -59,14 +57,14 @@ export default function () {
     }
 
     let formData = new FormData();
-    formData.append("user_id", loggedInUser.id);
+    formData.append("user_id", currentUser.id);
     formData.append("body", postBody ? postBody : "");
     formData.append("image", image.raw);
 
     const response = await fetch(`${apiUrl}/posts`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${loggedIn}` },
+        Authorization: `Bearer ${currentUser.token}` },
       body: formData
     })
 
@@ -95,7 +93,7 @@ export default function () {
     formData.append("avatar", avatar.raw)
     const response = await fetch(`${apiUrl}/users/update/image`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${loggedIn}` },
+      headers: { Authorization: `Bearer ${currentUser.token}` },
       body: formData
     })
 
@@ -109,7 +107,7 @@ export default function () {
 
   const addToFeed = async () => {
     setLoading(true);
-    const response = await fetch(`${apiUrl}/users/${loggedInUser.username}/page=${feedPage}`);
+    const response = await fetch(`${apiUrl}/users/${currentUser.username}/page=${feedPage}`);
     const data = await response.json();
     const feed = data.userpage_feed;
     const current = userPageInfo.userpage_feed;

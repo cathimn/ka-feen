@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 
+import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
@@ -30,7 +30,7 @@ const SupportCard = ({ type, support }) => (
 );
 
 export default function () {
-  const loggedIn = useSelector((store) => store.authentication.token);
+  const { currentUser } = useContext(AppContext);
   const [received, setReceived] = useState([]);
   const [given, setGiven] = useState([]);
   const [tab, setTab] = useState("received");
@@ -39,7 +39,7 @@ export default function () {
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`${apiUrl}/supports`, {
-        headers: { Authorization: `Bearer ${loggedIn}` },
+        headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       const responseData = await response.json();
       setReceived(responseData.received);
@@ -47,9 +47,9 @@ export default function () {
       setLoaded(true);
     }
     fetchData();
-  }, [loggedIn])
+  }, [currentUser.token])
 
-  if (!loggedIn) {
+  if (!currentUser.token) {
     return <Redirect to="/" />
   }
 

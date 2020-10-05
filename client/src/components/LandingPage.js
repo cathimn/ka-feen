@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
@@ -7,10 +6,9 @@ import { AppContext } from '../AppContext';
 import Navbar from './Navbar';
 
 export default function () {
-  const loggedIn = useSelector((store) => store.authentication.token);
-  const { setSignupModalDisplay } = useContext(AppContext);
+  const { setSignupModalDisplay, currentUser } = useContext(AppContext);
 
-  if (loggedIn) {
+  if (currentUser.token) {
     return <Redirect to='/newsfeed' />
   }
 

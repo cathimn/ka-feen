@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { AppContext } from '../AppContext';
 
 import { apiUrl } from '../config';
 
 export default function ({ post, setNewPost }) {
-  const loggedIn = useSelector((store) => store.authentication.token);
-  const loggedInUser = useSelector((store) => store.authentication.user);
+  const { currentUser } = useContext(AppContext);
   const [likes, setLike] = useState(post.likers ? [...post.likers] : null);
   const [showDelete, setShowDelete] = useState();
 
@@ -15,7 +14,7 @@ export default function ({ post, setNewPost }) {
     const response = await fetch(`${apiUrl}/posts`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${loggedIn}`,
+        Authorization: `Bearer ${currentUser.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({ "post_id": post })
@@ -27,10 +26,10 @@ export default function ({ post, setNewPost }) {
 
   const handleLikeClick = async (e, post) => {
     e.preventDefault();
-    if (likes.includes(loggedInUser.id)) {
+    if (likes.includes(currentUser.id)) {
       const response = await fetch(`${apiUrl}/posts/like`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${loggedIn}`,
+        headers: { Authorization: `Bearer ${currentUser.token}`,
          "Content-Type": "application/json" },
         body: JSON.stringify({"post_id": post})
       })
@@ -40,7 +39,7 @@ export default function ({ post, setNewPost }) {
       const response = await fetch(`${apiUrl}/posts/like`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${loggedIn}`,
+          Authorization: `Bearer ${currentUser.token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({ "post_id": post })
@@ -64,10 +63,10 @@ export default function ({ post, setNewPost }) {
             <strong>
               {post.private_supporter
               ? post.private_supporter
-              : ( post.supporter === loggedInUser.username ||
-                  post.supporter === loggedInUser.display_name ||
-                  post.author === loggedInUser.username ||
-                  post.author === loggedInUser.display_name )
+              : ( post.supporter === currentUser.username ||
+                  post.supporter === currentUser.displayName ||
+                  post.author === currentUser.username ||
+                  post.author === currentUser.displayName )
                 ? "You"
                 : post.supporter || post.author}</strong>
             {post.supported
@@ -92,7 +91,7 @@ export default function ({ post, setNewPost }) {
           <div style={{ display: "flex" }}>
             <button
               onClick={e => handleLikeClick(e, post.id, likes)}
-              className={likes.includes(loggedInUser.id) ? "like-button liked" : "like-button"} >
+              className={likes.includes(currentUser.id) ? "like-button liked" : "like-button"} >
               <i className="fa fa-heart" />
             </button>
             <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
@@ -100,7 +99,7 @@ export default function ({ post, setNewPost }) {
           <div>
             {showDelete &&
             <button className="delete-button" onClick={e => deletePost(e, post.id)}>Delete</button>}
-            {loggedInUser.username === post.username
+            {currentUser.username === post.username
             && !post.supported
             && <button onClick={e => setShowDelete(!showDelete)}><i className="fa fa-ellipsis-h" style={{ color: "lightgray" }} /></button>}
           </div>

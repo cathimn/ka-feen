@@ -1,23 +1,37 @@
 import React, { useState, useContext } from "react";
-import { useDispatch } from 'react-redux';
 
 import { AppContext } from '../AppContext';
-import { login } from '../actions/authentication';
+import { apiUrl, TOKEN_KEY, USER_KEY } from "../config";
 
 export default function () {
-  const { loginModalDisplay, setLoginModalDisplay, setSignupModalDisplay } = useContext(AppContext)
+  const { loginModalDisplay, setLoginModalDisplay, setSignupModalDisplay, setCurrentUser } = useContext(AppContext)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState('');
 
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login(email, password));
-    // if no errors
-    setPassword('');
-    setEmail('');
-    setLoginModalDisplay(false);
+
+    const response = await fetch(`${apiUrl}/session`, {
+      method: "put",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (response.ok) {
+      const { token, id, username, displayName } = await response.json();
+      window.localStorage.setItem(TOKEN_KEY, token);
+      window.localStorage.setItem(USER_KEY, JSON.stringify({
+        id, username, displayName
+      }));
+      setCurrentUser({ token, id, username, displayName });
+      setPassword('');
+      setEmail('');
+      setLoginModalDisplay(false);
+    } else {
+      const err = await response.json();
+      setErrors(err.msg);
+    }
   }
 
   const closeModal = (e) => {
@@ -28,6 +42,9 @@ export default function () {
     e.preventDefault();
     setEmail("captain@thecat.com");
     setPassword("astinkycheese");
+    setTimeout(() => {
+      document.getElementById("login-button").click();
+    }, 0)
   }
 
   return (
@@ -46,6 +63,7 @@ export default function () {
           <i className="fa fa-close" aria-hidden="true" />
         </button>
         <h3>Log in</h3>
+        {errors}
         <form className="modal-form" onSubmit={handleSubmit}>
           <input
             required
@@ -61,7 +79,7 @@ export default function () {
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
           />
-          <button type="submit">Log in</button>
+          <button id="login-button" type="submit">Log in</button>
         </form>
         <button onClick={demoLogin} className="modal-link">
           Log in with a demo account.

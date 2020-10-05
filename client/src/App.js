@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import { AppContext } from './AppContext';
-
-import { loadToken } from './actions/authentication';
 
 import LandingPage from './components/LandingPage';
 import Newsfeed from './components/Newsfeed';
@@ -18,17 +15,14 @@ import UserPage from './components/UserPage';
 import EditUserPage from './components/EditUserPage';
 import SupportPage from './components/SupportPage';
 
+import { apiUrl, TOKEN_KEY, USER_KEY } from './config';
+
 function App() {
-  const dispatch = useDispatch();
-  let history = useHistory();
-
-  const loggedInUser = useSelector(store => store.authentication.user)
-
+  const [currentUser, setCurrentUser] = useState({ token: null, id: null, username: null, displayName: null })
+  const [loaded, setLoaded] = useState(false);
   const [loginModalDisplay, setLoginModalDisplay] = useState(false);
   const [signupModalDisplay, setSignupModalDisplay] = useState(false);
   const [sidebarDisplay, setSidebarDisplay] = useState(false);
-
-  const [loaded, setLoaded] = useState(false);
 
   const closeAllModals = () => {
     setLoginModalDisplay(false);
@@ -37,9 +31,33 @@ function App() {
   }
 
   useEffect(() => {
-    dispatch(loadToken());
-    setLoaded(true);
-  }, [dispatch, history])
+    const token = window.localStorage.getItem(TOKEN_KEY);
+
+    if (!token) {
+      setCurrentUser({ token: null, id: null, username: null, displayName: null });
+      setLoaded(true);
+      return;
+    }
+
+    async function checkToken() {
+      const response = await fetch(`${apiUrl}/session`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (response.ok) {
+        const res = await response.json();
+        setCurrentUser({
+          token: res.token,
+          id: res.id,
+          username: res.username,
+          displayName: res.displayName
+        })
+      }
+      setLoaded(true);
+    }
+
+    checkToken();
+  }, [])
 
   useEffect(() => {
     document.addEventListener("keydown", (e) => {
@@ -57,6 +75,8 @@ function App() {
   return (
     <AppContext.Provider
       value={{
+        currentUser,
+        setCurrentUser,
         loginModalDisplay,
         setLoginModalDisplay,
         signupModalDisplay,
@@ -87,7 +107,7 @@ function App() {
           <Route exact path="/notfound">
             <Error />
           </Route>
-          <Route exact path={`/${loggedInUser.username}`}>
+          <Route exact path={`/${currentUser.username}`}>
             <EditUserPage />
           </Route>
           <Route path="/:user">

@@ -53,11 +53,15 @@ def index():
   return jsonify(token=access_token, id=user.id, username=user.username, display_name=user.display_name), 200
 
 
-# @session.routes.route("/", methods=["GET"])
-# @jwt_required
-# def verify():
-#   current_user_email = get_jwt_identity()
-#   user = User.query.filter(User.email == current_user_email)
-#   if not user:
-#     return jsonify(msg="Invalid session"), 401
-#   return user.session_token;
+@session_routes.route("/", methods=["GET"])
+@jwt_required
+def verify():
+  current_user_email = get_jwt_identity()
+  user = User.query.filter(User.email == current_user_email).first()
+  if not user:
+    return jsonify(msg="Invalid session"), 401
+  return {
+    "token": user.session_token,
+    "id": user.id,
+    "username": user.username,
+    "displayName": user.display_name }

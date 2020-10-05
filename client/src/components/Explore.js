@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
 function Explore () {
-  const loggedIn = useSelector((store) => store.authentication.token);
+  const { currentUser } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
@@ -58,9 +58,9 @@ function Explore () {
     <>
       <Navbar/>
       <div className="container">
-        {loggedIn ? <SidebarNav /> : null}
+        {currentUser.token ? <SidebarNav /> : null}
         <div
-          style={loggedIn ? { width: "725px" } :{ width: "950px" }}
+          style={currentUser.token ? { width: "725px" } :{ width: "950px" }}
           className="content"
         >
           <span style={{ fontSize: "14px", color: "gray" }}>
@@ -80,7 +80,7 @@ function Explore () {
           ?
             <>
               <h3>Results</h3>
-              <div style={loggedIn
+              <div style={currentUser.token
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr"}
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
                 {results.map(result =>
@@ -126,7 +126,7 @@ function Explore () {
               ?
               <>
               <h3 className="content-header">Users tagged with {currentTag}</h3>
-              <div style={loggedIn
+              <div style={currentUser.token
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               {taggedUsers.map(user =>
@@ -153,7 +153,7 @@ function Explore () {
               <>
               {currentTag !== null ? <h3 className="content-header">No results for {currentTag}</h3> : ""}
               <h3 className="content-header">Featured Creators</h3>
-              <div style={loggedIn
+              <div style={currentUser.token
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
               {featured.map(user =>

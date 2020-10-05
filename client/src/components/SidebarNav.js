@@ -1,15 +1,26 @@
-import React, { useContext, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import React, { useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
 
-import { logout } from "../actions/authentication";
 import { AppContext } from "../AppContext";
+import { apiUrl, TOKEN_KEY, USER_KEY } from "../config";
 
 export default function () {
-  const dispatch = useDispatch();
-  const loggedInUser = useSelector((store) => store.authentication.user);
+  const { currentUser, setCurrentUser } = useContext(AppContext);
 
-  if (!loggedInUser) {
+  const logout = async e => {
+    const response = await fetch(`${apiUrl}/session/logout`, {
+      method: "delete",
+      headers: { Authorization: `Bearer ${currentUser.token}` },
+    });
+
+    if (response.ok) {
+      window.localStorage.removeItem(TOKEN_KEY);
+      window.localStorage.removeItem(USER_KEY);
+      setCurrentUser({token: null, id: null, username: null, displayName: null})
+    }
+  }
+
+  if (!currentUser.token) {
     return null;
   }
 
@@ -17,12 +28,12 @@ export default function () {
     <div id="sidebar" className="sidebar-container">
       <ul>
         <Link to="/newsfeed">
-          <span>
-            <i className="fa fa-home" />
-          </span>
-          <span>Home</span>
+            <span>
+              <i className="fa fa-home" />
+            </span>
+            <span>Home</span>
         </Link>
-        <Link to={`/${loggedInUser.username}`}>
+        <Link to={`/${currentUser.username}`}>
           <span>
             <i className="fa fa-user-circle" />
           </span>
@@ -52,7 +63,7 @@ export default function () {
             </span>
             <span>Following</span>
         </Link>
-        <li onClick={() => dispatch(logout())}>
+        <li onClick={logout}>
           <span>
             <i className="fa fa-sign-out" />
           </span>

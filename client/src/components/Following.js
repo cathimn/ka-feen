@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect, useContext } from 'react';
 import { Redirect, Link } from 'react-router-dom';
 
+import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
 
 import Navbar from './Navbar';
@@ -51,24 +51,23 @@ const FollowCard = ({ user }) => (
 );
 
 export default function () {
-  const dispatch = useDispatch();
-  const loggedIn = useSelector((store) => store.authentication.token);
+  const { currentUser } = useContext(AppContext);
   const [follows, setFollows] = useState([]);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(`${apiUrl}/follows`, {
-        headers: { Authorization: `Bearer ${loggedIn}` },
+        headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       const responseData = await response.json();
       setFollows(responseData.following);
     }
     fetchData();
     setLoaded(true);
-  }, [dispatch, loggedIn]);
+  }, [currentUser.token]);
 
-  if (!loggedIn && loaded) {
+  if (!currentUser.token && loaded) {
     return <Redirect to="/" />
   }
 

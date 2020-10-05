@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import { apiUrl } from '../config';
+import { AppContext } from '../AppContext';
 
 import Navbar from './Navbar';
 import Post from './Post';
-import { AppContext } from '../AppContext';
 
 export default function () {
   const { user } = useParams();
-  const { setLoginModalDisplay } = useContext(AppContext);
-  const loggedIn = useSelector((store) => store.authentication.token);
-  const loggedInUser = useSelector((store) => store.authentication.user);
+  const { currentUser, setLoginModalDisplay } = useContext(AppContext);
+
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
@@ -35,7 +33,7 @@ export default function () {
 
     async function followingCheck() {
       const response = await fetch(`${apiUrl}/follows`, {
-        headers: { Authorization: `Bearer ${loggedIn}` },
+        headers: { Authorization: `Bearer ${currentUser.token}` },
       });
       const data = await response.json();
       const usernames = data.following.map((user) => user.username);
@@ -44,10 +42,10 @@ export default function () {
 
     fetchUserPageInfo();
     setNewPost(false);
-    if (loggedIn) {
+    if (currentUser.token) {
       followingCheck();
     }
-  }, [loggedIn, user, newPost])
+  }, [user, newPost, currentUser.token])
 
   const addToFeed = async () => {
     setLoading(true);
@@ -78,18 +76,18 @@ export default function () {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!loggedIn) {
+    if (!currentUser.token) {
       setLoginModalDisplay(true);
       return
     } else {
       await fetch(`${apiUrl}/supports`, {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${loggedIn}`,
+          Authorization: `Bearer ${currentUser.token}`,
           "Content-Type": "application/json" },
         body: JSON.stringify({
             "user_id": userPageInfo.id,
-            "supporter_id": loggedInUser.id,
+            "supporter_id": currentUser.id,
             "amount": supportAmount,
             "body": donationMessage,
             "private": privateDonation,
@@ -103,14 +101,14 @@ export default function () {
   }
 
   const follow = async () => {
-    if (!loggedIn) {
+    if (!currentUser.token) {
       setLoginModalDisplay(true);
       return;
     }
     const response = await fetch(`${apiUrl}/follows`, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${loggedIn}`,
+        Authorization: `Bearer ${currentUser.token}`,
         "Content-Type": "application/json" },
       body: JSON.stringify({ "follow": user })
     })
@@ -121,7 +119,7 @@ export default function () {
     const response = await fetch(`${apiUrl}/follows`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${loggedIn}`,
+        Authorization: `Bearer ${currentUser.token}`,
         "Content-Type": "application/json" },
       body: JSON.stringify({ "unfollow": user })
     })
@@ -257,7 +255,7 @@ export default function () {
             <button
               disabled={supportAmount === 0}
               onClick={handleSubmit}>Donate ${supportAmount * 3}</button>
-            {loggedIn
+            {currentUser.token
               ?
               <div style={{
                 margin: "15px auto 0px auto",
@@ -265,7 +263,7 @@ export default function () {
                 width: "min-content",
                 whiteSpace: "nowrap",
               }}>
-                Signed in as {loggedInUser.display_name || loggedInUser.username}
+                Signed in as {currentUser.displayName || currentUser.username}
               </div> : null}
           </div>
           <div className="userpage-posts">
