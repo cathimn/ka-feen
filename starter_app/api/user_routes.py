@@ -132,7 +132,7 @@ def index():
 
 @user_routes.route('/featured')
 def featured():
-  response = User.query.limit(6).all()
+  response = User.query.order_by(User.created_at.asc()).limit(6).all()
   return {"users": [user.to_dict() for user in response]}
 
 

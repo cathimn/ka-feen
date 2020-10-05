@@ -57,6 +57,10 @@ def index():
     post = Post.query.get(post_id)
     if post.user.username is not user.username:
       return jsonify(msg="Invalid user"), 401
+    if post.image_url:
+      before, folder, filename = post.image_url.partition(f'{user.id}/posts/')
+      print(folder + filename)
+      s3.delete_object(Bucket=BUCKET_NAME, Key=folder+filename)
     db.session.delete(post)
     db.session.commit()
     return jsonify(msg="Successfully deleted post"), 200
