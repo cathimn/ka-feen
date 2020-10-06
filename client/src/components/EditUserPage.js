@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
@@ -9,6 +9,7 @@ import Post from './Post';
 
 export default function () {
   const { currentUser } = useContext(AppContext);
+  const feedRef = useRef(null);
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userPageInfo, setUserPageInfo] = useState({});
@@ -75,6 +76,11 @@ export default function () {
     }
 
     setProcessingPost(false);
+    window.scrollTo({
+      left: 0,
+      top: feedRef.current.offsetTop - 75,
+      behavior: "smooth"
+    })
   }
 
   const handleAvatarChange = (e) => {
@@ -245,7 +251,7 @@ export default function () {
                 onClick={handleSubmit}
                 id="add-post-button">{processingPost && error === "" ? "Sending..." : "Post"}</button>
             </div>
-            <div className="userpage-posts">
+            <div ref={feedRef} className="userpage-posts">
               <h3>Feed</h3>
               {userPageInfo.userpage_feed.map(post => {
                 if (post.amount) {
