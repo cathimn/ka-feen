@@ -64,10 +64,7 @@ export default function ({ post, setNewPost }) {
             <strong>
               {post.private_supporter
               ? post.private_supporter
-              : ( post.supporter === currentUser.username ||
-                  post.supporter === currentUser.displayName ||
-                  post.author === currentUser.username ||
-                  post.author === currentUser.displayName )
+              : ( post.username === currentUser.username )
                 ? "You"
                 : post.supporter || post.author}</strong>
             {post.supported
