@@ -32,11 +32,12 @@ function Explore () {
   const { currentUser } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState('');
+  const [lastQuery, setLastQuery] = useState(query);
   const [results, setResults] = useState([]);
   const [searched, setSearched] = useState(null);
   const [taggedUsers, setTaggedUsers] = useState([]);
   const [featured, setFeatured] = useState([]);
-  const [currentTag, setCurrentTag] = useState(null);
+  const [currentTag, setCurrentTag] = useState({ "tag": null, "id": null });
 
   useEffect(() => {
     async function fetchData() {
@@ -54,6 +55,7 @@ function Explore () {
   }, [])
 
   const handleSearch = (e) => {
+    setLastQuery(query);
     if (query.length === 0) {
       return;
     }
@@ -71,7 +73,7 @@ function Explore () {
   const fetchTaggedUsers = async (tagId, tag) => {
     const response = await fetch(`${apiUrl}/users/tag/id=${tagId}`);
     const responseData = await response.json();
-    setCurrentTag(tag);
+    setCurrentTag({ tag, tagId });
     setTaggedUsers([...responseData.users_with_tag]);
   }
 
@@ -102,13 +104,13 @@ function Explore () {
               type="text"
               placeholder="Search creators"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}></input>
+              onChange={(e) => {setQuery(e.target.value)}}></input>
             <button type="submit">Search</button>
             <i className="fa fa-search" />
           </form>
-          {results.length > 0 && searched ?
+          {searched && results.length > 0 ?
             <>
-              <h3>Results for "{query}"</h3>
+              <h3>Results for "{lastQuery}"</h3>
               <div style={currentUser.token
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr"}
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
@@ -117,6 +119,7 @@ function Explore () {
             </>
           :
             <>
+              {searched && results.length === 0 ? <h3>No results for "{lastQuery}"</h3> : null}
               <h3 className="content-header">Categories</h3>
               <div id="categories-container">
                 <button id="scroll-left" className="categories-buttons" onClick={scrollLeft}><i className="fa fa-chevron-left" /></button>
@@ -125,7 +128,7 @@ function Explore () {
                   <li className="explore-categories__tags"
                     onClick={() => {
                       setTaggedUsers([])
-                      setCurrentTag(null)}}>
+                      setCurrentTag({ "tag": null, "id": null })}}>
                     Featured
                   </li>
                   {categories.map((tag) => (
@@ -141,7 +144,7 @@ function Explore () {
               </div>
               {taggedUsers.length > 0 ?
               <>
-                <h3 className="content-header">Users tagged with {currentTag}</h3>
+                <h3 className="content-header">Users tagged with {currentTag.tag}</h3>
                 <div style={currentUser.token
                   ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
                   : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
@@ -150,7 +153,7 @@ function Explore () {
                 </>
               :
               <>
-                {currentTag !== null ? <h3 className="content-header">No results for {currentTag}</h3> : ""}
+                {currentTag.tag !== null ? <h3 className="content-header">No results for {currentTag.tag}</h3> : ""}
                 <h3 className="content-header">Featured Creators</h3>
                 <div style={currentUser.token
                   ? { display: "grid", gridTemplateColumns: "1fr 1fr" }

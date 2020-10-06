@@ -44,7 +44,16 @@ export default function () {
 
     fetchUserPageInfo();
     setNewPost(false);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [user, newPost, currentUser.token])
+
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+    const loadMore = document.getElementById("load-more");
+    if (loadMore) loadMore.click()
+  }
 
   const addToFeed = async () => {
     setLoading(true);
@@ -53,15 +62,13 @@ export default function () {
     const end = data.end_of_feed;
     const feed = data.userpage_feed;
     const current = userPageInfo.userpage_feed;
-    console.log(current)
-    console.log(feed)
+    setLoading(false);
     setUserPageInfo({
       ...userPageInfo,
       "end_of_feed": end,
       "userpage_feed": [...current, ...feed]
     })
     setFeedPage(feedPage + 1);
-    setLoading(false);
   }
 
   const handleSupportClick = () => {
@@ -273,7 +280,7 @@ export default function () {
             })}
             {!userPageInfo.end_of_feed &&
               <button id="load-more" onClick={() => addToFeed()}>
-                {loading ? "Loading..." : "Load more..."}
+                {loading ? "Loading..." : ""}
               </button>}
           </div>
         </div>

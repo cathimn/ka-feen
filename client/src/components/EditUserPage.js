@@ -36,7 +36,16 @@ export default function () {
 
     fetchUserPageInfo();
     setNewPost(false);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [newPost, currentUser.username])
+
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+    const loadMore = document.getElementById("load-more");
+    if (loadMore) loadMore.click()
+  }
 
   const handleImageChange = (e) => {
     setImage({
@@ -262,7 +271,7 @@ export default function () {
               })}
               {!userPageInfo.end_of_feed &&
               <button id="load-more" onClick={() => addToFeed()}>
-                {loading ? "Loading..." : "Load more..."}
+                {loading ? "Loading..." : ""}
               </button>}
             </div>
           </div>

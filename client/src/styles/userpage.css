@@ -68,11 +68,8 @@
 }
 
 #follow-button {
-  font-size: 16px;
-  padding: 10px 15px;
+  padding: 0 15px;
   border: 2px solid black;
-  height: 45px;
-  width: 90px;
 }
 
 #follow-button:hover {
@@ -82,11 +79,9 @@
 }
 
 #following-button {
-  height: 45px;
-  width: 90px;
   border: 2px solid whitesmoke;
   background-color: whitesmoke;
-  padding: 5px 15px;
+  padding: 0px 15px;
   color: gray;
   white-space: nowrap;
 }

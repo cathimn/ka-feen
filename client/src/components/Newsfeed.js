@@ -29,7 +29,16 @@ export default function () {
     }
     if (currentUser.token) fetchData();
     setNewPost(false);
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [currentUser.token, newPost])
+
+  const handleScroll = () => {
+    if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight) return;
+    const loadMore = document.getElementById("load-more");
+    if (loadMore) loadMore.click()
+  }
 
   const addToFeed = async () => {
     setLoading(true);
@@ -62,7 +71,7 @@ export default function () {
         : feed.map(post => <Post key={post.id} post={post} setNewPost={setNewPost}/>)}
         {end ? null
           : loaded && <button id="load-more" onClick={() => addToFeed()}>
-            {loading ? "Loading..." : "Load more..."}
+            {loading ? "Loading..." : ""}
           </button>}
         </div>
       </div>

@@ -31,7 +31,7 @@ def upload_to_s3(file, folder, bucket_name, acl="public-read"):
 def search(query):
   res = User.query.filter(db.or_(User.username.like(
       f'%{query}%'), User.display_name.like(f'%{query}%')))
-  return {"results": [result.to_dict() for result in res]}
+  return { "results": [result.to_dict() for result in res] }
 
 
 @user_routes.route('/settings')
@@ -137,7 +137,7 @@ def featured():
 
 
 @user_routes.route('/<username>/page=<page>')
-@user_routes.route('/<username>', defaults={"page": 0})
+@user_routes.route('/<username>', defaults={"page": 0 })
 def user(username, page):
   page_int = int(page)
   user = User.query.filter(User.username == username).first()
@@ -227,12 +227,12 @@ def users_with_tag(tag_id):
 
   request = User.query.join(
     users_tags, (users_tags.c.user_id == User.id)).filter(
-      users_tags.c.tag_id == tag_id).all()
-  return {"users_with_tag": [{
-    "id": user.id,
-    "avatar_url": user.avatar_url,
-    "banner_url": user.banner_url,
-    "bio": user.bio,
-    "username": user.username,
-    "display_name": user.display_name,
-  } for user in request]}
+      users_tags.c.tag_id == tag_id)
+  return {
+    "users_with_tag": [{
+      "id": user.id,
+      "avatar_url": user.avatar_url,
+      "banner_url": user.banner_url,
+      "bio": user.bio,
+      "username": user.username,
+      "display_name": user.display_name } for user in request]}
