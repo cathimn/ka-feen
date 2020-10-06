@@ -26,13 +26,14 @@
 }
 
 #edit-button {
+  position: absolute;
+  left: 0;
   cursor: pointer;
   background-color: slateblue;
   color: white;
   padding: 10px 13px;
   border-radius: 50px;
 }
-
 
 #banneravatar-submit:hover,
 #add-post-button:hover,

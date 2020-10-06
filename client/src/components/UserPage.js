@@ -152,13 +152,11 @@ export default function () {
       >
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
-            <div
+            <img
+              onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+              alt="avatar"
               className="userpage-avatar"
-              style={{
-                backgroundPosition: "center",
-                backgroundSize: "cover",
-                backgroundImage: `url(${userPageInfo.avatar_url})` }}
-            />
+              src={userPageInfo.avatar_url} />
             <div className="userpage-info" style={ !userPageInfo.accept_payments ? { display: "flex", flexDirection: "column", justifyContent: "center"} : {}}>
               <div>{userPageInfo.accept_payments ? "Buy some caffeine for" : null}</div>
               <h1>{userPageInfo.display_name || userPageInfo.username}</h1>
@@ -193,7 +191,7 @@ export default function () {
               {userPageInfo.accept_payments ? "Support" : "About"}</span>&nbsp;
               {userPageInfo.display_name || userPageInfo.username}
           </h3>
-          <p style={{ margin: "5px 0" }}>{userPageInfo.bio}</p>
+          <p style={{ margin: "10px 0" }}>{userPageInfo.bio}</p>
           {userPageInfo.tags.length > 0 ?
           <div className="userpage-tag_container">
             {userPageInfo.tags

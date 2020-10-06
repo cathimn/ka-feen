@@ -53,10 +53,11 @@ export default function ({ post, setNewPost }) {
     <div className="post-container">
       <div className="post-header">
         <Link to={post.private_supporter ? "#" : `/${post.username}`}>
-          <div className="post-avatar"
-            style={{
-              backgroundImage: `url(${post.author_avatar ||
-              "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"})`}} />
+          <img
+            alt="avatar"
+            className="post-avatar"
+            src={post.author_avatar}
+            onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"} />
         </Link>
         <div className="post-info">
           <div>
@@ -84,7 +85,8 @@ export default function ({ post, setNewPost }) {
         {post.image_url &&
           <img
             className="post-body__image"
-            alt="post" src={post.image_url} />}
+            alt="post"
+            src={post.image_url} />}
         <p className="post-body__text">{post.body}</p>
         {likes &&
         <div className="post-buttons">

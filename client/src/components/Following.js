@@ -3,48 +3,26 @@ import { Redirect, Link } from 'react-router-dom';
 
 import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
-import Footer from './Footer';
 
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
 const FollowCard = ({ user }) => (
   <>
-    <div
-      style={{
-        padding: "20px 0px",
-        display: "flex",
-        justifyContent: "space-between",
-      }}
-    >
-      <div style={{ display: "flex" }}>
-        <div
+    <div className="follow-card">
+      <div className="follow-card__left">
+        <img
+          alt="avatar"
           className="post-avatar"
-          style={{
-            backgroundImage: `url(${user.avatar_url})` }}
-        />
-        <div
-          style={{
-            position: "relative",
-            left: "15px",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <span>
-            {user.display_name
-            ?
-            <>
-            {user.display_name}&nbsp;
-            <span style={{color: "grey", fontSize: "14px" }}>({user.username})</span>
-            </>
-            : user.username }</span>
-          <span style={{ color: "gray", fontSize: "14px" }}>Following</span>
+          src={user.avatar_url}
+          onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"} />
+        <div className="follow-card__left-info">
+          <span style={{ fontWeight: "600" }}>{user.display_name || user.username}</span>
+          <span style={{ color: "grey", fontSize: "14px" }}>ka-feen.herokuapp.com/{user.username}</span>
         </div>
       </div>
-      <Link to={`/${user.username}`}>
-        <button className="following-view_button">View</button>
+      <Link to={`/${user.username}`} className="following-view_button">
+        View
       </Link>
     </div>
     <div className="content-break" />
@@ -94,7 +72,6 @@ export default function () {
         : follows.map(user => <FollowCard key={user.id} user={user} />)}
       </div>
     </div>
-    <Footer />
     </>
   )
 }

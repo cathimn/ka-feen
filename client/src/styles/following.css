@@ -1,5 +1,24 @@
+.follow-card {
+  padding: 20px 0px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.follow-card__left {
+  display: flex;
+  width: 100%;
+}
+
+.follow-card__left-info {
+  position: relative;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
 .following-view_button {
-  margin: 10px;
+  margin: auto;
   padding: 5px 10px;
   border-radius: 10px;
   color: darkslateblue;

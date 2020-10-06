@@ -130,6 +130,13 @@ a {
   text-decoration: underline;
 }
 
+#mark-private {
+  background-color: lightgray;
+  margin-top: 10px;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+
 @import './styles/modal.css';
 @import './styles/sidebar.css';
 @import './styles/navbar.css';

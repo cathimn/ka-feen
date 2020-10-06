@@ -7,6 +7,27 @@ import { apiUrl } from '../config';
 import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
+const ExploreCard = ({ user }) => (
+  <Link to={`/${user.username}`} >
+    <div className="explore-usercard">
+      <div
+        className="usercard-bigbanner"
+        style={{ backgroundImage: `url(${user.banner_url})` }}>
+        <img
+          onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+          className="usercard-bigavatar"
+          src={user.avatar_url}
+          alt="user avatar" />
+      </div>
+      <div className="usercard-biginfo">
+        <h3>{user.display_name || user.username}</h3>
+        <p>{user.bio}</p>
+        <button>View Page</button>
+      </div>
+    </div>
+  </Link>
+)
+
 function Explore () {
   const { currentUser } = useContext(AppContext);
   const [categories, setCategories] = useState([]);
@@ -85,31 +106,13 @@ function Explore () {
             <button type="submit">Search</button>
             <i className="fa fa-search" />
           </form>
-          {results.length > 0 && searched
-          ?
+          {results.length > 0 && searched ?
             <>
-              <h3>Results</h3>
+              <h3>Results for "{query}"</h3>
               <div style={currentUser.token
                 ? { display: "grid", gridTemplateColumns: "1fr 1fr"}
                 : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-                {results.map(result =>
-                <Link key={result.id} to={`/${result.username}`} >
-                  <div className="explore-usercard">
-                    <div
-                      className="usercard-bigbanner"
-                      style={{ backgroundImage: `url(${result.banner_url})` }}>
-                    <img
-                      className="usercard-bigavatar"
-                          src={result.avatar_url}
-                      alt="user avatar" />
-                    </div>
-                    <div className="usercard-biginfo">
-                      <h3>{result.display_name || result.username}</h3>
-                      <p>{result.bio}</p>
-                      <button>View Page</button>
-                    </div>
-                  </div>
-                </Link>)}
+                {results.map(user => <ExploreCard key={user.id} user={user} />)}
               </div>
             </>
           :
@@ -136,58 +139,23 @@ function Explore () {
                   <li style={{ width: "50px"}}>&nbsp;</li>
                 </ul>
               </div>
-              {taggedUsers.length > 0
-              ?
+              {taggedUsers.length > 0 ?
               <>
-              <h3 className="content-header">Users tagged with {currentTag}</h3>
-              <div style={currentUser.token
-                ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
-                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-              {taggedUsers.map(user =>
-                <Link key={user.id} to={`/${user.username}`} >
-                  <div className="explore-usercard">
-                    <div
-                      className="usercard-bigbanner"
-                      style={{ backgroundImage: `url(${user.banner_url})` }}>
-                      <img
-                        className="usercard-bigavatar"
-                        src={user.avatar_url}
-                        alt="user avatar" />
-                    </div>
-                    <div className="usercard-biginfo">
-                      <h3>{user.display_name || user.username}</h3>
-                      <p>{user.bio}</p>
-                      <button>View Page</button>
-                    </div>
-                  </div>
-                </Link>)}
-              </div>
-              </>
+                <h3 className="content-header">Users tagged with {currentTag}</h3>
+                <div style={currentUser.token
+                  ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
+                  : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                {taggedUsers.map(user => <ExploreCard key={user.id} user={user} />)}
+                </div>
+                </>
               :
               <>
-              {currentTag !== null ? <h3 className="content-header">No results for {currentTag}</h3> : ""}
-              <h3 className="content-header">Featured Creators</h3>
-              <div style={currentUser.token
-                ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
-                : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
-              {featured.map(user =>
-                <Link key={user.id} to={`/${user.username}`} >
-                  <div className="explore-usercard">
-                    <div
-                      className="usercard-bigbanner"
-                      style={{ backgroundImage: `url(${user.banner_url})` }}>
-                      <img
-                        className="usercard-bigavatar"
-                        src={user.avatar_url}
-                        alt="user avatar" />
-                    </div>
-                    <div className="usercard-biginfo">
-                      <h3>{user.display_name || user.username}</h3>
-                      <p>{user.bio}</p>
-                      <button>View Page</button>
-                    </div>
-                  </div>
-                </Link>)}
+                {currentTag !== null ? <h3 className="content-header">No results for {currentTag}</h3> : ""}
+                <h3 className="content-header">Featured Creators</h3>
+                <div style={currentUser.token
+                  ? { display: "grid", gridTemplateColumns: "1fr 1fr" }
+                  : { display: "grid", gridTemplateColumns: "1fr 1fr 1fr" }}>
+                  {featured.map(user => <ExploreCard key={user.id} user={user} />)}
                 </div>
               </>}
             </>}

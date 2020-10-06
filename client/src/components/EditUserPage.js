@@ -141,27 +141,31 @@ export default function () {
             : { backgroundImage: `url(${userPageInfo.banner_url})`}} />
       : null}
       <input
+        disabled={processingImage}
         onChange={handleBannerChange}
         className="hidden"
         id="banner-upload"
         type="file"
         accept=".png,.jpg,.jpeg,.gif" />
+      <input
+        disabled={processingImage}
+        onChange={handleAvatarChange}
+        className="hidden"
+        id="avatar-upload"
+        type="file"
+        accept=".png,.jpg,.jpeg,.gif"></input>
       <div className="userpage-container"
         style={ userPageInfo.banner_url || banner.preview ? { marginTop: "25px"} : {marginTop: "100px"}}>
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
-            <div className="userpage-avatar"
-              style={avatar.preview ? { backgroundImage: `url(${avatar.preview})`} : {backgroundImage: `url(${userPageInfo.avatar_url})`}}>
-              <label htmlFor="avatar-upload" id="edit-button">
-                <i className="fa fa-pencil" />
-              </label>
-              <input
-                onChange={handleAvatarChange}
-                className="hidden"
-                id="avatar-upload"
-                type="file"
-                accept=".png,.jpg,.jpeg,.gif"></input>
-            </div>
+            <label htmlFor="avatar-upload" id="edit-button">
+              <i className="fa fa-pencil" />
+            </label>
+            <img
+              alt="avatar"
+              className="userpage-avatar"
+              onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"}
+              src={avatar.preview || userPageInfo.avatar_url} />
             <div className="userpage-info" style={{
               display: "flex",
               flexDirection: "column",
@@ -217,7 +221,7 @@ export default function () {
               ?
               <>
               <span style={{ color: "gray", fontSize: "12px" }}>Image preview</span><br/>
-              <img src={image.preview} alt="upload preview" style={{ width: "100%", marginBottom: "10px" }}/>
+              <img src={image.preview} alt="upload preview" style={{ width: "min-content", maxWidth: "100%", marginBottom: "10px" }}/>
               <button onClick={() => setImage({preview: "", raw: ""})} id="remove-image-button">Remove image?</button>
               </>
               : null}

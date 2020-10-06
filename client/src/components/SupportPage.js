@@ -8,24 +8,26 @@ import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
 const SupportCard = ({ type, support }) => (
-  <div style={{ marginTop: "25px" }}>
+  <div style={{ marginTop: "15px" }}>
     <div style={{ display: "flex", marginBottom: "10px" }}>
-      <div
+      <img
+        alt="avatar"
         className="post-avatar"
-        style={
-          type === "given" ?
-          { backgroundImage: `url(${support.supported_avatar})` } :
-          { backgroundImage: `url(${support.author_avatar})` }} />
-      <div style={{ display: "flex", flexDirection: "column", position: "relative", left: "15px" }}>
+        src={type === "given" ? support.supported_avatar : support.author_avatar}
+        onError={(e) => e.target.src = "https://kafeen.s3.us-east-2.amazonaws.com/Screen+Shot+2020-09-20+at+11.52.11+PM.png"} />
+      <div style={{ display: "flex", flexDirection: "column", position: "relative", justifyContent: "space-evenly", left: "15px" }}>
         {type === "received"
-        ? <span>{support.private_supporter || support.supporter}</span>
-        : <span>Supported: {support.supported}{support.private_supporter && " (Anonymously)"}</span>}
+          ? <span style={{ fontWeight: "600" }}>{support.private_supporter || support.supporter}</span>
+          : <span>Supported:&nbsp;<span style={{ fontWeight: "600" }}>{support.supported}</span>&nbsp;
+          {support.private_supporter && <span style={{ color: "gray", fontSize: "14px" }}> (Anonymously)</span>}</span>}
         <span style={{ color: "gray" }}>{support.posted_on}</span>
       </div>
     </div>
     <span>Amount: ${support.amount * 3}</span><br/>
-      {support.body && <span>{type==="given" && "Your "}Message: {support.body}</span>}
-    <div className="content-break" style={{ marginTop: "25px"}} />
+    {support.body && <span>{type==="given" && "Your "}Message: {support.body}</span>}<br/>
+    {/* {!support.private_supporter && type ==="given" &&
+    <button id="mark-private">Make Private</button>} */}
+    <div className="content-break" style={{ marginTop: "15px"}} />
   </div>
 );
 
@@ -61,7 +63,7 @@ export default function () {
         <div className="content">
           <h3 className="content-header">Support</h3>
           <div className="content-break" />
-          <div style={{ alignSelf: "center", marginTop: "20px"}}>
+          <div style={{ alignSelf: "center", marginTop: "10px"}}>
             <button
               className={tab === "received" ? "support__tab-button selected" : "support__tab-button" }
               onClick={() => setTab("received")}>Received</button>
