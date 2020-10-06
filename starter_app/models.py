@@ -186,15 +186,14 @@ class Support(db.Model):
   def to_dict(self):
     return {
       "id": self.id,
-      "username": User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
+      "username": self.supporting_user.username,
+      "supported_username": self.supported_user.username,
       "private_supporter": "Somebody" if self.private else None,
       "author_avatar": "https://kafeen.s3.us-east-2.amazonaws.com/Screen%2BShot%2B2020-09-20%2Bat%2B11.52.11%2BPM.jpg" if self.private else
-        User.query.filter(User.id == self.supporter_id).first().to_dict()["avatar_url"],
-      "supported_avatar": User.query.filter(User.id == self.user_id).first().to_dict()["avatar_url"],
-      "supporter": User.query.filter(User.id == self.supporter_id).first().to_dict()["display_name"] or
-        User.query.filter(User.id == self.supporter_id).first().to_dict()["username"],
-      "supported": User.query.filter(User.id == self.user_id).first().to_dict()["display_name"] or
-        User.query.filter(User.id == self.user_id).first().to_dict()["username"],
+        self.supporting_user.avatar_url,
+      "supported_avatar": self.supported_user.avatar_url,
+      "supporter": self.supporting_user.display_name or self.supporting_user.username,
+      "supported": self.supported_user.display_name or self.supported_user.username,
       "amount": self.amount,
       "body": self.body,
       "posted_on": humanize.naturaltime(datetime.now() - self.created_at),

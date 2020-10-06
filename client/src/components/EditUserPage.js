@@ -154,8 +154,12 @@ export default function () {
         id="avatar-upload"
         type="file"
         accept=".png,.jpg,.jpeg,.gif"></input>
-      <div className="userpage-container"
-        style={ userPageInfo.banner_url || banner.preview ? { marginTop: "25px"} : {marginTop: "100px"}}>
+      <div
+        className="userpage-container"
+        style={
+          userPageInfo.banner_url || banner.preview
+            ? { marginTop: "25px"}
+            : {marginTop: "100px"}}>
         <div className="userpage-topbar">
           <div className="userpage-avatarinfo">
             <label htmlFor="avatar-upload" id="edit-button">
@@ -205,7 +209,7 @@ export default function () {
               </div>
               : null}
             {userPageInfo.total_support > 0
-              ? <div style={{ fontSize: "18px" }}><i className="fa fa-coffee" />&nbsp;x&nbsp;
+              ? <div style={{ fontSize: "18px", marginTop: "10px" }}><i className="fa fa-coffee" />&nbsp;x&nbsp;
             <strong>{userPageInfo.total_support}</strong>
             &nbsp;Received</div> : null}
           </div>

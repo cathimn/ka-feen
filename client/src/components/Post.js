@@ -64,12 +64,17 @@ export default function ({ post, setNewPost }) {
             <strong>
               {post.private_supporter
               ? post.private_supporter
-              : ( post.username === currentUser.username )
-                ? "You"
-                : post.supporter || post.author}</strong>
+              : 
+              <Link to={`/${post.username}`}>
+                  {(post.username === currentUser.username)
+                    ? "You"
+                    : post.supporter || post.author}
+              </Link>
+              }
+              </strong>
             {post.supported
             ? <span>&nbsp;bought some caffeine for&nbsp;
-              <strong>{post.supported}</strong></span>
+              <strong><Link to={`/${post.supported_username}`}>{post.supported_username === currentUser.username ? "You" : post.supported}</Link></strong></span>
             : <span>&nbsp;posted</span>}</div>
           <div style={{ fontSize: "14px", color: "gray" }}>{post.posted_on}</div>
         </div>

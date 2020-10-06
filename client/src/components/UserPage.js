@@ -13,13 +13,14 @@ export default function () {
 
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [userPageInfo, setUserPageInfo] = useState({});
-  const [isFollowing, setIsFollowing] = useState(false);
+  const [userPageInfo, setUserPageInfo] = useState({ tags: [], userpage_feed: [] });
+  const [isFollowing, setIsFollowing] = useState(null);
   const [feedPage, setFeedPage] = useState(1);
   const [newPost, setNewPost] = useState(false);
   const [privateDonation, setPrivateDonation] = useState(false);
   const [donationMessage, setDonationMessage] = useState("");
   const [supportAmount, setSupportAmount] = useState(1);
+  const [invalidUser, setInvalidUser] = useState(null);
 
   useEffect(() => {
     async function fetchUserPageInfo() {
@@ -27,24 +28,22 @@ export default function () {
       if (response.ok) {
         const data = await response.json();
         setUserPageInfo({ ...data });
+        if (currentUser.token) {
+          const response = await fetch(`${apiUrl}/follows`, {
+            headers: { Authorization: `Bearer ${currentUser.token}` },
+          });
+          const data = await response.json();
+          const usernames = data.following.map((user) => user.username);
+          setIsFollowing(usernames.includes(user));
+        }
+      } else {
+        setInvalidUser(true);
       }
       setLoaded(true);
     }
 
-    async function followingCheck() {
-      const response = await fetch(`${apiUrl}/follows`, {
-        headers: { Authorization: `Bearer ${currentUser.token}` },
-      });
-      const data = await response.json();
-      const usernames = data.following.map((user) => user.username);
-      setIsFollowing(usernames.includes(user));
-    }
-
     fetchUserPageInfo();
     setNewPost(false);
-    if (currentUser.token) {
-      followingCheck();
-    }
   }, [user, newPost, currentUser.token])
 
   const addToFeed = async () => {
@@ -130,18 +129,18 @@ export default function () {
     return null;
   }
 
-  if (loaded && Object.keys(userPageInfo).length === 0) {
+  if (loaded && invalidUser) {
     return <Redirect to="/notfound" />
   }
 
   return (
     <>
       <Navbar />
+      {userPageInfo.banner_url ?
       <div
-        className={userPageInfo.banner_url ? "userpage-banner" : "hidden"}
-        style={ userPageInfo.banner_url
-          ? { backgroundImage: `url(${userPageInfo.banner_url})` }
-          : {}}/>
+        className="userpage-banner"
+        style={{ backgroundImage: `url(${userPageInfo.banner_url})` }}/>
+      : null}
       <div
         className="userpage-container"
         style={
@@ -203,7 +202,7 @@ export default function () {
           </div>
           : null}
           {userPageInfo.total_support > 0 ?
-          <div style={{ fontSize: "18px" }}>
+            <div style={{ fontSize: "18px", marginTop: "10px"  }}>
               <div><i className="fa fa-coffee" />&nbsp;x&nbsp;
               <strong>{userPageInfo.total_support}</strong>
               &nbsp;Received</div> 
@@ -265,26 +264,17 @@ export default function () {
           </div>
           <div className="userpage-posts">
             <h3>Feed</h3>
-            {userPageInfo.userpage_feed.length > 0
-              ? userPageInfo.userpage_feed.map(post => {
-                if (post.amount) {
-                  return (
-                    <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} setNewPost={setNewPost} />)
-                } else {
-                  return (
-                    <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
-                  )
-                }
+            {userPageInfo.userpage_feed.map(post => {
+              if (post.amount) {
+                return <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />
+              } else {
+                return <Post key={"post" + post.id} post={post} setNewPost={setNewPost} />
               }
-              ):
-              <div>Nothing to see here.</div>}
-            {userPageInfo.end_of_feed
-            ? null
-            :
-            <button id="load-more" onClick={() => addToFeed()}>
-              {loading ? "Loading..." : "Load more..."}
-            </button>
-            }
+            })}
+            {!userPageInfo.end_of_feed &&
+              <button id="load-more" onClick={() => addToFeed()}>
+                {loading ? "Loading..." : "Load more..."}
+              </button>}
           </div>
         </div>
       </div>
