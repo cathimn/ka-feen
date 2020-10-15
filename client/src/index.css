@@ -118,7 +118,7 @@ a {
   width: 100%;
   position: sticky;
   bottom: 0;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 #footer > li {
@@ -135,6 +135,34 @@ a {
   margin-top: 10px;
   padding: 5px 10px;
   border-radius: 15px;
+}
+
+#my-info {
+  position: relative;
+  background-color: lavender;
+  border-radius: 10px;
+  padding: 20px 25px;
+  margin: 10px 0;
+  font-size: 14px;
+  opacity: 1;
+}
+
+#my-info > a {
+  text-decoration: underline;
+}
+
+#my-info > button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}
+
+#my-info.hidden {
+  transition: margin .5s, padding .5s, height .5s, opacity .1s;
+  opacity: 0;
+  height: 0px;
+  margin: 0;
+  padding: 0;
 }
 
 @import './styles/modal.css';

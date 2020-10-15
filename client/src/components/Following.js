@@ -41,9 +41,9 @@ export default function () {
       });
       const responseData = await response.json();
       setFollows(responseData.following);
+      setLoaded(true);
     }
     fetchData();
-    setLoaded(true);
   }, [currentUser.token]);
 
   if (!currentUser.token && loaded) {
@@ -58,7 +58,7 @@ export default function () {
       <div className="content">
         <h3 className="content-header">Following</h3>
         <div className="content-break" />
-        {follows.length === 0
+        {follows.length === 0 && loaded
         ? <p style={{
             alignSelf: "center",
             padding: "50px",

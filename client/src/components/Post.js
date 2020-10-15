@@ -5,7 +5,7 @@ import { AppContext } from '../AppContext';
 import { apiUrl } from '../config';
 
 export default function ({ post, setNewPost }) {
-  const { currentUser } = useContext(AppContext);
+  const { currentUser, setLoginModalDisplay } = useContext(AppContext);
   const [likes, setLike] = useState(post.likers ? [...post.likers] : null);
   const [showDelete, setShowDelete] = useState();
 
@@ -94,7 +94,13 @@ export default function ({ post, setNewPost }) {
         <div className="post-buttons">
           <div style={{ display: "flex" }}>
             <button
-              onClick={e => handleLikeClick(e, post.id, likes)}
+              onClick={e => {
+                if (currentUser.token) {
+                  handleLikeClick(e, post.id, likes)
+                } else {
+                  setLoginModalDisplay(true);
+                }
+                }}
               className={likes.includes(currentUser.id) ? "like-button liked" : "like-button"} >
               <i className="fa fa-heart" />
             </button>

@@ -4,9 +4,9 @@ export default function () {
   return (
     <>
     <ul id="footer">
-      <li><a href="https://cathimn.github.io/">Portfolio</a></li>
-      <li><a href="https://github.com/cathimn/ka-feen">Github</a></li>
-      <li><a href="https://www.linkedin.com/in/cath-lee">LinkedIn</a></li>
+      <li><i className="fa fa-code"/> by <a href="https://cathimn.github.io/">Cath Lee</a></li>
+      <li><i className="fa fa-github-alt"/> <a href="https://github.com/cathimn/ka-feen">Github</a></li>
+      <li><i className="fa fa-linkedin"/> <a href="https://www.linkedin.com/in/cath-lee">LinkedIn</a></li>
       <li>Inspired by: <a href="https://ko-fi.com/">Ko-fi</a></li>
     </ul>
     </>

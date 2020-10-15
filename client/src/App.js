@@ -24,6 +24,8 @@ function App() {
   const [signupModalDisplay, setSignupModalDisplay] = useState(false);
   const [sidebarDisplay, setSidebarDisplay] = useState(false);
 
+  const [myInfoDisplay, setMyInfoDisplay] = useState(true);
+
   const closeAllModals = () => {
     setLoginModalDisplay(false);
     setSignupModalDisplay(false);
@@ -88,6 +90,8 @@ function App() {
         setSignupModalDisplay,
         sidebarDisplay,
         setSidebarDisplay,
+        myInfoDisplay,
+        setMyInfoDisplay
       }}
     >
       <Login />

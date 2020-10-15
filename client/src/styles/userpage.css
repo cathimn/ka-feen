@@ -45,11 +45,13 @@
 .userpage-buttons {
   display: flex;
   align-self: center;
+  height: min-content;
 }
 
 .userpage-buttons > button {
   font-size: 16px;
   border-radius: 50px;
+  height: 40px;
 }
 
 #support-button {
@@ -58,8 +60,6 @@
   color: white;
   margin-right: 10px;
   font-weight: 600;
-  height: min-content;
-  white-space: nowrap;
 }
 
 #support-button:hover {

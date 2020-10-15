@@ -8,6 +8,21 @@ import Navbar from "./Navbar";
 import SidebarNav from "./SidebarNav";
 import Post from './Post';
 
+const MyInfo = () => {
+  const { myInfoDisplay, setMyInfoDisplay } = useContext(AppContext);
+
+  return (
+  <div id="my-info" className={myInfoDisplay ? "" : "hidden"}>
+    <button onClick={e => setMyInfoDisplay(false)}><i className="fa fa-close"/></button>
+    Welcome to Ka-feen!<br/><br/>
+    This portfolio project is based on <a href="https://ko-fi.com/">Ko-fi</a> and made by&nbsp;
+    <a href="https://cathimn.github.io/">Cath Lee</a> using React, Flask, and SQLAlchemy.<br/><br/>
+    Check out the <a href="https://github.com/cathimn/ka-feen">GitHub repo</a>&nbsp;
+    or my <a href="https://www.linkedin.com/in/cath-lee">LinkedIn</a> for more information about me and my projects. <i className="fa fa-smile-o"/>
+  </div>
+  )
+};
+
 export default function () {
   const { currentUser } = useContext(AppContext);
   const [feed, setFeed] = useState([]);
@@ -64,8 +79,9 @@ export default function () {
       <SidebarNav />
       <div className="content">
       <h3 className="content-header">Newsfeed</h3>
-      <div style={{ width: "500px" }}>
+      <div style={{ width: "500px", position: "relative" }}>
         <div className="content-break" />
+        <MyInfo />
         {loaded && feed.length === 0
         ? <div style={{ marginTop: "15px" }}>Nothing to see here.</div>
         : feed.map(post => <Post key={post.id} post={post} setNewPost={setNewPost}/>)}
