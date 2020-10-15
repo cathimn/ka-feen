@@ -151,7 +151,7 @@ def user(username, page):
   if page_int == 0:
     feed_page = feed[0:10]
   elif page_int > 0:
-    start = (10 * page_int )+ 1
+    start = (10 * page_int )
     end = 10 * (page_int + 1)
     feed_page = feed[slice(start,end)]
   user = user.to_dict()
@@ -181,7 +181,7 @@ def feed(page):
   if page_int == 0:
     feed_page = response[0:10]
   elif page_int > 0:
-    start = (10 * page_int) + 1
+    start = 10 * page_int
     end = 10 * (page_int + 1)
     feed_page = response[slice(start, end)]
   return {

@@ -83,7 +83,7 @@ export default function () {
         <div className="content-break" />
         <MyInfo />
         {loaded && feed.length === 0
-        ? <div style={{ marginTop: "15px" }}>Nothing to see here.</div>
+        ? <div style={{ marginTop: "15px" }}>No activity yet.</div>
         : feed.map(post => <Post key={post.id} post={post} setNewPost={setNewPost}/>)}
         {end ? null
           : loaded && <button id="load-more" onClick={() => addToFeed()}>

@@ -21,7 +21,7 @@
   left: 15px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
 }
 
 .post-body {
@@ -65,10 +65,14 @@
   justify-content: space-between;
 }
 
+.like-button {
+  padding: 0;
+  margin-right: 5px;
+}
+
 .like-button > i {
   font-size: 20px;
-  color: lightgray;
-  vertical-align: center;
+  color: gray;
 }
 
 .like-button > i:hover {

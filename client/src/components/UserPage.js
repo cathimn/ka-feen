@@ -271,7 +271,12 @@ export default function () {
           </div>
           <div className="userpage-posts">
             <h3>Feed</h3>
-            {userPageInfo.userpage_feed.map(post => {
+            {userPageInfo.userpage_feed.length === 0 && loaded ?
+            <div style={{marginTop: "10px"}}>
+              No activity yet.
+            </div>
+            :
+            userPageInfo.userpage_feed.map(post => {
               if (post.amount) {
                 return <Post key={"support" + post.id} post={post} support={userPageInfo.display_name || userPageInfo.username} />
               } else {

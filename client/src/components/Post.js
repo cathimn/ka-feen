@@ -102,7 +102,7 @@ export default function ({ post, setNewPost }) {
                 }
                 }}
               className={likes.includes(currentUser.id) ? "like-button liked" : "like-button"} >
-              <i className="fa fa-heart" />
+              <i className={likes.includes(currentUser.id) ? "fa fa-heart" : "fa fa-heart-o"} />
             </button>
             <span>&nbsp;{likes.length > 0 ? likes.length : null}</span>
           </div>
