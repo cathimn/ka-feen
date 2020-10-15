@@ -8,8 +8,8 @@ import Navbar from './Navbar';
 import SidebarNav from './SidebarNav';
 
 const ExploreCard = ({ user }) => (
-  <Link to={`/${user.username}`} >
-    <div className="explore-usercard">
+  <div className="explore-usercard">
+    <Link to={`/${user.username}`} >
       <div
         className="usercard-bigbanner"
         style={{ backgroundImage: `url(${user.banner_url})` }}>
@@ -24,13 +24,30 @@ const ExploreCard = ({ user }) => (
         <p>{user.bio}</p>
         <button>View Page</button>
       </div>
-    </div>
-  </Link>
+    </Link>
+  </div>
 )
 
 function Explore () {
+  const categories = [
+    { id: 1, tag_name: "Animation" },
+    { id: 2, tag_name: "Art" },
+    { id: 3, tag_name: "Comics" },
+    { id: 4, tag_name: "Drawing & Painting" },
+    { id: 5, tag_name: "Food & Drink" },
+    { id: 6, tag_name: "Gaming" },
+    { id: 7, tag_name: "Music" },
+    { id: 8, tag_name: "Other" },
+    { id: 9, tag_name: "Photography" },
+    { id: 10, tag_name: "Podcast" },
+    { id: 11, tag_name: "Science & Tech" },
+    { id: 12, tag_name: "Social" },
+    { id: 13, tag_name: "Software" },
+    { id: 14, tag_name: "Streaming" },
+    { id: 15, tag_name: "Video & Film" },
+    { id: 16, tag_name: "Writing" }];
+    
   const { currentUser } = useContext(AppContext);
-  const [categories, setCategories] = useState([]);
   const [query, setQuery] = useState('');
   const [lastQuery, setLastQuery] = useState(query);
   const [results, setResults] = useState([]);
@@ -40,17 +57,12 @@ function Explore () {
   const [currentTag, setCurrentTag] = useState({ "tag": null, "id": null });
 
   useEffect(() => {
-    async function fetchData() {
-      const response = await fetch(`${apiUrl}/users/tags`);
-      const responseData = await response.json();
-      setCategories(responseData.tags);
-    }
     async function fetchFeatured() {
       const response = await fetch(`${apiUrl}/users/featured`);
       const responseData = await response.json();
       setFeatured([...responseData.users]);
     }
-    fetchData();
+    // fetchData();
     fetchFeatured();
   }, [])
 
