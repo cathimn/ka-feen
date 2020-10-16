@@ -28,6 +28,7 @@ export default function () {
       setPassword('');
       setEmail('');
       setLoginModalDisplay(false);
+      setErrors('');
     } else {
       const err = await response.json();
       setErrors(err.msg);

@@ -35,6 +35,7 @@ export default function () {
       setEmail("");
       setPassword("");
       setConfirmPassword("");
+      setErrors("");
     }
 
     setSignupModalDisplay(false);
