@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { AppContext } from '../AppContext';
 import { apiUrl, TOKEN_KEY, USER_KEY } from "../config";
 
-export default function () {
+function Login () {
   const { loginModalDisplay, setLoginModalDisplay, setSignupModalDisplay, setCurrentUser } = useContext(AppContext)
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -99,3 +99,5 @@ export default function () {
     </div>
   );
 }
+
+export default Login;
