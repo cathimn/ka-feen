@@ -21,7 +21,7 @@ with app.app_context():
 
   captain = User(username='captaincat',
                  email='captain@thecat.com',
-                 password = SEED_USERS_PASSWORD,
+                 password = 'astinkycheese',
                  bio="a loud cat that gallops around the house at 3am")
   luna = User(username='lunacat',
               email='luna@thecat.com',
